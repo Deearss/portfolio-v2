@@ -1,26 +1,59 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #FAFAF9;
+    --foreground: #1C1917;
+
+    --brand-50: #E3F2FD;
+    --brand-100: #BBDEFB;
+    --brand-200: #90CAF9;
+    --brand-300: #64B5F6;
+    --brand-400: #42A5F5;
+    --brand-500: #2196F3;
+    --brand-600: #1E88E5;
+    --brand-700: #1976D2;
+    --brand-800: #1565C0;
+    --brand-900: #0D47A1;
+  }
+
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.font-display {
+  font-family: var(--font-display), "Patua One", serif;
 }
+
+.font-sans {
+  font-family: var(--font-sans), "Plus Jakarta Sans", sans-serif;
+}
+
+.font-serif {
+  font-family: var(--font-serif), "PT Serif", serif;
+}
+
+/* Subtle scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F5F5F4;
+}
+::-webkit-scrollbar-thumb {
+  background: #D6D3D1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A8A29E;
+}
+
