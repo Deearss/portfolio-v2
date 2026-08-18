@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Sparkles, Bot, Zap, ArrowRight, MessageSquare, Check } from "lucide-react";
+import { Sparkles, Check } from "lucide-react";
 
 const CHAT_SIMULATIONS = [
   {

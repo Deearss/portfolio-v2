@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { X, ExternalLink, CheckCircle2, Cpu } from "lucide-react";
+import { X, ExternalLink, CheckCircle2 } from "lucide-react";
 
 export interface ProjectDetailData {
   id: string;

@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { ArrowUp } from "lucide-react";
 
 export function Footer() {

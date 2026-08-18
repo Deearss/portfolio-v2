@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { MessageSquare, Send, CheckCircle2, ShieldCheck, Mail } from "lucide-react";
+import { MessageSquare, ShieldCheck } from "lucide-react";
 
 export function WhatsappForm() {
   const [name, setName] = useState("");
