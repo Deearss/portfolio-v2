@@ -1,29 +1,31 @@
-"use me";
+"use client";
 import React from "react";
-import Link from "next/link";
-import { Sparkles, Code2, ArrowUpRight } from "lucide-react";
+import { Sparkles, ArrowUpRight } from "lucide-react";
 
 export function Navbar() {
   return (
     <header className="sticky top-0 z-40 bg-[#FAFAF9]/90 backdrop-blur-md border-b border-stone-200/60 transition-all">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Brand Badge */}
-        <Link 
-          href="/" 
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="flex items-center gap-2.5 group transition-transform active:scale-95"
         >
-          <div className="w-8 h-8 rounded-md bg-[#1976D2] text-white flex items-center justify-center font-display text-lg font-bold shadow-xs group-hover:bg-[#1565C0] transition-colors">
-            H
-          </div>
-          <div className="flex flex-col">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://avatars.githubusercontent.com/u/111673708?v=4"
+            alt="Haidir Aditya Avatar"
+            className="w-8 h-8 rounded-md border border-stone-200 object-cover shadow-xs group-hover:scale-105 transition-transform"
+          />
+          <div className="flex flex-col text-left">
             <span className="font-bold text-sm text-stone-900 tracking-tight leading-none group-hover:text-[#1565C0] transition-colors">
               Haidir Aditya
             </span>
             <span className="text-[11px] font-medium text-stone-500 leading-tight">
-              Systems Engineer
+              Systems & Digital Services Engineer
             </span>
           </div>
-        </Link>
+        </button>
 
         {/* Navigation Links */}
         <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-stone-600">

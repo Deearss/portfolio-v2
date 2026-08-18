@@ -28,6 +28,12 @@
     font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
+
+  button,
+  a,
+  [role="button"] {
+    cursor: pointer;
+  }
 }
 
 .font-display {
