@@ -1,28 +1,17 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Patua_One, PT_Serif } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
-});
-
-const patuaOne = Patua_One({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["400"],
-});
-
-const ptSerif = PT_Serif({
-  variable: "--font-serif",
-  subsets: ["latin"],
-  weight: ["400", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Haidir Aditya — Systems & Software Engineer",
-  description: "Portofolio Haidir Aditya. Membantu kamu mempermudah proses input Excel, pembuatan aplikasi web internal ERP, migrasi data e-commerce, hingga translasi kontekstual.",
+  description: "Portofolio Haidir Aditya. Membantu pembuatan aplikasi web kencang, restrukturisasi Excel, dan otomatisasi sistem digital dengan performa tinggi.",
   keywords: ["Haidir Aditya", "Systems Engineer", "Software Engineer", "Full-Stack Developer", "Next.js", "Shopee WooCommerce Migration", "Excel Data Restructuring"],
   authors: [{ name: "Haidir Aditya" }],
   openGraph: {
@@ -42,7 +31,7 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${plusJakartaSans.variable} ${patuaOne.variable} ${ptSerif.variable} h-full antialiased`}
+      className={`${plusJakartaSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#FAFAF9] text-[#1C1917]">
         {children}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import {
   ExternalLink,
   ArrowUpRight,
@@ -22,7 +23,7 @@ const FAN_CARDS: FannedCardItem[] = [
     id: "ac",
     title: "Landing Page Jasa AC Skala Proyek",
     category: "Services Showcase",
-    image: "/showcase/ac.png",
+    image: "/showcase/ac.webp",
     liveUrl: "https://demo-jasa-ac.netlify.app",
     tilt: "-rotate-8 -translate-x-[130px] sm:-translate-x-[200px] md:-translate-x-[260px] scale-[0.92] sm:scale-95 hover:-rotate-2 hover:-translate-y-3 hover:scale-105",
     zIndex: 10,
@@ -31,7 +32,7 @@ const FAN_CARDS: FannedCardItem[] = [
     id: "wedding",
     title: "Landing Page Wedding Organizer",
     category: "Commercial Showcase",
-    image: "/showcase/wedding.png",
+    image: "/showcase/wedding.webp",
     liveUrl: "https://demo-wedding-organizer.netlify.app",
     tilt: "rotate-0 z-20 scale-105 sm:scale-110 shadow-2xl hover:-translate-y-3 hover:scale-115",
     zIndex: 20,
@@ -40,7 +41,7 @@ const FAN_CARDS: FannedCardItem[] = [
     id: "es-batu",
     title: "Landing Page Langganan Es Batu Kristal",
     category: "B2B Subscription",
-    image: "/showcase/es-batu.png",
+    image: "/showcase/es-batu.webp",
     liveUrl: "https://demo-es-batu.netlify.app",
     tilt: "rotate-8 translate-x-[130px] sm:translate-x-[200px] md:translate-x-[260px] scale-[0.92] sm:scale-95 hover:rotate-2 hover:-translate-y-3 hover:scale-105",
     zIndex: 10,
@@ -116,6 +117,7 @@ export function ProjectDeckCarousel() {
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
                             className="text-[#42A5F5] hover:text-white p-1 transition-colors"
+                            aria-label={`Buka Live Demo ${card.title}`}
                             title="Buka Live Demo"
                           >
                             <ExternalLink className="w-3.5 h-3.5" />
@@ -124,11 +126,13 @@ export function ProjectDeckCarousel() {
 
                         {/* Screenshot Preview Image */}
                         <div className="relative aspect-[16/10] bg-stone-950 overflow-hidden">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
+                          <Image
                             src={card.image}
                             alt={card.title}
+                            width={340}
+                            height={212}
                             className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
                         </div>
@@ -143,6 +147,7 @@ export function ProjectDeckCarousel() {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
+                            aria-label={`Live Demo ${card.title}`}
                             className="px-2.5 py-1 rounded bg-[#1976D2] hover:bg-[#1565C0] text-white text-[11px] font-bold shrink-0 inline-flex items-center gap-1 transition-all"
                           >
                             <span>Live Demo</span>

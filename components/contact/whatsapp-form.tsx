@@ -338,10 +338,10 @@ ${actualName}`;
                     <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#008069] border-2 border-[#202c33]" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-sm text-[#e9edef] leading-tight flex items-center gap-1.5">
+                    <p className="font-semibold text-sm text-[#e9edef] leading-tight flex items-center gap-1.5">
                       Haidir Aditya
-                    </h4>
-                    <p className="text-[11px] text-[#8696a0] font-normal leading-tight mt-0.5">
+                    </p>
+                    <p className="text-[11px] text-stone-400 font-normal leading-tight mt-0.5">
                       Systems &amp; Software Engineer
                     </p>
                   </div>
@@ -389,6 +389,7 @@ ${actualName}`;
                       <button
                         type="button"
                         onClick={() => openModal("name")}
+                        aria-label="Isi Nama Pengirim"
                         className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-semibold text-xs transition-all cursor-pointer ${
                           name.trim()
                             ? "bg-[#00483a] text-white border border-[#008069]/70 hover:bg-[#005a48]"
@@ -410,6 +411,7 @@ ${actualName}`;
                       <button
                         type="button"
                         onClick={() => openModal("purpose")}
+                        aria-label="Pilih Keperluan Kontak"
                         className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-semibold text-xs transition-all cursor-pointer ${
                           purpose.trim()
                             ? "bg-[#00483a] text-white border border-[#008069]/70 hover:bg-[#005a48]"
@@ -431,6 +433,7 @@ ${actualName}`;
                       <button
                         type="button"
                         onClick={() => openModal("topic")}
+                        aria-label="Pilih Topik Projek"
                         className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-semibold text-xs transition-all cursor-pointer ${
                           topic.trim()
                             ? "bg-[#00483a] text-white border border-[#008069]/70 hover:bg-[#005a48]"
@@ -452,6 +455,7 @@ ${actualName}`;
                       <button
                         type="button"
                         onClick={() => openModal("budget")}
+                        aria-label="Pilih Estimasi Budget"
                         className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-semibold text-xs transition-all cursor-pointer ${
                           budget.trim()
                             ? "bg-[#00483a] text-white border border-[#008069]/70 hover:bg-[#005a48]"
@@ -487,6 +491,7 @@ ${actualName}`;
                       <button
                         type="button"
                         onClick={() => openModal("message")}
+                        aria-label="Tulis Deskripsi Tambahan"
                         className={`w-full inline-flex items-start justify-between text-left gap-1.5 px-2.5 py-1.5 rounded-md text-xs sm:text-[13px] transition-all cursor-pointer ${
                           message.trim()
                             ? "bg-[#00483a] text-white border border-[#008069]/70 hover:bg-[#005a48]"
@@ -517,6 +522,7 @@ ${actualName}`;
                 <button
                   type="button"
                   onClick={handleSendAction}
+                  aria-label="Kirim Draft ke WhatsApp"
                   className="flex-1 py-3 px-5 rounded-xl bg-[#008069] hover:bg-[#006e5a] active:scale-[0.99] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all shadow-md cursor-pointer"
                 >
                   <svg
@@ -570,8 +576,7 @@ ${actualName}`;
               <div className="px-4 py-2.5 flex items-center gap-3 border-b border-stone-200/80 text-xs sm:text-sm">
                 <span className="text-stone-500 font-medium w-16 shrink-0">Penerima</span>
                 <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-[#0b57d0] font-semibold text-xs shadow-2xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-[#0b57d0] font-semibold text-xs shadow-2xs">
                     Haidir Aditya (Email Resmi)
                   </span>
                 </div>
@@ -714,6 +719,7 @@ ${actualName}`;
                 <button
                   type="button"
                   onClick={handleSendAction}
+                  aria-label="Kirim Draft Lewat Email"
                   className="flex-1 py-3 px-5 rounded-xl bg-[#0b57d0] hover:bg-[#0842a0] active:scale-[0.99] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all shadow-md cursor-pointer"
                 >
                   <svg

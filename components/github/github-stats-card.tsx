@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import {
   GitCommit,
   GitBranch,
@@ -14,7 +15,6 @@ import {
   Terminal,
   Check,
 } from "lucide-react";
-import { motion } from "framer-motion";
 
 interface GithubUserData {
   public_repos: number;
@@ -241,12 +241,7 @@ export function GithubStatsCard() {
   const activeEvents = events.length > 0 ? events : FALLBACK_EVENTS;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-      className="w-full max-w-4xl mx-auto my-6 bg-[#0d1117] rounded-xl border border-[#30363d] shadow-[0_8px_40px_rgba(0,0,0,0.45)] overflow-hidden text-left font-sans text-[#c9d1d9]"
-    >
+    <div className="w-full max-w-4xl mx-auto my-6 bg-[#0d1117] rounded-xl border border-[#30363d] shadow-[0_8px_40px_rgba(0,0,0,0.45)] overflow-hidden text-left font-sans text-[#c9d1d9]">
       {/* Header Bar - Dark Mode IDE Style */}
       <div className="px-4 py-3 bg-[#161b22] border-b border-[#30363d] flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
@@ -266,6 +261,7 @@ export function GithubStatsCard() {
             <button
               onClick={() => fetchGithubData(true)}
               disabled={refreshing}
+              aria-label="Refresh Data GitHub"
               className="p-1 rounded text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#30363d] transition-all disabled:opacity-50"
             >
               <RefreshCw
@@ -337,11 +333,13 @@ export function GithubStatsCard() {
                   <div className="flex items-center -space-x-2 shrink-0">
                     <div className="relative group/claude z-10">
                       <div className="w-9 h-9 rounded-full border-2 border-[#161b22] bg-[#0d1117] p-1.5 flex items-center justify-center">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src="/claude.svg"
+                        <Image
+                          src="/claude.webp"
                           alt="Claude AI"
+                          width={24}
+                          height={24}
                           className="w-full h-full object-contain"
+                          loading="lazy"
                         />
                       </div>
                       <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-[#161b22] border border-[#30363d] text-[#f0f6fc] text-[9px] font-mono font-medium rounded-md shadow-xl opacity-0 group-hover/claude:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-40">
@@ -351,11 +349,13 @@ export function GithubStatsCard() {
                     </div>
                     <div className="relative group/agy z-0">
                       <div className="w-9 h-9 rounded-full border-2 border-[#161b22] bg-white p-1.5 flex items-center justify-center">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src="/antigravity.svg"
+                        <Image
+                          src="/antigravity.webp"
                           alt="Antigravity AI"
+                          width={24}
+                          height={24}
                           className="w-full h-full object-contain"
+                          loading="lazy"
                         />
                       </div>
                       <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-[#161b22] border border-[#30363d] text-[#f0f6fc] text-[9px] font-mono font-medium rounded-md shadow-xl opacity-0 group-hover/agy:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-40">
@@ -465,11 +465,13 @@ export function GithubStatsCard() {
 
                   {/* Sticking-Out Tilted Antigravity Mini Card (Elevated & Top-Aligned Icon) */}
                   <div className="absolute -bottom-5 sm:-bottom-6 right-6 sm:right-8 w-11 h-17 sm:w-12 sm:h-19 bg-white/95 rounded-xl shadow-xl border border-stone-200/80 flex items-start justify-center pt-2 sm:pt-2.5 transform rotate-6 translate-y-1 group-hover/item:rotate-2 group-hover/item:translate-y-0 transition-all duration-300 pointer-events-none z-0">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/antigravity.svg"
+                    <Image
+                      src="/antigravity.webp"
                       alt="Antigravity AI"
+                      width={24}
+                      height={24}
                       className="w-5 h-5 sm:w-5.5 sm:h-5.5 object-contain"
+                      loading="lazy"
                     />
                   </div>
                 </div>
@@ -605,6 +607,6 @@ export function GithubStatsCard() {
           <ExternalLink className="w-3 h-3" />
         </a>
       </div>
-    </motion.div>
+    </div>
   );
 }

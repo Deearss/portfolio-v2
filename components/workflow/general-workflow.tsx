@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import {
   Search,
   Compass,
@@ -27,7 +28,7 @@ const WORKFLOW_STEPS: WorkflowStep[] = [
     title: "Cari Tau Klien Maunya Apa",
     desc: "Diskusi mendalam mengenai kebutuhan, fitur utama, preferensi desain, dan target penyelesaian projek agar hasil tepat sasaran.",
     icon: Search,
-    image: "/roadmap-image/alur-1.svg",
+    image: "/roadmap-image/alur-1.webp",
     highlight: "Konsultasi & Discovery",
   },
   {
@@ -35,7 +36,7 @@ const WORKFLOW_STEPS: WorkflowStep[] = [
     title: "Pilih Solusi Terbaik Buat Masalah Klien",
     desc: "Menentukan arsitektur sistem, stack teknologi yang efisien, estimasi biaya hemat (anti-boncos), dan roadmap pengerjaan yang jelas.",
     icon: Compass,
-    image: "/roadmap-image/alur-2.svg",
+    image: "/roadmap-image/alur-2.webp",
     highlight: "Solusi & Strategi",
   },
   {
@@ -43,7 +44,7 @@ const WORKFLOW_STEPS: WorkflowStep[] = [
     title: "Eksekusi Kilat Bareng AI",
     desc: "Pengembangan kode secara cepat dan presisi menggunakan workflow AI engineering mutakhir, clean code, serta performa tinggi.",
     icon: Zap,
-    image: "/roadmap-image/alur-3.svg",
+    image: "/roadmap-image/alur-3.webp",
     highlight: "AI-Powered Coding",
   },
   {
@@ -51,7 +52,7 @@ const WORKFLOW_STEPS: WorkflowStep[] = [
     title: "Tanya Klien Udah Pas Atau Belum",
     desc: "Uji coba fungsional, demo live ke klien, dan penyesuaian iteratif berdasarkan feedback langsung sampai kamu benar-benar puas.",
     icon: MessageCircle,
-    image: "/roadmap-image/alur-4.svg",
+    image: "/roadmap-image/alur-4.webp",
     highlight: "Review & Validasi",
   },
   {
@@ -59,7 +60,7 @@ const WORKFLOW_STEPS: WorkflowStep[] = [
     title: "Beres, Hasil Rapi Siap Pakai",
     desc: "Penyerahan source code bersih, dokumentasi lengkap, panduan deployment, dan dukungan awal agar projek langsung siap go-live.",
     icon: CheckCircle2,
-    image: "/roadmap-image/alur-5.svg",
+    image: "/roadmap-image/alur-5.webp",
     highlight: "Delivery & Serah Terima",
   },
 ];
@@ -273,7 +274,7 @@ export function GeneralWorkflow() {
                       <span className="px-2.5 py-0.5 rounded-full bg-[#E3F2FD] text-[#1565C0] text-xs font-mono font-extrabold border border-blue-100">
                         Langkah {step.num}
                       </span>
-                      <span className="text-[11px] font-semibold text-stone-400">
+                      <span className="text-[11px] font-semibold text-stone-500">
                         {step.highlight}
                       </span>
                     </div>
@@ -282,19 +283,16 @@ export function GeneralWorkflow() {
                     </div>
                   </div>
 
-                  {/* SVG Illustration Container (1:1 Ratio, Static Crisp Render) */}
-                  <div className="w-full h-80 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                  {/* Illustration Container (1:1 Ratio, Static Crisp Render) */}
+                  <div className="w-full h-80 rounded-xl mb-4 flex items-center justify-center overflow-hidden relative">
+                    <Image
                       src={step.image}
                       alt={step.title}
+                      width={400}
+                      height={400}
                       className={`w-full h-full object-contain pointer-events-none ${
-                      idx === 1 || idx === 4 ? "scale-[0.95] translate-y-2.5" : "scale-[0.95] translate-y-5.5"
-                      }
-                        ${
-                      idx === 0 && "scale-[0.95]! -translate-y-4.5!"
-                      }
-                        `}
+                        idx === 1 || idx === 4 ? "scale-[0.95] translate-y-2.5" : "scale-[0.95] translate-y-0.5"
+                      } ${idx === 0 ? "scale-[0.95]! -translate-y-4.5!" : ""}`}
                       draggable={false}
                       loading="lazy"
                     />
@@ -310,9 +308,9 @@ export function GeneralWorkflow() {
                 </div>
 
                 {/* Bottom Step Indicator Bar */}
-                <div className="pt-4 mt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-400">
+                <div className="pt-4 mt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500 font-medium">
                   <span>Tahap {idx + 1} dari {WORKFLOW_STEPS.length}</span>
-                  <span className={`font-semibold ${isActive ? "text-[#1976D2]" : "text-stone-400"}`}>
+                  <span className={`font-semibold ${isActive ? "text-[#1976D2]" : "text-stone-500"}`}>
                     {idx === WORKFLOW_STEPS.length - 1 ? "Selesai ✨" : "Lanjut ➔"}
                   </span>
                 </div>

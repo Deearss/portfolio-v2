@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { ArrowUp } from "lucide-react";
 
 export function Footer() {
@@ -27,13 +28,15 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center py-1"
-              aria-label="GitHub Haidir Aditya"
+              aria-label="Kunjungi Profil GitHub Haidir Aditya"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/footer-image/longicon-github.svg"
+              <Image
+                src="/footer-image/longicon-github.webp"
                 alt="GitHub"
-                className="h-4 sm:h-4.5 w-auto object-contain opacity-55 group-hover:opacity-100 transition-opacity duration-200"
+                width={80}
+                height={20}
+                className="h-4 sm:h-4.5 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-200"
+                loading="lazy"
               />
             </a>
             <div className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-top-10 transition-all duration-200 z-30">
@@ -51,13 +54,15 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center py-1"
-              aria-label="LinkedIn Haidir Aditya"
+              aria-label="Kunjungi Profil LinkedIn Haidir Aditya"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/footer-image/longicon-linkedin.svg"
+              <Image
+                src="/footer-image/longicon-linkedin.webp"
                 alt="LinkedIn"
-                className="h-4 sm:h-4.5 w-auto object-contain opacity-55 group-hover:opacity-100 transition-opacity duration-200"
+                width={80}
+                height={20}
+                className="h-4 sm:h-4.5 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-200"
+                loading="lazy"
               />
             </a>
             <div className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-top-10 transition-all duration-200 z-30">
@@ -75,13 +80,15 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center py-1"
-              aria-label="Projects.co.id Haidir Aditya"
+              aria-label="Kunjungi Profil Projects.co.id Haidir Aditya"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/footer-image/longicon-projectscoid.svg"
+              <Image
+                src="/footer-image/longicon-projectscoid.webp"
                 alt="Projects.co.id"
-                className="h-4 sm:h-4.5 w-auto object-contain opacity-55 group-hover:opacity-100 transition-opacity duration-200"
+                width={95}
+                height={20}
+                className="h-4 sm:h-4.5 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-200"
+                loading="lazy"
               />
             </a>
             <div className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-top-10 transition-all duration-200 z-30">

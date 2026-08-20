@@ -24,6 +24,7 @@ export function ExcelBeforeAfter() {
         <div className="flex items-center bg-emerald-900/40 p-1 rounded-lg border border-emerald-500/40 gap-1">
           <button
             onClick={() => setMode("before")}
+            aria-label="Lihat tampilan Excel sebelum dipermak"
             className={`px-3 py-1.5 rounded-md text-xs font-bold flex items-center gap-1.5 transition-all ${
               mode === "before"
                 ? "bg-rose-600 text-white shadow-xs"
@@ -36,6 +37,7 @@ export function ExcelBeforeAfter() {
 
           <button
             onClick={() => setMode("after")}
+            aria-label="Lihat tampilan Excel sesudah dipermak"
             className={`px-3 py-1.5 rounded-md text-xs font-bold flex items-center gap-1.5 transition-all ${
               mode === "after"
                 ? "bg-white text-[#107C41] shadow-xs"
@@ -180,6 +182,7 @@ export function ExcelBeforeAfter() {
               <span>*Tampilan baru toko sembako: Pemisahan angka &amp; satuan otomatis, omset terekap akurat, &amp; stok terpantau instan.</span>
               <button
                 onClick={() => setMode("before")}
+                aria-label="Bandingkan dengan versi file Excel sebelum dipermak"
                 className="text-[#107C41] font-bold hover:underline inline-flex items-center gap-1 text-xs"
               >
                 <span>Bandingkan dengan versi lama</span>

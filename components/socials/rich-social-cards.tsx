@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { ExternalLink, CheckCircle2 } from "lucide-react";
-
 
 export function RichSocialCards() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
@@ -23,7 +23,7 @@ export function RichSocialCards() {
         {/* 2 Social Cards Grid (LinkedIn & Projects.co.id) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto items-stretch">
 
-          {/* Card 2: LinkedIn */}
+          {/* Card 1: LinkedIn */}
           <div
             className="relative h-full flex flex-col"
             onMouseEnter={() => setHoveredCard("linkedin")}
@@ -33,24 +33,27 @@ export function RichSocialCards() {
               href="https://www.linkedin.com/in/haidir-aditya-487b44279/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Kunjungi Profil LinkedIn Haidir Aditya"
               className="flex flex-col h-full bg-white rounded-md border border-stone-200 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group"
             >
               {/* Top Bar */}
-              <div className="px-4 py-3 border-b border-stone-100 flex items-center justify-between bg-stone-50 shrink-0">
+              <div className="px-4 py-3 border-b border-stone-100 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-md overflow-hidden flex items-center justify-center shrink-0 shadow-xs">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/footer-image/icon-linkedin.svg"
+                  <div className="w-10 h-10 rounded-md overflow-hidden flex items-center justify-center shrink-0">
+                    <Image
+                      src="/footer-image/icon-linkedin.webp"
                       alt="LinkedIn"
+                      width={40}
+                      height={40}
                       className="w-10 h-10 object-contain rounded-md"
+                      loading="lazy"
                     />
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm text-stone-900 flex items-center gap-1">
+                    <h3 className="font-bold text-sm text-stone-900 flex items-center gap-1">
                       Haidir Aditya
                       <CheckCircle2 className="w-3.5 h-3.5 text-[#1976D2]" />
-                    </h4>
+                    </h3>
                     <p className="text-[11px] text-stone-500">LinkedIn Professional</p>
                   </div>
                 </div>
@@ -76,7 +79,7 @@ export function RichSocialCards() {
             )}
           </div>
 
-          {/* Card 3: Projects.co.id */}
+          {/* Card 2: Projects.co.id */}
           <div
             className="relative h-full flex flex-col"
             onMouseEnter={() => setHoveredCard("projects")}
@@ -86,24 +89,27 @@ export function RichSocialCards() {
               href="https://projects.co.id/public/browse_users/view/2eaf56/dier-dieeerrr"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Kunjungi Profil Projects.co.id Haidir Aditya"
               className="flex flex-col h-full bg-white rounded-md border border-stone-200 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group"
             >
               {/* Top Bar */}
-              <div className="px-4 py-3 border-b border-stone-100 flex items-center justify-between bg-stone-50 shrink-0">
+              <div className="px-4 py-3 border-b border-stone-100 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-md overflow-hidden flex items-center justify-center shrink-0 shadow-xs">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/footer-image/icon-projectscoid.svg"
+                  <div className="w-10 h-10 rounded-md overflow-hidden flex items-center justify-center shrink-0">
+                    <Image
+                      src="/footer-image/icon-projectscoid.webp"
                       alt="Projects.co.id"
+                      width={40}
+                      height={40}
                       className="w-10 h-10 object-contain rounded-md"
+                      loading="lazy"
                     />
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm text-stone-900 flex items-center gap-1">
+                    <h3 className="font-bold text-sm text-stone-900 flex items-center gap-1">
                       dier-dieeerrr
                       <CheckCircle2 className="w-3.5 h-3.5 text-[#1976D2]" />
-                    </h4>
+                    </h3>
                     <p className="text-[11px] text-stone-500">Projects.co.id</p>
                   </div>
                 </div>

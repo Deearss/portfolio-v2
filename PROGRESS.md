@@ -15,13 +15,14 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 ---
 
 ## 🛠️ Tech Stack & Konfigurasi Arsitektur
-- **Framework**: Next.js 16 (App Router), React 19, TypeScript
+- **Framework**: Next.js 16 (App Router, Static Export `output: "export"`), React 19, TypeScript
 - **Styling**: Tailwind CSS v4, Vanilla CSS utilities (`app/globals.css`)
-- **Animasi & Interaktivitas**: Framer Motion, Lucide React Icons, React Icons
+- **Tipografi**: `Plus Jakarta Sans` (`next/font/google` dengan `display: "swap"`)
+- **Icon & Gambar**: Native WebP + SVG Vector, Lucide React Icons
 - **Design System / Branding**:
+  - **Hero Section**: Solid Dark IDE (`#0d1117`, `#161b22`, `#30363d`), Brand Blue `#58a6ff` & `#1f6feb`
   - **Material Blue Primary**: `#1565C0`, `#1976D2`, `#42A5F5`, `#E3F2FD`
   - **Neutrals**: Stone (`#FAFAF9`, `#F5F5F4`, `#E7E5E4`, `#1C1917`)
-  - **Dark IDE Mode (GitHub Card)**: `#0d1117`, `#161b22`, `#30363d`
   - **Excel Theme (Showcase 2)**: Microsoft Excel Light Mode `#107C41`
 - **Keamanan & Privasi**:
   - Zero hardcoded contact credentials di repo publik.
@@ -35,23 +36,23 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 ### 1. Header & Navbar (`components/navbar/navbar.tsx`)
 - **Status**: ✅ **Selesai & Teruji**
 - **Fitur**:
-  - Sticky glassmorphism header (`backdrop-blur-md`).
+  - Dynamic scroll transparency: 100% transparan di posisi atas Hero, beralih ke `backdrop-blur-md` saat di-scroll.
   - Brand avatar & judul "Haidir Aditya — Systems & Software Engineer".
   - Link navigasi anchor: `#projek`, `#workflow`, `#sosmed`, `#kontak`.
 
 ### 2. Hero Section (`components/hero/railway-hero.tsx`)
-- **Status**: ✅ **Selesai & Teruji**
+- **Status**: ✅ **Selesai & Teruji (Super Kencang & Ringan)**
 - **Fitur**:
-  - Background animasi matrix titik-titik bergerak ke bawah (`moveDotsDown`).
-  - Animasi typewriter cepat dengan teks value proposition dinamis.
-  - Headline tegas: *Haidir Aditya — Systems & Software Engineer*.
+  - Latar solid Dark `#0d1117` tanpa background matrix dot yang membebani CPU/GPU mobile.
+  - Value proposition statis yang to-the-point dan mudah dibaca.
+  - Headline tegas: *Haidir Aditya — Systems & Software Engineer* (`#58a6ff`).
   - Call-to-action ganda: *Diskusi Projek* dan *Lihat Portofolio*.
 
 ### 3. GitHub Bento Card (`components/github/github-stats-card.tsx`)
 - **Status**: ✅ **Selesai & Teruji**
 - **Fitur**:
   - Sinkronisasi live activity log dari GitHub API `Deearss`.
-  - Layout baris header item rapat (`gap-2`) dan `truncate` agar timestamp (`timeAgo`) tetap 1 baris & tinggi ketiga card simetris.
+  - Avatar AI Claude & Google Antigravity transparan murni tanpa background kotak hitam.
   - Container Dark Mode IDE dengan efek drop shadow tebal.
   - Yearly Activity Heatmap Grid 2026 dengan tooltip interaktif.
 
@@ -59,43 +60,41 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 - **Status**: ✅ **Selesai & Teruji**
 - **2 Bagian Utama**:
   1. **Landing Page buatan Haidir**:
-     - 3 kartu melayang motif kipas (Jasa AC, Wedding Organizer, Es Batu Kristal).
-     - Tombol live demo ke masing-masing subdomain Netlify.
+     - 3 kartu melayang motif kipas (Jasa AC, Wedding Organizer, Es Batu Kristal) berbasis format WebP (~58 KB).
+     - Tombol live demo ke masing-masing subdomain Netlify dengan `aria-label` aksesibilitas.
   2. **Restrukturisasi Pembukuan Usaha (`components/projects/excel-before-after.tsx`)**:
      - Simulasi sheet Excel toko sembako dengan toggle Sebelum vs Sesudah.
-     - Callout rapi dan minimalis (badge redundan sudah dibersihkan).
+     - Callout rapi, minimalis, dan berlabel aksesibilitas lengkap.
 
 ### 5. Alur Kerja / General Workflow (`components/workflow/general-workflow.tsx`)
 - **Status**: ✅ **Selesai & Teruji**
 - **Fitur**:
-  - Judul: *"Gimana Cara Saya Ngerjain Tugasmu?"* (Copywriting sopan & profesional bergaya buku non-fiksi).
+  - Judul: *"Gimana Cara Saya Ngerjain Tugasmu?"*.
   - Carousel horizontal full-width di desktop dengan kartu lebar (`400px` - `440px`).
-  - Fitur seret mouse/touch drag mulus dengan momentum snap.
-  - Ilustrasi SVG 1:1 di `public/roadmap-image/alur-1.svg` s/d `alur-5.svg` dengan proporsi pas tanpa terpotong di bagian bawah.
+  - 5 Ilustrasi WebP line art berlatar transparan (total hanya ~370 KB, turun 95% dari 7.02 MB).
+  - Menggunakan `<Image />` dari `next/image` dengan native `loading="lazy"`.
 
 ### 6. Official Platforms & Social Cards (`components/socials/rich-social-cards.tsx`)
 - **Status**: ✅ **Selesai & Teruji**
 - **Fitur**:
-  - Ikon resmi SVG (`icon-linkedin.svg`, `icon-projectscoid.svg`).
+  - Ikon resmi LinkedIn (`icon-linkedin.webp`) dan Projects.co.id (`icon-projectscoid.webp`) bersih & tajam.
   - Kedua kartu memiliki lebar dan tinggi simetris (`max-w-4xl`, `items-stretch`).
-  - Copywriting terarah: menginformasikan pengunjung diarahkan ke halaman Profil Projects.co.id.
+  - Hirarki heading `h3` yang sesuai standar SEO & WCAG.
 
 ### 7. Interactive Consultation & Contact Form (`components/contact/whatsapp-form.tsx`)
 - **Status**: ✅ **Selesai & Teruji**
 - **Fitur**:
-  - Toggle segmented: **WhatsApp Chat** (Dark Mode Web UI) vs **Email Draft** (Gmail Compose UI).
-  - Tampilan *Penerima* menggunakan badge nama resmi (`Haidir Aditya (Email Resmi)`), tanpa mengekspos email mentah.
-  - Tooltip tombol reset draf rata kanan (`right-0`) sehingga tidak terpotong tepi container.
+  - Toggle segmented: **WhatsApp Chat** vs **Email Draft**.
+  - Tampilan *Penerima* menggunakan badge nama resmi (`Haidir Aditya (Email Resmi)`).
   - Server-side route handler `/api/contact/whatsapp` dengan sanitasi input ketat.
 
 ### 8. Footer (`components/footer/footer.tsx`)
 - **Status**: ✅ **Selesai & Teruji**
-- **Fitur**: Branding minimalis, ikon media sosial resmi (`longicon-github.svg`, `longicon-linkedin.svg`, `longicon-projectscoid.svg`), dan tombol scroll-to-top.
+- **Fitur**: Branding minimalis, ikon media sosial resmi transparan (`longicon-github.webp`, `longicon-linkedin.webp`, `longicon-projectscoid.webp`), dan tombol scroll-to-top.
 
 ### 9. Rencana Fitur Transisi Evolusi Portofolio
-- **Status**: 📝 **Surat Tugas Siap** (`SURAT_TUGAS_TRANSISI_EVOLUSI.md`)
-- **Aset**: Tangkapan layar web lama tersimpan di `public/evolution/biodata-2023.png`.
-- **Target**: Transisi pembuka 5 detik yang menceritakan perjalanan dari `biodata-vert.vercel.app` (2023) ke versi 2026.
+- **Status**: 📝 **Ditunda (Sesuai Arahan User Sesi Ini Tidak Disentuh)**
+- **Aset**: Tersimpan aman di `public/evolution/biodata-2023.png`.
 
 ---
 
@@ -110,8 +109,8 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 
 ## 🚀 Perintah Verifikasi
 ```bash
-# Linter resmi
-npm run lint
+# Type check resmi
+npx tsc --noEmit
 
 # Build produksi
 npm run build
