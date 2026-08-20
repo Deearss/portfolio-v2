@@ -65,7 +65,9 @@ export function ExcelBeforeAfter() {
               <table className="w-full text-xs text-left border-collapse">
                 <thead>
                   <tr className="bg-[#F3F4F6] text-stone-600 border-b border-stone-300 text-[11px] font-bold">
-                    <th className="w-8 p-1.5 text-center border-r border-stone-300 bg-[#E5E7EB]"></th>
+                    <th className="w-8 p-1.5 text-center border-r border-stone-300 bg-[#E5E7EB]">
+                      <span className="sr-only">No</span>
+                    </th>
                     <th className="p-2 border-r border-stone-300">A (Tanggal)</th>
                     <th className="p-2 border-r border-stone-300">B (Nama Barang Toko)</th>
                     <th className="p-2 border-r border-stone-300">C (Jumlah)</th>
@@ -140,7 +142,9 @@ export function ExcelBeforeAfter() {
               <table className="w-full text-xs text-left border-collapse">
                 <thead>
                   <tr className="bg-[#F3F4F6] text-stone-700 border-b border-stone-300 text-[11px] font-bold">
-                    <th className="w-8 p-2 text-center border-r border-stone-300 bg-[#E5E7EB]"></th>
+                    <th className="w-8 p-2 text-center border-r border-stone-300 bg-[#E5E7EB]">
+                      <span className="sr-only">No</span>
+                    </th>
                     <th className="p-2 border-r border-stone-300">Tanggal</th>
                     <th className="p-2 border-r border-stone-300">Nama Barang Sembako</th>
                     <th className="p-2 border-r border-stone-300 text-right">Jumlah (Qty)</th>

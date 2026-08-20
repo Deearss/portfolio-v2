@@ -304,14 +304,15 @@ export function GithubStatsCard() {
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-1">
-                  <h3 className="font-bold text-base text-[#f0f6fc] truncate">
+                  <p className="font-bold text-base text-[#f0f6fc] truncate">
                     {activeUser.name}
-                  </h3>
+                  </p>
                   <div className="relative group inline-flex items-center">
                     <a
                       href={activeUser.html_url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label="Buka Profil GitHub Deearss"
                       className="text-[#8b949e] hover:text-[#58a6ff] transition-colors p-1"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
@@ -436,9 +437,9 @@ export function GithubStatsCard() {
           <div className="lg:col-span-6 p-4 bg-[#161b22] rounded-lg border border-[#30363d] flex flex-col justify-between">
             <div className="flex items-center gap-2 pb-1.5 mb-2 border-b border-[#30363d]">
               <GitCommit className="w-4 h-4 text-[#58a6ff]" />
-              <h4 className="text-xs font-bold text-[#f0f6fc] tracking-wide uppercase font-mono">
+              <p className="text-xs font-bold text-[#f0f6fc] tracking-wide uppercase font-mono">
                 Live GitHub Activity Log
-              </h4>
+              </p>
             </div>
 
             <div className="space-y-2">

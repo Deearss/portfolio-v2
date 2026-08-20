@@ -6,7 +6,8 @@
     "dev": "next dev --webpack -H 0.0.0.0",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "audit:a11y": "node scripts/test-a11y.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.30.0",
@@ -20,8 +21,10 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "axe-core": "^4.13.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
+    "jsdom": "^30.0.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
