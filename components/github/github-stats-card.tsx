@@ -50,7 +50,7 @@ const FALLBACK_PROFILE: GithubUserData = {
   login: "Deearss",
   name: "Dir",
   avatar_url: "https://avatars.githubusercontent.com/u/111673708?v=4",
-  bio: "Systems & Digital Services Engineer, AI-augmented",
+  bio: "Systems & Software Engineer",
   public_repos: 80,
   followers: 12,
   following: 5,
@@ -448,13 +448,13 @@ export function GithubStatsCard() {
                   className="relative overflow-hidden p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#388bfd]/60 transition-all group/item shadow-sm"
                 >
                   {/* Left Content (Repo Pill, Time Ago, Commit Message) */}
-                  <div className="relative z-10 pr-20 sm:pr-28">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-[#388bfd]/20 text-[#58a6ff] border border-[#388bfd]/40 flex items-center gap-1">
-                        <GitBranch className="w-2.5 h-2.5" />
-                        {evt.repoName}
+                  <div className="relative z-10 pr-16 sm:pr-20">
+                    <div className="flex items-center gap-2 mb-1 min-w-0">
+                      <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-[#388bfd]/20 text-[#58a6ff] border border-[#388bfd]/40 flex items-center gap-1 shrink min-w-0">
+                        <GitBranch className="w-2.5 h-2.5 shrink-0" />
+                        <span className="truncate">{evt.repoName}</span>
                       </span>
-                      <span className="text-[10px] text-[#8b949e] font-mono">
+                      <span className="text-[10px] text-[#8b949e] font-mono whitespace-nowrap shrink-0">
                         {evt.timeAgo}
                       </span>
                     </div>

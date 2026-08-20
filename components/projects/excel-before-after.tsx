@@ -112,14 +112,9 @@ export function ExcelBeforeAfter() {
         ) : (
           <div className="space-y-4">
             {/* Success Callout */}
-            <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center justify-between gap-2 font-medium">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 shrink-0 text-[#107C41]" />
-                <span>Stok terstruktur, kalkulasi omset otomatis, Currency Rp, &amp; Rekap Harian instan!</span>
-              </div>
-              <span className="text-[11px] font-bold bg-[#107C41] text-white px-2.5 py-0.5 rounded shadow-2xs shrink-0">
-                Dipermak Rapi
-              </span>
+            <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center gap-2 font-medium">
+              <Sparkles className="w-4 h-4 shrink-0 text-[#107C41]" />
+              <span>Stok terstruktur, kalkulasi omset otomatis, Currency Rp, &amp; Rekap Harian instan!</span>
             </div>
 
             {/* Clean KPI Cards */}

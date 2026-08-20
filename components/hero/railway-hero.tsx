@@ -80,7 +80,7 @@ export function RailwayHero() {
 
         {/* Profession Subtitle */}
         <p className="text-lg sm:text-2xl font-bold text-[#1565C0] tracking-tight mb-6">
-          Systems & Digital Services Engineer
+          Systems & Software Engineer
         </p>
 
         {/* Realtime Typewriter Subheadline (Fixed 2-line height) */}

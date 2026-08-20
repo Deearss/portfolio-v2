@@ -21,12 +21,12 @@ const ptSerif = PT_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Haidir Aditya — Systems & Digital Services Engineer",
+  title: "Haidir Aditya — Systems & Software Engineer",
   description: "Portofolio Haidir Aditya. Membantu kamu mempermudah proses input Excel, pembuatan aplikasi web internal ERP, migrasi data e-commerce, hingga translasi kontekstual.",
-  keywords: ["Haidir Aditya", "Systems Engineer", "Full-Stack Developer", "Netlify", "Next.js", "Shopee WooCommerce Migration", "Excel Data Restructuring"],
+  keywords: ["Haidir Aditya", "Systems Engineer", "Software Engineer", "Full-Stack Developer", "Next.js", "Shopee WooCommerce Migration", "Excel Data Restructuring"],
   authors: [{ name: "Haidir Aditya" }],
   openGraph: {
-    title: "Haidir Aditya — Systems & Digital Services Engineer",
+    title: "Haidir Aditya — Systems & Software Engineer",
     description: "Portofolio Haidir Aditya. Solusi digital cepat, presisi, dan terstruktur.",
     url: "https://my.id",
     siteName: "Haidir Aditya Portfolio",

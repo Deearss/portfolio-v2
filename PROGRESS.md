@@ -6,7 +6,7 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 
 ## 👤 Profil & Konteks Pemilik
 - **Nama**: Haidir Aditya (Dier / Deearss)
-- **Role / Headline**: *Systems & Digital Services Engineer*
+- **Role / Headline**: *Systems & Software Engineer*
 - **Domisili / Identitas**: Mahasiswa Computer Science, Indonesia
 - **Target Domain**: `my.id` (Personal Branding & Freelance Service)
 - **Repositori GitHub Portofolio**: `https://github.com/Deearss/portfolio-v2` (Branch: `main`)
@@ -35,16 +35,16 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 - **Status**: ✅ **Selesai & Teruji**
 - **Fitur**:
   - Sticky glassmorphism header (`backdrop-blur-md`).
-  - Brand avatar & judul "Haidir Aditya — Systems & Digital Services Engineer".
+  - Brand avatar & judul "Haidir Aditya — Systems & Software Engineer".
   - Tombol avatar memiliki fungsi smooth scroll ke atas: `window.scrollTo({ top: 0, behavior: "smooth" })`.
-  - Link navigasi anchor: `#projek`, `#workflow`, `#ai-engineer`, `#sosmed`, `#kontak`.
+  - Link navigasi anchor: `#projek`, `#workflow`, `#sosmed`, `#kontak`.
 
 ### 2. Hero Section (`components/hero/railway-hero.tsx`)
 - **Status**: ✅ **Selesai & Teruji**
 - **Fitur**:
   - Background animasi matrix titik-titik bergerak ke bawah (`moveDotsDown`).
   - Animasi typewriter cepat (25ms forward, 12ms delete, 2s pause) dengan teks value proposition dinamis.
-  - Headline utama tebal & tegas: *Haidir Aditya — Systems & Digital Services Engineer*.
+  - Headline utama tebal & tegas: *Haidir Aditya — Systems & Software Engineer*.
   - Call-to-action ganda: *Diskusi Projek via WhatsApp* dan *Lihat Portofolio* (scroll ke `#projek`).
 
 ### 3. GitHub Bento Card (`components/github/github-stats-card.tsx`)
@@ -58,8 +58,8 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 
 ### 4. Showcase Kemampuan Ril (`components/projects/project-deck-carousel.tsx`)
 - **Status**: ✅ **Selesai & Teruji** (Mengalir secara vertikal dari atas ke bawah, **tanpa carousel**)
-- **Header Section**: *"Haidir Bisa Ngapain Aja?"* (Subjudul: *"Dari landing page modern, permak file Excel berantakan, hingga aplikasi web custom."*).
-- **3 Bagian Utama**:
+- **Header Section**: *"Haidir Bisa Ngapain Aja?"* (Subjudul: *"Dari landing page modern hingga restrukturisasi pembukuan & permak file Excel berantakan."*).
+- **2 Bagian Utama**:
   1. **01. Landing Page buatan Haidir**:
      - 3 kartu melayang motif kipas (*fanned cards deck*).
      - Menampilkan screenshot hero section asli:
@@ -71,24 +71,24 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
      - Komponen interaktif Light Mode khas Microsoft Excel (`#107C41`) dengan font autentik `Calibri`.
      - Skenario nyata pembukuan & stok **Toko Sembako** (Beras Premium, Minyak Goreng, Gula Pasir).
      - Toggle *Sebelum (File Berhamburan)* vs *Sesudah (Dipermak Rapi)* yang menunjukkan perbaikan error `#VALUE!`, otomatisasi omset harian (`Rp 1.876.000`), dan rekap stok terstruktur.
-  3. **03. Custom Web App & PWA (Kaspul Hudur)**:
-     - Showcase sistem presensi & absensi custom ril yang dibangun untuk teman bernama Kaspul Hudur.
-     - Badge verifikasi: `Verified Private Repo (Deearss/kaspul-hudur)`.
-     - Poin teknis: Google OAuth via `@supabase/ssr` (tanpa flicker), flat session feed untuk shift malam lintas hari, anti-spam double-click, installable PWA.
 
 ### 5. Alur Kerja / General Workflow (`components/workflow/general-workflow.tsx`)
-- **Status**: ✅ Selesai (5 langkah transparan dari konsultasi awal, penentuan harga hemat, eksekusi kilat bersama AI, review revisi, hingga serah terima).
+- **Status**: ✅ Selesai (5 langkah transparan dari konsultasi awal, penentuan alur, eksekusi, review, hingga serah terima).
 
-### 6. Autonomous AI Partner Section (`components/ai/autonomous-ai-section.tsx`)
-- **Status**: ✅ Selesai (Menjelaskan kolaborasi bersama Claude & Antigravity SDK untuk pengerjaan tugas kilat, dilengkapi perbandingan kecepatan dan simulasi chat klien).
-
-### 7. Rich Social & Official Profiles (`components/socials/rich-social-cards.tsx`)
+### 6. Rich Social & Official Profiles (`components/socials/rich-social-cards.tsx`)
 - **Status**: ✅ Selesai (Kartu profil GitHub `@Deearss`, LinkedIn, dan Projects.co.id `dier-dieeerrr`).
 
-### 8. WhatsApp Consultation Form (`components/contact/whatsapp-form.tsx`)
-- **Status**: ✅ Selesai (Form input interaktif dengan kalkulator budget, pilihan topik, live preview gelembung chat WA, dan tombol pembuka draf pesan ke `082353358245`).
+### 7. Interactive Consultation & Contact Form (`components/contact/whatsapp-form.tsx`)
+- **Status**: ✅ Selesai
+- **Fitur**:
+  - Segmented toggle dinamis antara **WhatsApp Chat** dan **Email Draft**.
+  - **Dynamic Theme Adaptation**:
+    - **Mode WhatsApp**: Tema aksen emerald `#25D366`, badge WA direct channel, form fokus hijau, preview autentik **WhatsApp Web Dark Mode** (Header dengan avatar Haidir & status online tanpa tombol call/search/menu, dark doodle canvas `#0b141a`, sent bubble hijau `#005c4b` dengan status read tick `✓✓`, dan chat bar bawah `+`, `🙂`, `Type a message`, `🎤`), direct link `https://wa.me/NOMOR-WA-DIHAPUS-DARI-RIWAYAT`.
+    - **Mode Email**: Tema aksen indigo `#6366F1`, badge official email channel, form fokus indigo, preview compose window email (Kepada, Subjek, dan body tersusun rapi), direct link `mailto:kontak-dihapus@contoh.invalid`.
+  - Tombol **Salin Teks / Draf** dengan feedback toast "Tersalin!".
+  - Catatan keamanan & reassurance interaktif (tidak langsung terkirim tanpa konfirmasi user).
 
-### 9. Footer (`components/footer/footer.tsx`)
+### 8. Footer (`components/footer/footer.tsx`)
 - **Status**: ✅ Selesai (Branding ringkas, link sosial media, dan tombol scroll-to-top).
 
 ---

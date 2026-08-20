@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Sparkles, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 export function Navbar() {
   return (
@@ -22,7 +22,7 @@ export function Navbar() {
               Haidir Aditya
             </span>
             <span className="text-[11px] font-medium text-stone-500 leading-tight">
-              Systems & Digital Services Engineer
+              Systems & Software Engineer
             </span>
           </div>
         </button>
@@ -34,10 +34,6 @@ export function Navbar() {
           </a>
           <a href="#workflow" className="hover:text-[#1565C0] transition-colors">
             Cara Kerja
-          </a>
-          <a href="#ai-engineer" className="hover:text-[#1565C0] transition-colors flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5 text-[#1976D2]" />
-            AI Partner
           </a>
           <a href="#sosmed" className="hover:text-[#1565C0] transition-colors">
             Sosial Media
