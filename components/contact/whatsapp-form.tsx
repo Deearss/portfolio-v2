@@ -62,11 +62,8 @@ export function WhatsappForm() {
   const [copied, setCopied] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  // Obfuscasi anti-scraping: email dirangkai saat runtime tanpa ekspos string mentah di kode
-  const protectedEmail = React.useMemo(() => {
-    if (typeof window === "undefined") return "";
-    return atob("aGFpZGlyYWRpdHlhMTZAZ21haWwuY29t");
-  }, []);
+  // Email kontak diambil dari Environment Variable publik
+  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "";
 
   // Modal State for interactive placeholder click
   const [activeModal, setActiveModal] = useState<ActiveModalField>(null);
@@ -229,7 +226,11 @@ ${actualName}`;
     } else {
       const encodedSubject = encodeURIComponent(sanitizeInput(emailSubject, 150));
       const encodedBody = encodeURIComponent(sanitizeInput(emailBody, 1200));
-      const targetEmail = protectedEmail || atob("aGFpZGlyYWRpdHlhMTZAZ21haWwuY29t");
+      const targetEmail = contactEmail;
+      if (!targetEmail) {
+        setValidationError("Alamat email tujuan belum dikonfigurasi di environment variable.");
+        return;
+      }
 
       // Buka Gmail Web Compose langsung di tab baru (kompatibel semua OS & browser)
       const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${targetEmail}&su=${encodedSubject}&body=${encodedBody}`;

@@ -7,11 +7,18 @@ import {
   validateMessage,
 } from "@/lib/sanitize";
 
-// Nomor WhatsApp tersimpan di server-side agar tidak ter-scrape bot dari HTML publik
-const SERVER_WA_NUMBER = process.env.WHATSAPP_PHONE || "NOMOR-WA-DIHAPUS-DARI-RIWAYAT";
+// Nomor WhatsApp tersimpan murni di server-side environment variable (tanpa hardcoded string di repo)
+const SERVER_WA_NUMBER = process.env.WHATSAPP_PHONE;
 
 export async function POST(req: NextRequest) {
   try {
+    if (!SERVER_WA_NUMBER) {
+      return NextResponse.json(
+        { error: "Konfigurasi nomor WhatsApp belum disetel di server (WHATSAPP_PHONE missing)." },
+        { status: 500 }
+      );
+    }
+
     const body = await req.json();
     const { name, topic, budget, message, purpose } = body;
 

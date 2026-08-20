@@ -83,8 +83,8 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 - **Fitur**:
   - Segmented toggle dinamis antara **WhatsApp Chat** dan **Email Draft**.
   - **Dynamic Theme Adaptation**:
-    - **Mode WhatsApp**: Tema aksen emerald `#25D366`, badge WA direct channel, form fokus hijau, preview autentik **WhatsApp Web Dark Mode** (Header dengan avatar Haidir & status online tanpa tombol call/search/menu, dark doodle canvas `#0b141a`, sent bubble hijau `#005c4b` dengan status read tick `✓✓`, dan chat bar bawah `+`, `🙂`, `Type a message`, `🎤`), direct link `https://wa.me/NOMOR-WA-DIHAPUS-DARI-RIWAYAT`.
-    - **Mode Email**: Tema aksen indigo `#6366F1`, badge official email channel, form fokus indigo, preview compose window email (Kepada, Subjek, dan body tersusun rapi), direct link `mailto:kontak-dihapus@contoh.invalid`.
+    - **Mode WhatsApp**: Tema aksen emerald `#25D366`, badge WA direct channel, form fokus hijau, preview autentik **WhatsApp Web Dark Mode** (Header dengan avatar Haidir & status online tanpa tombol call/search/menu, dark doodle canvas `#0b141a`, sent bubble hijau `#005c4b` dengan status read tick `✓✓`, dan chat bar bawah `+`, `🙂`, `Type a message`, `🎤`), direct dispatch link WhatsApp via server-side route.
+    - **Mode Email**: Tema aksen indigo `#6366F1`, badge official email channel, form fokus indigo, preview compose window email (Penerima, Subjek, dan body tersusun rapi), direct link mailto / Gmail compose.
   - Tombol **Salin Teks / Draf** dengan feedback toast "Tersalin!".
   - Catatan keamanan & reassurance interaktif (tidak langsung terkirim tanpa konfirmasi user).
 
