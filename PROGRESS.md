@@ -107,10 +107,19 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 
 ---
 
+## 🎯 Agenda Sesi Selanjutnya (Next Session)
+- **Fokus**: Penyesuaian Responsivitas UI/UX Mode Mobile.
+- **Catatan**: Audit dan perbaiki beberapa komponen/layout yang masih kurang pas, padding terpotong, atau belum optimal di layar smartphone kecil/mobile.
+
+---
+
 ## 🚀 Perintah Verifikasi
 ```bash
 # Type check resmi
 npx tsc --noEmit
+
+# Audit aksesibilitas lokal (ringan & cepat)
+npm run audit:a11y
 
 # Build produksi
 npm run build
