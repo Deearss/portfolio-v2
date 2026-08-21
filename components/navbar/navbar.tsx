@@ -11,57 +11,20 @@ export function Navbar() {
     const handleScroll = () => {
       const scrollPos =
         window.pageYOffset ||
-        document.documentElement.scrollTop ||
         window.scrollY ||
+        document.documentElement.scrollTop ||
         document.body.scrollTop ||
         0;
-      const scrolled = scrollPos > 10;
-      setIsScrolled(scrolled);
-      const navEl = document.getElementById("main-navbar");
-      if (navEl) {
-        if (scrolled) {
-          navEl.setAttribute("data-scrolled", "true");
-        } else {
-          navEl.removeAttribute("data-scrolled");
-        }
-      }
+      setIsScrolled(scrollPos > 20);
     };
 
     handleScroll();
 
-    let observer: IntersectionObserver | null = null;
-    const sentinel = document.getElementById("top-sentinel");
-    if (sentinel && typeof IntersectionObserver !== "undefined") {
-      observer = new IntersectionObserver(
-        ([entry]) => {
-          const scrolled = !entry.isIntersecting;
-          setIsScrolled(scrolled);
-          const navEl = document.getElementById("main-navbar");
-          if (navEl) {
-            if (scrolled) {
-              navEl.setAttribute("data-scrolled", "true");
-            } else {
-              navEl.removeAttribute("data-scrolled");
-            }
-          }
-        },
-        { threshold: [0, 0.5, 1], rootMargin: "-10px 0px 0px 0px" }
-      );
-      observer.observe(sentinel);
-    }
-
     window.addEventListener("scroll", handleScroll, { passive: true });
-    document.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("touchmove", handleScroll, { passive: true });
-    window.addEventListener("wheel", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
+    window.addEventListener("resize", handleScroll, { passive: true });
 
     return () => {
-      if (observer) observer.disconnect();
       window.removeEventListener("scroll", handleScroll);
-      document.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("touchmove", handleScroll);
-      window.removeEventListener("wheel", handleScroll);
       window.removeEventListener("resize", handleScroll);
     };
   }, []);
