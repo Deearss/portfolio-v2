@@ -49,7 +49,7 @@ interface RawGithubEvent {
 const FALLBACK_PROFILE: GithubUserData = {
   login: "Deearss",
   name: "Dir",
-  avatar_url: "https://avatars.githubusercontent.com/u/111673708?v=4",
+  avatar_url: "/avatar.webp",
   bio: "Systems & Software Engineer",
   public_repos: 80,
   followers: 12,
@@ -59,27 +59,45 @@ const FALLBACK_PROFILE: GithubUserData = {
 
 const FALLBACK_EVENTS: GithubEvent[] = [
   {
-    id: "1",
+    id: "95b0fff",
     type: "PushEvent",
     repoName: "Deearss/portfolio-v2",
-    detail: "feat: overhaul hero section & dark mode github bento card",
-    timeAgo: "2j yang lalu",
+    detail: "docs: add next session agenda for mobile UI/UX responsiveness",
+    timeAgo: "23j yang lalu",
   },
   {
-    id: "2",
+    id: "ebbcbc0",
     type: "PushEvent",
-    repoName: "Deearss/demo-website-spekhp",
-    detail: "feat: add interactive specs comparison table & filters",
-    timeAgo: "4j yang lalu",
+    repoName: "Deearss/portfolio-v2",
+    detail: "fix(a11y): resolve heading hierarchy, missing link labels, and empty table headers",
+    timeAgo: "23j yang lalu",
   },
   {
-    id: "3",
+    id: "1ce6951",
     type: "PushEvent",
-    repoName: "Deearss/sigadai",
-    detail: "refactor: optimize pawnshop calculation engine & API",
-    timeAgo: "16j yang lalu",
+    repoName: "Deearss/portfolio-v2",
+    detail: "perf: optimize web performance, compress assets to webp, and improve a11y",
+    timeAgo: "1h yang lalu",
   },
 ];
+
+// Helper to format ISO timestamp into relative Indonesian time
+function formatRelativeTime(dateString?: string): string {
+  if (!dateString) return "Baru saja";
+  const createdDate = new Date(dateString);
+  if (isNaN(createdDate.getTime())) return "Baru saja";
+  const now = new Date();
+  const diffMs = now.getTime() - createdDate.getTime();
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  if (diffHours >= 24) {
+    return `${Math.floor(diffHours / 24)}h yang lalu`;
+  } else if (diffHours >= 1) {
+    return `${diffHours}j yang lalu`;
+  } else {
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    return diffMinutes > 0 ? `${diffMinutes}m yang lalu` : "Baru saja";
+  }
+}
 
 // GitHub Authentic Dark Mode Matrix Activity Pattern
 // 4 rows (weeks) × 12 columns (months) — Jan to Dec 2026
@@ -100,7 +118,7 @@ const DAYS_IN_MONTH_2026 = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 export function GithubStatsCard() {
   const [userData, setUserData] = useState<GithubUserData | null>(null);
-  const [events, setEvents] = useState<GithubEvent[]>([]);
+  const [events, setEvents] = useState<GithubEvent[]>(FALLBACK_EVENTS);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -110,7 +128,7 @@ export function GithubStatsCard() {
       setRefreshing(true);
     }
     try {
-      // 1. Fetch Profile
+      // 1. Fetch Live Profile
       const profileRes = await fetch("https://api.github.com/users/Deearss");
       if (profileRes.ok) {
         const data = await profileRes.json();
@@ -137,84 +155,91 @@ export function GithubStatsCard() {
         setUserData(FALLBACK_PROFILE);
       }
 
-      // 2. Fetch Events
-      const eventsRes = await fetch(
-        "https://api.github.com/users/Deearss/events/public",
-      );
-      if (eventsRes.ok) {
-        const eventsData = await eventsRes.json();
-        if (Array.isArray(eventsData) && eventsData.length > 0) {
-          const parsedEvents: GithubEvent[] = (eventsData as RawGithubEvent[])
-            .slice(0, 3)
-            .map((item: RawGithubEvent, idx: number) => {
-              const repo = item?.repo?.name || "Deearss/repo";
-              let detail = "Aktivitas repositori";
-
-              if (
-                item?.type === "PushEvent" &&
-                Array.isArray(item?.payload?.commits) &&
-                item.payload.commits.length > 0
-              ) {
-                const rawMsg = item.payload.commits[0]?.message;
-                detail =
-                  typeof rawMsg === "string" && rawMsg.trim()
-                    ? rawMsg
-                    : "Commit update";
-              } else if (item?.type === "CreateEvent") {
-                detail = `feat: setup ${item?.payload?.ref_type || "repository"} structure`;
-              } else if (item?.type === "WatchEvent") {
-                detail = `chore: update repository star count`;
-              }
-
-              let safeDetail = String(detail || "Aktivitas repositori");
-              if (
-                safeDetail === "Aktivitas repositori" ||
-                safeDetail.startsWith("Membuat ")
-              ) {
-                if (repo.toLowerCase().includes("spekhp")) {
-                  safeDetail =
-                    "feat: add interactive specs comparison table & filters";
-                } else if (repo.toLowerCase().includes("sigadai")) {
-                  safeDetail =
-                    "refactor: optimize core pawnshop calculation engine & API";
-                } else if (repo.toLowerCase().includes("portfolio")) {
-                  safeDetail =
-                    "feat: overhaul hero section & dark mode github bento card";
-                } else {
-                  safeDetail = `feat: update core components in ${repo.split("/")[1] || repo}`;
-                }
-              }
-
-              // Calculate relative time safely
-              let timeAgo = "Baru saja";
-              if (item?.created_at) {
-                const createdDate = new Date(item.created_at);
-                if (!isNaN(createdDate.getTime())) {
-                  const now = new Date();
-                  const diffMs = now.getTime() - createdDate.getTime();
-                  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-                  if (diffHours >= 24) {
-                    timeAgo = `${Math.floor(diffHours / 24)}h yang lalu`;
-                  } else if (diffHours >= 1) {
-                    timeAgo = `${diffHours}j yang lalu`;
-                  }
-                }
-              }
-
-              return {
-                id: item?.id ? String(item.id) : String(idx),
-                type: item?.type || "Event",
-                repoName: repo,
-                detail: safeDetail,
-                timeAgo,
+      // 2. Fetch Live Commits from Primary Active Repo (Gives 100% Real Commit Messages)
+      let commitEventsParsed = false;
+      try {
+        const commitsRes = await fetch(
+          "https://api.github.com/repos/Deearss/portfolio-v2/commits?per_page=3"
+        );
+        if (commitsRes.ok) {
+          const commitsData = await commitsRes.json();
+          if (Array.isArray(commitsData) && commitsData.length > 0) {
+            interface GithubCommitItem {
+              sha?: string;
+              commit?: {
+                message?: string;
+                author?: { date?: string };
+                committer?: { date?: string };
               };
-            });
-          setEvents(parsedEvents);
+            }
+            const parsed = (commitsData as GithubCommitItem[])
+              .slice(0, 3)
+              .map((item: GithubCommitItem, idx: number) => {
+                const rawMsg = item?.commit?.message || "Commit update";
+                const firstLine = rawMsg.split("\n")[0].trim();
+                const dateStr =
+                  item?.commit?.author?.date || item?.commit?.committer?.date;
+                return {
+                  id: item?.sha ? item.sha.substring(0, 7) : String(idx),
+                  type: "PushEvent",
+                  repoName: "Deearss/portfolio-v2",
+                  detail: firstLine,
+                  timeAgo: formatRelativeTime(dateStr),
+                };
+              });
+            setEvents(parsed);
+            commitEventsParsed = true;
+          }
+        }
+      } catch {
+        // Continue to public events endpoint if commits API fails
+      }
+
+      // 3. Fallback to /events/public if commit endpoint was not used
+      if (!commitEventsParsed) {
+        const eventsRes = await fetch(
+          "https://api.github.com/users/Deearss/events/public"
+        );
+        if (eventsRes.ok) {
+          const eventsData = await eventsRes.json();
+          if (Array.isArray(eventsData) && eventsData.length > 0) {
+            const parsedEvents: GithubEvent[] = (eventsData as RawGithubEvent[])
+              .slice(0, 3)
+              .map((item: RawGithubEvent, idx: number) => {
+                const repo = item?.repo?.name || "Deearss/repo";
+                let detail = "Aktivitas repositori";
+
+                if (
+                  item?.type === "PushEvent" &&
+                  Array.isArray(item?.payload?.commits) &&
+                  item.payload.commits.length > 0
+                ) {
+                  const rawMsg = item.payload.commits[0]?.message;
+                  detail =
+                    typeof rawMsg === "string" && rawMsg.trim()
+                      ? rawMsg.split("\n")[0].trim()
+                      : "Commit update";
+                } else if (item?.type === "CreateEvent") {
+                  detail = `feat: setup ${item?.payload?.ref_type || "repository"} structure`;
+                } else if (item?.type === "WatchEvent") {
+                  detail = `chore: update repository star count`;
+                }
+
+                return {
+                  id: item?.id ? String(item.id) : String(idx),
+                  type: item?.type || "Event",
+                  repoName: repo,
+                  detail,
+                  timeAgo: formatRelativeTime(item?.created_at),
+                };
+              });
+            setEvents(parsedEvents);
+          } else {
+            setEvents(FALLBACK_EVENTS);
+          }
         } else {
           setEvents(FALLBACK_EVENTS);
         }
-      } else {
-        setEvents(FALLBACK_EVENTS);
       }
     } catch {
       setUserData(FALLBACK_PROFILE);
@@ -277,13 +302,13 @@ export function GithubStatsCard() {
       </div>
 
       {/* Main Bento Grid Layout */}
-      <div className="p-4 sm:p-5 flex flex-col gap-4">
+      <div className="p-3 sm:p-5 flex flex-col gap-3 sm:gap-4">
         {/* Top Row: Left Profile Card (5 Cols) + Right Activity Log (7 Cols) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 items-stretch">
           {/* Left Column: Developer Profile Card (Compact Height) */}
-          <div className="lg:col-span-6 p-4 bg-[#161b22] rounded-lg border border-[#30363d] flex flex-col justify-between">
+          <div className="lg:col-span-6 p-3 sm:p-4 bg-[#161b22] rounded-lg border border-[#30363d] flex flex-col justify-between">
             {/* Top Profile Header */}
-            <div className="flex items-start gap-3.5 pb-3 border-b border-[#30363d]">
+            <div className="flex items-start gap-2.5 sm:gap-3.5 pb-2.5 sm:pb-3 border-b border-[#30363d]">
               <div className="relative shrink-0">
                 {!imgError ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
@@ -291,20 +316,20 @@ export function GithubStatsCard() {
                     src={activeUser.avatar_url}
                     alt={activeUser.name}
                     onError={() => setImgError(true)}
-                    className="size-20 rounded-xl border-2 border-[#30363d] shadow-xs object-cover bg-[#0d1117]"
+                    className="size-14 sm:size-20 rounded-xl border-2 border-[#30363d] shadow-xs object-cover bg-[#0d1117]"
                   />
                 ) : (
-                  <div className="size-20 rounded-xl border-2 border-[#30363d] shadow-xs bg-[#388bfd]/20 text-[#58a6ff] font-bold font-mono text-xl flex items-center justify-center">
+                  <div className="size-14 sm:size-20 rounded-xl border-2 border-[#30363d] shadow-xs bg-[#388bfd]/20 text-[#58a6ff] font-bold font-mono text-base sm:text-xl flex items-center justify-center">
                     D
                   </div>
                 )}
-                <span className="absolute -bottom-1 -right-1 w-4.5 h-4.5 rounded-full bg-[#238636] border-2 border-[#161b22] flex items-center justify-center text-white shadow-xs">
-                  <Check className="w-2.5 h-2.5 stroke-3" />
+                <span className="absolute -bottom-1 -right-1 w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-[#238636] border-2 border-[#161b22] flex items-center justify-center text-white shadow-xs">
+                  <Check className="w-2 h-2 sm:w-2.5 sm:h-2.5 stroke-3" />
                 </span>
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-1">
-                  <p className="font-bold text-base text-[#f0f6fc] truncate">
+                  <p className="font-bold text-sm sm:text-base text-[#f0f6fc] truncate">
                     {activeUser.name}
                   </p>
                   <div className="relative group inline-flex items-center">
@@ -323,17 +348,17 @@ export function GithubStatsCard() {
                     </div>
                   </div>
                 </div>
-                <p className="text-xs font-semibold text-[#58a6ff]">
+                <p className="text-[11px] sm:text-xs font-semibold text-[#58a6ff]">
                   @{activeUser.login}
                 </p>
-                <div className="flex items-center gap-2 mt-1">
-                  <p className="text-xs text-[#8b949e] line-clamp-2 leading-relaxed flex-1">
+                <div className="flex items-center gap-2 mt-0.5 sm:mt-1">
+                  <p className="text-[10.5px] sm:text-xs text-[#8b949e] line-clamp-2 leading-relaxed flex-1">
                     {activeUser.bio}
                   </p>
                   {/* AI Collaborator Avatars */}
-                  <div className="flex items-center -space-x-2 shrink-0">
+                  <div className="flex items-center -space-x-1.5 sm:-space-x-2 shrink-0">
                     <div className="relative group/claude z-10">
-                      <div className="w-9 h-9 rounded-full border-2 border-[#161b22] bg-[#0d1117] p-1.5 flex items-center justify-center">
+                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full border-2 border-[#161b22] bg-[#0d1117] p-1 sm:p-1.5 flex items-center justify-center">
                         <Image
                           src="/claude.webp"
                           alt="Claude AI"
@@ -349,7 +374,7 @@ export function GithubStatsCard() {
                       </div>
                     </div>
                     <div className="relative group/agy z-0">
-                      <div className="w-9 h-9 rounded-full border-2 border-[#161b22] bg-white p-1.5 flex items-center justify-center">
+                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full border-2 border-[#161b22] bg-white p-1 sm:p-1.5 flex items-center justify-center">
                         <Image
                           src="/antigravity.webp"
                           alt="Antigravity AI"
@@ -370,63 +395,63 @@ export function GithubStatsCard() {
             </div>
 
             {/* Quick Metrics Grid */}
-            <div className="grid grid-cols-2 gap-2 mt-3">
-              <div className="p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
-                <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
-                  <FolderGit2 className="w-3.5 h-3.5 text-[#58a6ff]" />
+            <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-2.5 sm:mt-3">
+              <div className="p-1.5 sm:p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
+                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-medium text-[#8b949e]">
+                  <FolderGit2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#58a6ff]" />
                   <span>Public Repos</span>
                 </div>
-                <p className="text-sm font-extrabold text-[#f0f6fc] mt-0.5 font-mono">
-                  {loading ? "..." : `${activeUser.public_repos}+`}
+                <p className="text-xs sm:text-sm font-extrabold text-[#f0f6fc] mt-0.5 font-mono">
+                  {loading ? "..." : activeUser.public_repos}
                 </p>
               </div>
 
-              <div className="p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
-                <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
-                  <Code2 className="w-3.5 h-3.5 text-[#58a6ff]" />
+              <div className="p-1.5 sm:p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
+                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-medium text-[#8b949e]">
+                  <Code2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#58a6ff]" />
                   <span>Primary Stack</span>
                 </div>
-                <p className="text-[11px] font-bold text-[#c9d1d9] mt-0.5 truncate">
+                <p className="text-[10px] sm:text-[11px] font-bold text-[#c9d1d9] mt-0.5 truncate">
                   TypeScript / PHP
                 </p>
               </div>
 
-              <div className="p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
-                <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
-                  <Zap className="w-3.5 h-3.5 text-amber-400" />
+              <div className="p-1.5 sm:p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
+                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-medium text-[#8b949e]">
+                  <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400" />
                   <span>Workflow</span>
                 </div>
-                <p className="text-[11px] font-bold text-amber-300 mt-0.5">
+                <p className="text-[10px] sm:text-[11px] font-bold text-amber-300 mt-0.5">
                   AI-Augmented
                 </p>
               </div>
 
-              <div className="p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
-                <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
-                  <Activity className="w-3.5 h-3.5 text-[#3fb950]" />
+              <div className="p-1.5 sm:p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
+                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-medium text-[#8b949e]">
+                  <Activity className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#3fb950]" />
                   <span>Commit Rate</span>
                 </div>
-                <p className="text-[11px] font-bold text-[#3fb950] mt-0.5">
+                <p className="text-[10px] sm:text-[11px] font-bold text-[#3fb950] mt-0.5">
                   High Daily
                 </p>
               </div>
 
-              <div className="p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
-                <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
-                  <Flame className="w-3.5 h-3.5 text-orange-400" />
+              <div className="p-1.5 sm:p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
+                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-medium text-[#8b949e]">
+                  <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-orange-400" />
                   <span>Dev Streak</span>
                 </div>
-                <p className="text-[11px] font-bold text-orange-400 mt-0.5">
+                <p className="text-[10px] sm:text-[11px] font-bold text-orange-400 mt-0.5">
                   365+ Days
                 </p>
               </div>
 
-              <div className="p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
-                <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
-                  <Terminal className="w-3.5 h-3.5 text-purple-400" />
+              <div className="p-1.5 sm:p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
+                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-medium text-[#8b949e]">
+                  <Terminal className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-400" />
                   <span>Environment</span>
                 </div>
-                <p className="text-[11px] font-bold text-purple-300 mt-0.5 truncate">
+                <p className="text-[10px] sm:text-[11px] font-bold text-purple-300 mt-0.5 truncate">
                   Linux Ubuntu
                 </p>
               </div>
@@ -434,10 +459,10 @@ export function GithubStatsCard() {
           </div>
 
           {/* Right Column: Live Recent Commit / Event Stream (7 Cols) */}
-          <div className="lg:col-span-6 p-4 bg-[#161b22] rounded-lg border border-[#30363d] flex flex-col justify-between">
+          <div className="lg:col-span-6 p-3 sm:p-4 bg-[#161b22] rounded-lg border border-[#30363d] flex flex-col justify-between">
             <div className="flex items-center gap-2 pb-1.5 mb-2 border-b border-[#30363d]">
-              <GitCommit className="w-4 h-4 text-[#58a6ff]" />
-              <p className="text-xs font-bold text-[#f0f6fc] tracking-wide uppercase font-mono">
+              <GitCommit className="w-3.5 h-3.5 text-[#58a6ff]" />
+              <p className="text-[10px] sm:text-xs font-bold text-[#f0f6fc] tracking-wide uppercase font-mono">
                 Live GitHub Activity Log
               </p>
             </div>
@@ -446,32 +471,32 @@ export function GithubStatsCard() {
               {activeEvents.map((evt) => (
                 <div
                   key={evt.id}
-                  className="relative overflow-hidden p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#388bfd]/60 transition-all group/item shadow-sm"
+                  className="relative overflow-hidden p-2 sm:p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#388bfd]/60 transition-all group/item shadow-sm"
                 >
                   {/* Left Content (Repo Pill, Time Ago, Commit Message) */}
-                  <div className="relative z-10 pr-16 sm:pr-20">
-                    <div className="flex items-center gap-2 mb-1 min-w-0">
-                      <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-[#388bfd]/20 text-[#58a6ff] border border-[#388bfd]/40 flex items-center gap-1 shrink min-w-0">
+                  <div className="relative z-10 pr-14 sm:pr-20">
+                    <div className="flex items-center gap-1.5 sm:gap-2 mb-1 min-w-0">
+                      <span className="px-1.5 sm:px-2 py-0.5 rounded-md text-[8.5px] sm:text-[10px] font-mono font-bold bg-[#388bfd]/20 text-[#58a6ff] border border-[#388bfd]/40 flex items-center gap-1 shrink min-w-0 max-w-[140px] sm:max-w-none">
                         <GitBranch className="w-2.5 h-2.5 shrink-0" />
                         <span className="truncate">{evt.repoName}</span>
                       </span>
-                      <span className="text-[10px] text-[#8b949e] font-mono whitespace-nowrap shrink-0">
+                      <span className="text-[8.5px] sm:text-[10px] text-[#8b949e] font-mono whitespace-nowrap shrink-0">
                         {evt.timeAgo}
                       </span>
                     </div>
-                    <p className="text-[#c9d1d9] text-xs font-medium font-mono leading-snug h-9 line-clamp-2">
+                    <p className="text-[#c9d1d9] text-[10px] sm:text-xs font-medium font-mono leading-tight sm:leading-snug line-clamp-2">
                       {evt.detail}
                     </p>
                   </div>
 
                   {/* Sticking-Out Tilted Antigravity Mini Card (Elevated & Top-Aligned Icon) */}
-                  <div className="absolute -bottom-5 sm:-bottom-6 right-6 sm:right-8 w-11 h-17 sm:w-12 sm:h-19 bg-white/95 rounded-xl shadow-xl border border-stone-200/80 flex items-start justify-center pt-2 sm:pt-2.5 transform rotate-6 translate-y-1 group-hover/item:rotate-2 group-hover/item:translate-y-0 transition-all duration-300 pointer-events-none z-0">
+                  <div className="absolute -bottom-4 sm:-bottom-6 right-5 sm:right-8 w-8 h-13 sm:w-12 sm:h-19 bg-white/95 rounded-xl shadow-xl border border-stone-200/80 flex items-start justify-center pt-1.5 sm:pt-2.5 transform rotate-6 translate-y-1 group-hover/item:rotate-2 group-hover/item:translate-y-0 transition-all duration-300 pointer-events-none z-0">
                     <Image
                       src="/antigravity.webp"
                       alt="Antigravity AI"
                       width={24}
                       height={24}
-                      className="w-5 h-5 sm:w-5.5 sm:h-5.5 object-contain"
+                      className="w-3.5 h-3.5 sm:w-5.5 sm:h-5.5 object-contain"
                       loading="lazy"
                     />
                   </div>
@@ -482,7 +507,7 @@ export function GithubStatsCard() {
         </div>
 
         {/* Bottom Row: Full 12-Column Width Yearly Activity Heatmap */}
-        <div className="p-4 bg-[#161b22] rounded-lg border border-[#30363d]">
+        <div className="p-3.5 sm:p-4 bg-[#161b22] rounded-lg border border-[#30363d]">
           {/* Custom Dark Scrollbar Styles for GitHub Card */}
           <style jsx global>{`
             .github-dark-scrollbar::-webkit-scrollbar {
@@ -501,34 +526,34 @@ export function GithubStatsCard() {
             }
           `}</style>
 
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
             <div className="flex items-center gap-2">
               <Activity className="w-3.5 h-3.5 text-[#58a6ff]" />
-              <span className="text-xs font-bold text-[#f0f6fc] font-mono">
+              <span className="text-[11px] sm:text-xs font-bold text-[#f0f6fc] font-mono">
                 Yearly Activity Heatmap
               </span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#388bfd]/20 text-[#58a6ff] border border-[#388bfd]/40">
+              <span className="px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-mono font-bold bg-[#388bfd]/20 text-[#58a6ff] border border-[#388bfd]/40">
                 2026
               </span>
             </div>
-            <div className="flex items-center gap-1.5 text-[10px] text-[#8b949e] font-mono leading-none">
+            <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] text-[#8b949e] font-mono leading-none">
               <span className="leading-none">Less</span>
               <div className="inline-flex items-center gap-1">
-                <span className="w-3 aspect-4/3 rounded-xs bg-[#161b22] border border-[#30363d] shrink-0 inline-block"></span>
-                <span className="w-3 aspect-4/3 rounded-xs bg-[#0e4429] shrink-0 inline-block"></span>
-                <span className="w-3 aspect-4/3 rounded-xs bg-[#006d32] shrink-0 inline-block"></span>
-                <span className="w-3 aspect-4/3 rounded-xs bg-[#26a641] shrink-0 inline-block"></span>
-                <span className="w-3 aspect-4/3 rounded-xs bg-[#39d353] shrink-0 inline-block"></span>
+                <span className="w-2.5 sm:w-3 aspect-4/3 rounded-xs bg-[#161b22] border border-[#30363d] shrink-0 inline-block"></span>
+                <span className="w-2.5 sm:w-3 aspect-4/3 rounded-xs bg-[#0e4429] shrink-0 inline-block"></span>
+                <span className="w-2.5 sm:w-3 aspect-4/3 rounded-xs bg-[#006d32] shrink-0 inline-block"></span>
+                <span className="w-2.5 sm:w-3 aspect-4/3 rounded-xs bg-[#26a641] shrink-0 inline-block"></span>
+                <span className="w-2.5 sm:w-3 aspect-4/3 rounded-xs bg-[#39d353] shrink-0 inline-block"></span>
               </div>
               <span className="leading-none">More</span>
             </div>
           </div>
 
           {/* Matrix Squares Grid — 4 rows (weeks) × 12 columns (months) */}
-          <div className="w-full overflow-x-auto pt-8 pb-2 github-dark-scrollbar">
-            <div className="w-full min-w-125 flex flex-col gap-1.5">
+          <div className="w-full pt-4 sm:pt-6 pb-1">
+            <div className="w-full flex flex-col gap-1 sm:gap-1.5">
               {MATRIX_PATTERN.map((row, rIdx) => (
-                <div key={rIdx} className="flex gap-1.5 justify-between">
+                <div key={rIdx} className="grid grid-cols-12 gap-1 sm:gap-1.5 w-full">
                   {row.map((val, cIdx) => {
                     let colorClass = "bg-[#161b22] border border-[#30363d]/40";
                     if (val === 1) colorClass = "bg-[#0e4429]";
@@ -546,7 +571,7 @@ export function GithubStatsCard() {
                     const dateLabel = `${weekStart}-${weekEnd} ${MONTH_SHORT[cIdx]}`;
 
                     return (
-                      <div key={cIdx} className="relative group/square flex-1">
+                      <div key={cIdx} className="relative group/square w-full">
                         <div
                           className={`w-full aspect-4/3 rounded-xs ${colorClass} hover:opacity-80 transition-opacity cursor-pointer`}
                         />
@@ -575,10 +600,10 @@ export function GithubStatsCard() {
                   })}
                 </div>
               ))}
-              {/* Month Labels */}
-              <div className="flex gap-1.5 justify-between mt-1">
+              {/* Month Labels (12 Columns) */}
+              <div className="grid grid-cols-12 gap-1 sm:gap-1.5 w-full mt-1">
                 {MONTH_SHORT.map((m) => (
-                  <span key={m} className="flex-1 text-center text-[9px] font-mono text-[#8b949e]">
+                  <span key={m} className="w-full text-center text-[8px] sm:text-[9px] font-mono text-[#8b949e] truncate">
                     {m}
                   </span>
                 ))}
@@ -589,24 +614,28 @@ export function GithubStatsCard() {
       </div>
 
       {/* Terminal Footer Strip */}
-      <div className="px-4 py-2.5 bg-[#161b22] border-t border-[#30363d] text-[#8b949e] font-mono text-[11px] flex flex-col sm:flex-row items-center justify-between gap-2">
-        <div className="flex items-center gap-2 truncate">
-          <span className="text-[#3fb950] font-bold">$</span>
-          <span className="text-[#8b949e]">git log --oneline -1</span>
-          <span className="text-[#30363d]">→</span>
+      <div className="px-3.5 sm:px-4 py-2.5 bg-[#161b22] border-t border-[#30363d] text-[#8b949e] font-mono text-[10px] sm:text-[11px] flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 truncate w-full sm:w-auto min-w-0">
+          <span className="text-[#3fb950] font-bold shrink-0">$</span>
+          <span className="text-[#8b949e] shrink-0">git log -1</span>
+          <span className="text-[#30363d] shrink-0">→</span>
           <span className="text-[#c9d1d9] truncate">
-            <span className="text-[#f0883e]">a3f7b2c</span> feat: overhaul hero section &amp; dark mode github bento card
+            <span className="text-[#f0883e]">{activeEvents[0]?.id || "95b0fff"}</span>{" "}
+            {activeEvents[0]?.detail || "docs: add next session agenda for mobile UI/UX responsiveness"}
           </span>
         </div>
-        <a
-          href={activeUser.html_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-[#58a6ff] hover:text-white font-semibold transition-colors shrink-0"
-        >
-          <span>github.com/{activeUser.login}</span>
-          <ExternalLink className="w-3 h-3" />
-        </a>
+
+        <div className="flex items-center gap-3 shrink-0 self-end sm:self-auto">
+          <a
+            href="https://github.com/Deearss"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] sm:text-[11px] text-[#58a6ff] hover:underline flex items-center gap-1 font-mono"
+          >
+            <span>github.com/Deearss</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
       </div>
     </div>
   );

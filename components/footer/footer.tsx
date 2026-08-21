@@ -10,17 +10,17 @@ export function Footer() {
   };
 
   return (
-    <footer className="py-8 bg-stone-900 text-stone-300 text-xs border-t border-stone-800">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <footer className="py-7 sm:py-8 bg-stone-900 text-stone-300 text-xs border-t border-stone-800 font-sans">
+      <div className="max-w-5xl mx-auto px-3.5 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
         
         <div>
           <p className="font-bold text-stone-100 text-sm">Haidir Aditya</p>
-          <p className="text-stone-400 mt-0.5">
+          <p className="text-stone-400 mt-0.5 text-xs">
             Systems &amp; Software Engineer
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-5 sm:gap-8">
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8">
           {/* GitHub */}
           <div className="relative group flex items-center justify-center">
             <a
@@ -39,7 +39,7 @@ export function Footer() {
                 loading="lazy"
               />
             </a>
-            <div className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-top-10 transition-all duration-200 z-30">
+            <div className="hidden md:block pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-top-10 transition-all duration-200 z-30">
               <div className="relative px-2.5 py-1 text-[11px] font-semibold text-stone-100 bg-stone-800/95 border border-stone-700 rounded-md shadow-xl whitespace-nowrap">
                 GitHub
                 <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-stone-800" />
@@ -65,7 +65,7 @@ export function Footer() {
                 loading="lazy"
               />
             </a>
-            <div className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-top-10 transition-all duration-200 z-30">
+            <div className="hidden md:block pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-top-10 transition-all duration-200 z-30">
               <div className="relative px-2.5 py-1 text-[11px] font-semibold text-stone-100 bg-stone-800/95 border border-stone-700 rounded-md shadow-xl whitespace-nowrap">
                 LinkedIn
                 <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-stone-800" />
@@ -91,7 +91,7 @@ export function Footer() {
                 loading="lazy"
               />
             </a>
-            <div className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-top-10 transition-all duration-200 z-30">
+            <div className="hidden md:block pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-top-10 transition-all duration-200 z-30">
               <div className="relative px-2.5 py-1 text-[11px] font-semibold text-stone-100 bg-stone-800/95 border border-stone-700 rounded-md shadow-xl whitespace-nowrap">
                 Projects.co.id
                 <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-stone-800" />
@@ -100,15 +100,15 @@ export function Footer() {
           </div>
 
           {/* Scroll to Top */}
-          <div className="relative group flex items-center justify-center ml-2">
+          <div className="relative group flex items-center justify-center ml-1 sm:ml-2">
             <button
               onClick={scrollToTop}
-              className="p-2.5 rounded-lg bg-stone-800 hover:bg-stone-700 active:scale-95 text-stone-200 transition-all cursor-pointer"
+              className="p-2 sm:p-2.5 rounded-lg bg-stone-800 hover:bg-stone-700 active:scale-95 text-stone-200 transition-all cursor-pointer"
               aria-label="Kembali ke atas"
             >
-              <ArrowUp className="w-4 h-4" />
+              <ArrowUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
-            <div className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-top-10 transition-all duration-200 z-30">
+            <div className="hidden md:block pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-top-10 transition-all duration-200 z-30">
               <div className="relative px-2.5 py-1 text-[11px] font-semibold text-stone-100 bg-stone-800/95 border border-stone-700 rounded-md shadow-xl whitespace-nowrap">
                 Kembali ke atas
                 <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-stone-800" />

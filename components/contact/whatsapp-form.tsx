@@ -11,7 +11,7 @@ import {
   Copy,
   AlertCircle,
   Lock,
-  Trash2,
+  RotateCcw,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
 import {
@@ -77,6 +77,34 @@ export function WhatsappForm() {
       inputRef.current.focus();
     }
   }, [activeModal]);
+
+  // Listen for global switch-contact-tab trigger (e.g. from Hero or Navbar CTA)
+  useEffect(() => {
+    const handleSwitch = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      if (customEvent.detail === "whatsapp" || customEvent.detail === "email") {
+        setMethod(customEvent.detail as ContactMethod);
+      } else {
+        setMethod("whatsapp");
+      }
+      setValidationError(null);
+    };
+
+    const handleHash = () => {
+      if (window.location.hash === "#kontak" || window.location.hash === "#whatsapp") {
+        setMethod("whatsapp");
+        setValidationError(null);
+      }
+    };
+
+    window.addEventListener("switch-contact-tab", handleSwitch);
+    window.addEventListener("hashchange", handleHash);
+
+    return () => {
+      window.removeEventListener("switch-contact-tab", handleSwitch);
+      window.removeEventListener("hashchange", handleHash);
+    };
+  }, []);
 
   const openModal = (field: ActiveModalField) => {
     setModalError(null);
@@ -255,15 +283,15 @@ ${actualName}`;
   return (
     <section
       id="kontak"
-      className="py-20 bg-white border-b border-stone-200/60 font-sans transition-colors duration-300 relative"
+      className="scroll-mt-16 sm:scroll-mt-20 py-14 sm:py-20 bg-white border-b border-stone-200/60 font-sans relative"
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 px-2 sm:px-0">
+          <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-stone-900 tracking-tight text-balance">
             Konsultasikan Tugas Kamu ke Haidir
           </h2>
-          <p className="text-stone-600 text-xs sm:text-sm mt-2 leading-relaxed">
+          <p className="text-stone-600 text-xs sm:text-sm mt-1.5 sm:mt-2 leading-relaxed text-balance">
             Klik bagian teks yang disorot di bawah untuk mengisi data, lalu klik tombol kirim.
           </p>
 
@@ -324,7 +352,7 @@ ${actualName}`;
             /* ========================================================================= */
             /* 1. WHATSAPP WEB DIRECT INTERACTIVE CHAT WINDOW (Comfort Dark Theme) */
             /* ========================================================================= */
-            <div className="rounded-2xl overflow-hidden border border-stone-800 shadow-2xl bg-[#0b141a] text-[#e9edef] transition-all duration-300">
+            <div className="rounded-2xl overflow-hidden border border-stone-800 shadow-2xl bg-[#0b141a] text-[#e9edef]">
               {/* Header Bar */}
               <div className="px-4 py-3 bg-[#202c33] flex items-center justify-between border-b border-stone-800/80">
                 <div className="flex items-center gap-3">
@@ -349,7 +377,7 @@ ${actualName}`;
               </div>
 
               {/* Chat Canvas with Interactive Bubble */}
-              <div className="relative p-5 sm:p-7 min-h-70 flex flex-col justify-end bg-[#0b141a] overflow-hidden">
+              <div className="relative p-3.5 sm:p-7 min-h-64 sm:min-h-70 flex flex-col justify-end bg-[#0b141a] overflow-hidden">
                 {/* Doodle Background Pattern */}
                 <div
                   className="absolute inset-0 opacity-[0.05] pointer-events-none"
@@ -376,9 +404,11 @@ ${actualName}`;
                 </div>
 
                 {/* Interactive Guide Tooltip Badge */}
-                <div className="relative z-10 self-center mb-7 sm:mb-8 px-3.5 py-1 rounded-full bg-[#182229] border border-[#008069]/40 text-[11px] text-[#8696a0] flex items-center gap-1.5 shadow-sm">
-                  <Sparkles className="w-3.5 h-3.5 text-[#008069]" />
-                  <span>Klik bagian bergaris putus-putus untuk mengisi pesan</span>
+                <div className="relative z-10 self-center mb-7 sm:mb-8 max-w-[95%] sm:max-w-[88%] bg-[#182229]/95 border border-[#008069]/40 rounded-lg px-3.5 py-2 text-center shadow-md">
+                  <p className="text-[11px] sm:text-xs text-[#8696a0] leading-relaxed flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 font-sans">
+                    <Sparkles className="w-3.5 h-3.5 text-[#00a884] shrink-0" />
+                    <span>Klik bagian bergaris putus-putus untuk mengisi pesan</span>
+                  </p>
                 </div>
 
                 {/* 1st Bubble: Intro & Kebutuhan */}
@@ -389,15 +419,14 @@ ${actualName}`;
                       <button
                         type="button"
                         onClick={() => openModal("name")}
-                        aria-label="Isi Nama Pengirim"
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-semibold text-xs transition-all cursor-pointer ${
+                        className={`inline-flex items-center gap-1 px-2 py-1 min-h-[28px] rounded-md font-semibold text-xs transition-all cursor-pointer ${
                           name.trim()
                             ? "bg-[#00483a] text-white border border-[#008069]/70 hover:bg-[#005a48]"
-                            : "bg-[#0f2c25] text-amber-200/90 border border-dashed border-amber-600/50 hover:bg-[#143830]"
+                            : "bg-[#0f2c25] text-amber-200 border border-dashed border-amber-600/50 hover:bg-[#143830]"
                         }`}
                       >
                         <span>{displayName}</span>
-                        <Pencil className="w-3 h-3 text-[#8696a0] shrink-0" />
+                        <Pencil className="w-3 h-3 text-emerald-200/90 shrink-0" />
                       </button>
                       <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover/tip:opacity-100 group-hover/tip:-top-9 transition-all duration-200 z-30">
                         <span className="relative block px-2.5 py-1 text-[11px] font-semibold text-stone-100 bg-stone-900/95 border border-stone-700 rounded-md shadow-xl whitespace-nowrap">
@@ -411,15 +440,14 @@ ${actualName}`;
                       <button
                         type="button"
                         onClick={() => openModal("purpose")}
-                        aria-label="Pilih Keperluan Kontak"
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-semibold text-xs transition-all cursor-pointer ${
+                        className={`inline-flex items-center gap-1 px-2 py-1 min-h-[28px] rounded-md font-semibold text-xs transition-all cursor-pointer ${
                           purpose.trim()
                             ? "bg-[#00483a] text-white border border-[#008069]/70 hover:bg-[#005a48]"
-                            : "bg-[#0f2c25] text-amber-200/90 border border-dashed border-amber-600/50 hover:bg-[#143830]"
+                            : "bg-[#0f2c25] text-amber-200 border border-dashed border-amber-600/50 hover:bg-[#143830]"
                         }`}
                       >
                         <span>{displayPurpose}</span>
-                        <Pencil className="w-3 h-3 text-[#8696a0] shrink-0" />
+                        <Pencil className="w-3 h-3 text-emerald-200/90 shrink-0" />
                       </button>
                       <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover/tip:opacity-100 group-hover/tip:-top-9 transition-all duration-200 z-30">
                         <span className="relative block px-2.5 py-1 text-[11px] font-semibold text-stone-100 bg-stone-900/95 border border-stone-700 rounded-md shadow-xl whitespace-nowrap">
@@ -433,15 +461,14 @@ ${actualName}`;
                       <button
                         type="button"
                         onClick={() => openModal("topic")}
-                        aria-label="Pilih Topik Projek"
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-semibold text-xs transition-all cursor-pointer ${
+                        className={`inline-flex items-center gap-1 px-2 py-1 min-h-[28px] rounded-md font-semibold text-xs transition-all cursor-pointer ${
                           topic.trim()
                             ? "bg-[#00483a] text-white border border-[#008069]/70 hover:bg-[#005a48]"
-                            : "bg-[#0f2c25] text-amber-200/90 border border-dashed border-amber-600/50 hover:bg-[#143830]"
+                            : "bg-[#0f2c25] text-amber-200 border border-dashed border-amber-600/50 hover:bg-[#143830]"
                         }`}
                       >
                         <span>{displayTopic}</span>
-                        <Pencil className="w-3 h-3 text-[#8696a0] shrink-0" />
+                        <Pencil className="w-3 h-3 text-emerald-200/90 shrink-0" />
                       </button>
                       <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover/tip:opacity-100 group-hover/tip:-top-9 transition-all duration-200 z-30">
                         <span className="relative block px-2.5 py-1 text-[11px] font-semibold text-stone-100 bg-stone-900/95 border border-stone-700 rounded-md shadow-xl whitespace-nowrap">
@@ -455,15 +482,14 @@ ${actualName}`;
                       <button
                         type="button"
                         onClick={() => openModal("budget")}
-                        aria-label="Pilih Estimasi Budget"
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-semibold text-xs transition-all cursor-pointer ${
+                        className={`inline-flex items-center gap-1 px-2 py-1 min-h-[28px] rounded-md font-semibold text-xs transition-all cursor-pointer ${
                           budget.trim()
                             ? "bg-[#00483a] text-white border border-[#008069]/70 hover:bg-[#005a48]"
-                            : "bg-[#0f2c25] text-amber-200/90 border border-dashed border-amber-600/50 hover:bg-[#143830]"
+                            : "bg-[#0f2c25] text-amber-200 border border-dashed border-amber-600/50 hover:bg-[#143830]"
                         }`}
                       >
                         <span>{displayBudget}</span>
-                        <Pencil className="w-3 h-3 text-[#8696a0] shrink-0" />
+                        <Pencil className="w-3 h-3 text-emerald-200/90 shrink-0" />
                       </button>
                       <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover/tip:opacity-100 group-hover/tip:-top-9 transition-all duration-200 z-30">
                         <span className="relative block px-2.5 py-1 text-[11px] font-semibold text-stone-100 bg-stone-900/95 border border-stone-700 rounded-md shadow-xl whitespace-nowrap">
@@ -475,7 +501,7 @@ ${actualName}`;
                     <span>.</span>
                   </div>
 
-                  <div className="flex items-center justify-end gap-1 text-[10px] text-[#8696a0] font-mono select-none pt-0.5">
+                  <div className="flex items-center justify-end gap-1 text-[10px] text-emerald-100/90 font-mono select-none pt-0.5">
                     <span>12:00</span>
                     <CheckCheck className="w-3.5 h-3.5 text-[#53bdeb]" />
                   </div>
@@ -484,22 +510,21 @@ ${actualName}`;
                 {/* 2nd Bubble: Detail Pesan Klien */}
                 <div className="relative z-10 self-end max-w-[95%] sm:max-w-[90%] bg-[#005c4b] text-[#e9edef] rounded-2xl rounded-tr-xs p-3.5 sm:p-4 shadow-md border border-[#025144] space-y-2 mt-2">
                   <div className="text-xs sm:text-[13px] leading-relaxed whitespace-pre-wrap font-sans text-stone-100 flex flex-col items-start gap-1.5 w-full">
-                    <span className="font-semibold text-[11px] text-[#8696a0] block">
+                    <span className="font-semibold text-[11px] text-emerald-100/90 block">
                       Deskripsi Tambahan (Opsional):
                     </span>
                     <div className="relative group/tip w-full">
                       <button
                         type="button"
                         onClick={() => openModal("message")}
-                        aria-label="Tulis Deskripsi Tambahan"
-                        className={`w-full inline-flex items-start justify-between text-left gap-1.5 px-2.5 py-1.5 rounded-md text-xs sm:text-[13px] transition-all cursor-pointer ${
+                        className={`w-full inline-flex items-start justify-between text-left gap-1.5 px-2.5 py-2 min-h-[36px] rounded-md text-xs sm:text-[13px] transition-all cursor-pointer ${
                           message.trim()
                             ? "bg-[#00483a] text-white border border-[#008069]/70 hover:bg-[#005a48]"
-                            : "bg-[#0f2c25] text-amber-200/90 border border-dashed border-amber-600/50 hover:bg-[#143830]"
+                            : "bg-[#0f2c25] text-amber-200 border border-dashed border-amber-600/50 hover:bg-[#143830]"
                         }`}
                       >
                         <span className="leading-snug flex-1">{displayMessage}</span>
-                        <Pencil className="w-3 h-3 text-[#8696a0] shrink-0 mt-0.5" />
+                        <Pencil className="w-3 h-3 text-emerald-200/90 shrink-0 mt-0.5" />
                       </button>
                       <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover/tip:opacity-100 group-hover/tip:-top-9 transition-all duration-200 z-30">
                         <span className="relative block px-2.5 py-1 text-[11px] font-semibold text-stone-100 bg-stone-900/95 border border-stone-700 rounded-md shadow-xl whitespace-nowrap">
@@ -510,7 +535,7 @@ ${actualName}`;
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-end gap-1 text-[10px] text-[#8696a0] font-mono select-none pt-0.5">
+                  <div className="flex items-center justify-end gap-1 text-[10px] text-emerald-100/90 font-mono select-none pt-0.5">
                     <span>12:01</span>
                     <CheckCheck className="w-3.5 h-3.5 text-[#53bdeb]" />
                   </div>
@@ -546,14 +571,14 @@ ${actualName}`;
                       setBudget("");
                       setMessage("");
                     }}
-                    className="p-3 rounded-xl bg-[#182229] hover:bg-red-950/40 text-[#8696a0] hover:text-red-400 border border-stone-700/60 transition-all cursor-pointer shadow-xs"
-                    aria-label="Reset / Buang Draf"
+                    className="p-3 rounded-xl bg-[#182229] hover:bg-stone-800 text-[#8696a0] hover:text-stone-200 border border-stone-700/60 transition-all cursor-pointer shadow-xs active:scale-95"
+                    aria-label="Reset Formulir"
                   >
-                    <Trash2 className="w-5 h-5" />
+                    <RotateCcw className="w-5 h-5" />
                   </button>
                   <div className="pointer-events-none absolute -top-9 right-0 opacity-0 group-hover/tip:opacity-100 group-hover/tip:-top-10 transition-all duration-200 z-30">
                     <div className="relative px-2.5 py-1 text-[11px] font-semibold text-stone-100 bg-stone-900/95 border border-stone-700 rounded-md shadow-xl whitespace-nowrap">
-                      Reset / Buang Draf
+                      Reset Formulir
                       <div className="absolute top-full right-4 border-4 border-transparent border-t-stone-900" />
                     </div>
                   </div>
@@ -564,7 +589,7 @@ ${actualName}`;
             /* ========================================================================= */
             /* 2. GMAIL CLIENT DIRECT INTERACTIVE COMPOSE WINDOW */
             /* ========================================================================= */
-            <div className="rounded-2xl overflow-hidden border border-stone-300 shadow-xl bg-white text-stone-800 transition-all duration-300 font-sans">
+            <div className="rounded-2xl overflow-hidden border border-stone-300 shadow-xl bg-white text-stone-800 font-sans">
               {/* Gmail Top Header Bar */}
               <div className="px-4 py-2.5 bg-[#f2f6fc] border-b border-stone-200/90 flex items-center select-none">
                 <span className="text-xs sm:text-sm font-semibold text-[#041e49]">
@@ -599,7 +624,7 @@ ${actualName}`;
                     <button
                       type="button"
                       onClick={() => openModal("name")}
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold transition-all cursor-pointer ${
+                      className={`inline-flex items-center gap-1 px-2.5 py-1 min-h-[28px] rounded text-xs font-semibold transition-all cursor-pointer ${
                         name.trim()
                           ? "bg-blue-100 text-blue-900 border border-blue-300 hover:bg-blue-200"
                           : "bg-blue-50 text-blue-700 border border-dashed border-blue-400 hover:bg-blue-100"
@@ -620,7 +645,7 @@ ${actualName}`;
                     <button
                       type="button"
                       onClick={() => openModal("purpose")}
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold transition-all cursor-pointer ${
+                      className={`inline-flex items-center gap-1 px-2.5 py-1 min-h-[28px] rounded text-xs font-semibold transition-all cursor-pointer ${
                         purpose.trim()
                           ? "bg-blue-100 text-blue-900 border border-blue-300 hover:bg-blue-200"
                           : "bg-blue-50 text-blue-700 border border-dashed border-blue-400 hover:bg-blue-100"
@@ -641,7 +666,7 @@ ${actualName}`;
                     <button
                       type="button"
                       onClick={() => openModal("topic")}
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold transition-all cursor-pointer ${
+                      className={`inline-flex items-center gap-1 px-2.5 py-1 min-h-[28px] rounded text-xs font-semibold transition-all cursor-pointer ${
                         topic.trim()
                           ? "bg-blue-100 text-blue-900 border border-blue-300 hover:bg-blue-200"
                           : "bg-blue-50 text-blue-700 border border-dashed border-blue-400 hover:bg-blue-100"
@@ -662,7 +687,7 @@ ${actualName}`;
                     <button
                       type="button"
                       onClick={() => openModal("budget")}
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold transition-all cursor-pointer ${
+                      className={`inline-flex items-center gap-1 px-2.5 py-1 min-h-[28px] rounded text-xs font-semibold transition-all cursor-pointer ${
                         budget.trim()
                           ? "bg-blue-100 text-blue-900 border border-blue-300 hover:bg-blue-200"
                           : "bg-blue-50 text-blue-700 border border-dashed border-blue-400 hover:bg-blue-100"
@@ -689,7 +714,7 @@ ${actualName}`;
                     <button
                       type="button"
                       onClick={() => openModal("message")}
-                      className={`w-full text-left p-2.5 rounded-lg text-xs sm:text-[13px] transition-all cursor-pointer flex items-start justify-between gap-2 ${
+                      className={`w-full text-left p-2.5 min-h-[38px] rounded-lg text-xs sm:text-[13px] transition-all cursor-pointer flex items-start justify-between gap-2 ${
                         message.trim()
                           ? "bg-stone-50 border border-stone-300 text-stone-800 hover:border-blue-400"
                           : "bg-stone-50/60 border border-dashed border-stone-300 text-stone-500 hover:border-blue-400"
@@ -743,14 +768,14 @@ ${actualName}`;
                       setBudget("");
                       setMessage("");
                     }}
-                    className="p-3 rounded-xl bg-white hover:bg-red-50 text-stone-500 hover:text-red-600 border border-stone-300 shadow-xs hover:border-red-200 transition-all cursor-pointer shrink-0"
-                    aria-label="Reset / Buang Draf"
+                    className="p-3 rounded-xl bg-white hover:bg-stone-100 text-stone-500 hover:text-stone-800 border border-stone-300 shadow-xs hover:border-stone-400 transition-all cursor-pointer shrink-0 active:scale-95"
+                    aria-label="Reset Formulir"
                   >
-                    <Trash2 className="w-5 h-5" />
+                    <RotateCcw className="w-5 h-5" />
                   </button>
                   <div className="pointer-events-none absolute -top-9 right-0 opacity-0 group-hover/tip:opacity-100 group-hover/tip:-top-10 transition-all duration-200 z-30">
                     <div className="relative px-2.5 py-1 text-[11px] font-semibold text-stone-100 bg-stone-900/95 border border-stone-700 rounded-md shadow-xl whitespace-nowrap">
-                      Reset / Buang Draf
+                      Reset Formulir
                       <div className="absolute top-full right-4 border-4 border-transparent border-t-stone-900" />
                     </div>
                   </div>
@@ -808,11 +833,11 @@ ${actualName}`;
       {/* ========================================================================= */}
       {activeModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3.5 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
           onClick={() => setActiveModal(null)}
         >
           <div
-            className="w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-stone-200 space-y-4 animate-in zoom-in-95 duration-200 text-stone-900 font-sans"
+            className="w-full max-w-md bg-white rounded-2xl p-4 sm:p-6 shadow-2xl border border-stone-200 space-y-4 max-h-[85vh] overflow-y-auto animate-in zoom-in-95 duration-200 text-stone-900 font-sans"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
