@@ -13,8 +13,11 @@ export function Footer() {
     <footer className="py-8 bg-stone-900 text-stone-300 text-xs border-t border-stone-800">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         
-        <div>
-          <p className="font-bold text-stone-100 text-sm">Haidir Aditya</p>
+        <div className="text-center sm:text-left">
+          <p className="font-bold text-stone-100 text-sm">
+            Haidir Aditya{" "}
+            <span className="font-semibold text-stone-400">· @deearss</span>
+          </p>
           <p className="text-stone-400 mt-0.5">
             Systems &amp; Software Engineer
           </p>
@@ -28,7 +31,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center py-1"
-              aria-label="Kunjungi Profil GitHub Haidir Aditya"
+              aria-label="Buka profil GitHub saya di tab baru"
             >
               <Image
                 src="/footer-image/longicon-github.webp"
@@ -54,7 +57,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center py-1"
-              aria-label="Kunjungi Profil LinkedIn Haidir Aditya"
+              aria-label="Buka profil LinkedIn saya di tab baru"
             >
               <Image
                 src="/footer-image/longicon-linkedin.webp"
@@ -80,7 +83,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center py-1"
-              aria-label="Kunjungi Profil Projects.co.id Haidir Aditya"
+              aria-label="Buka profil Projects.co.id saya di tab baru"
             >
               <Image
                 src="/footer-image/longicon-projectscoid.webp"

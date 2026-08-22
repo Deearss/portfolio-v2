@@ -10,7 +10,6 @@ import {
   Sparkles,
   Copy,
   AlertCircle,
-  Lock,
   Trash2,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -261,10 +260,10 @@ ${actualName}`;
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-10">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-            Konsultasikan Tugas Kamu ke Haidir
+            Ceritain Tugas Kamu ke Saya
           </h2>
           <p className="text-stone-600 text-xs sm:text-sm mt-2 leading-relaxed">
-            Klik bagian teks yang disorot di bawah untuk mengisi data, lalu klik tombol kirim.
+            Isi bagian yang disorot, nanti teksnya nempel di WhatsApp kamu dan masih bisa kamu edit sebelum kirim.
           </p>
 
           {/* Medium Switcher / Toggle Pills */}
@@ -363,16 +362,6 @@ ${actualName}`;
                 {/* Authentic WhatsApp Date Badge */}
                 <div className="relative z-10 self-center mb-2.5 px-3 py-0.5 rounded-md bg-[#182229] text-[11px] font-medium text-[#8696a0] shadow-xs select-none">
                   Hari Ini
-                </div>
-
-                {/* Authentic WhatsApp Yellow Security / Reassurance Banner */}
-                <div className="relative z-10 self-center mb-3 max-w-[95%] sm:max-w-[88%] bg-[#182229]/95 border border-[#ffd279]/20 rounded-lg px-3.5 py-2 text-center shadow-md">
-                  <p className="text-[11px] sm:text-xs text-[#ffd279] leading-relaxed flex items-center justify-center gap-1.5 flex-wrap font-sans">
-                    <Lock className="w-3.5 h-3.5 text-[#ffd279] shrink-0 inline" />
-                    <span>
-                      Pesan aman &amp; tidak langsung terkirim. Teks hanya ditempel di chat bar WA kamu dan masih bisa diedit sebelum dikirim.
-                    </span>
-                  </p>
                 </div>
 
                 {/* Interactive Guide Tooltip Badge */}
