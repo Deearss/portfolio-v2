@@ -54,6 +54,22 @@ export function ExcelBeforeAfter() {
         </div>
       </div>
 
+      {/* Selisih kerja — kelihatan di dua mode, ini inti peraganya */}
+      <div className="px-4 sm:px-5 pt-4 bg-[#F9FAFB] grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <div className="p-3 rounded-lg bg-white border border-stone-200 shadow-2xs">
+          <span className="text-[11px] font-bold text-stone-500 block mb-0.5">Sebelum</span>
+          <span className="text-xs sm:text-sm font-semibold text-stone-800 leading-snug block">
+            3 kolom diisi manual, rekap harian dijumlah tangan.
+          </span>
+        </div>
+        <div className="p-3 rounded-lg bg-white border border-stone-200 shadow-2xs">
+          <span className="text-[11px] font-bold text-stone-500 block mb-0.5">Sesudah</span>
+          <span className="text-xs sm:text-sm font-semibold text-[#107C41] leading-snug block">
+            1 kolom diisi, sisanya kehitung sendiri.
+          </span>
+        </div>
+      </div>
+
       {/* Simulated Excel Sheet Body */}
       <div className="p-4 sm:p-5 bg-[#F9FAFB]">
         {mode === "before" ? (
@@ -121,22 +137,6 @@ export function ExcelBeforeAfter() {
             <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center gap-2 font-medium">
               <Sparkles className="w-4 h-4 shrink-0 text-[#107C41]" />
               <span>Stok terstruktur, kalkulasi omset otomatis, Currency Rp, &amp; Rekap Harian instan!</span>
-            </div>
-
-            {/* Clean KPI Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-              <div className="p-3 rounded-lg bg-white border border-stone-200 shadow-2xs">
-                <span className="text-[11px] font-bold text-stone-500 block">Total Omset Harian</span>
-                <span className="text-base font-bold text-[#107C41]">Rp 1.876.000</span>
-              </div>
-              <div className="p-3 rounded-lg bg-white border border-stone-200 shadow-2xs">
-                <span className="text-[11px] font-bold text-stone-500 block">Rekap Stok Toko</span>
-                <span className="text-base font-bold text-blue-700">100% Terstruktur</span>
-              </div>
-              <div className="p-3 rounded-lg bg-white border border-stone-200 shadow-2xs col-span-2 sm:col-span-1">
-                <span className="text-[11px] font-bold text-stone-500 block">Status Validasi Data</span>
-                <span className="text-base font-bold text-[#047857]">Zero Error</span>
-              </div>
             </div>
 
             {/* Clean Professional Modern Table */}

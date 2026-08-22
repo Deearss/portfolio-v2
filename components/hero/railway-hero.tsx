@@ -20,8 +20,11 @@ export function RailwayHero() {
         </p>
 
         {/* Static Concise Value Proposition */}
+        <p className="max-w-2xl text-sm sm:text-lg font-bold text-white leading-snug font-sans mb-2.5 sm:mb-3 px-2">
+          Kerjaan manual yang berantakan, saya ubah jadi sistem yang jalan sendiri.
+        </p>
         <p className="max-w-xl text-xs sm:text-base text-stone-300 leading-relaxed font-sans mb-6 sm:mb-8 px-2">
-          Membantu pembuatan aplikasi web kencang, restrukturisasi Excel, dan otomatisasi sistem digital dengan performa tinggi.
+          Data, dokumen, dan aplikasi web. Hasilnya saya serahkan dalam bentuk yang bisa kamu cek sendiri, bukan yang harus kamu percaya begitu saja.
         </p>
 
         {/* Dual CTA Buttons */}
@@ -43,10 +46,10 @@ export function RailwayHero() {
           </a>
           <a
             href="#projek"
-            aria-label="Lihat Portofolio Projek"
+            aria-label="Lihat kerjaan saya"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 rounded-lg bg-[#161b22] hover:bg-[#21262d] border border-[#30363d] text-stone-200 font-semibold text-xs sm:text-sm active:scale-95 transition-all shadow-xs"
           >
-            <span>Lihat Portofolio</span>
+            <span>Lihat Kerjaan Saya</span>
             <ArrowDown className="w-4 h-4 text-stone-400" />
           </a>
         </div>

@@ -10,7 +10,6 @@ import {
   Sparkles,
   Copy,
   AlertCircle,
-  Lock,
   RotateCcw,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -63,7 +62,6 @@ export function WhatsappForm() {
   const [validationError, setValidationError] = useState<string | null>(null);
 
   // Email kontak diambil dari Environment Variable publik
-  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "";
 
   // Modal State for interactive placeholder click
   const [activeModal, setActiveModal] = useState<ActiveModalField>(null);
@@ -235,38 +233,30 @@ ${actualName}`;
     }
 
     if (method === "whatsapp") {
+      // Nomornya sengaja nggak ada di sini. Perantara /go/wa yang jalan di
+      // sisi Netlify yang nyusun URL wa.me-nya, jadi nomor itu nggak pernah
+      // ikut ke bundle browser maupun ke repo publik.
+      // Lihat netlify/functions/wa.mts.
       const encodedText = encodeURIComponent(waText);
-      const targetNum = atob("BASE64-NOMOR-WA-DIHAPUS");
-      window.open(`https://wa.me/${targetNum}?text=${encodedText}`, "_blank");
-
-      // Logging background API
-      fetch("/api/contact/whatsapp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: sanitizeInput(name, 60),
-          purpose: sanitizeInput(purpose, 80),
-          topic: sanitizeInput(topic, 100),
-          budget: sanitizeInput(budget, 60),
-          message: sanitizeInput(message, 800),
-        }),
-      }).catch(() => {});
+      window.open(`/go/wa?text=${encodedText}`, "_blank");
     } else {
+      // Alamat emailnya sengaja nggak ada di sini, sama alasannya kayak
+      // nomor WA di atas. Perantara /go/email yang nyusun URL Gmail-nya.
       const encodedSubject = encodeURIComponent(sanitizeInput(emailSubject, 150));
       const encodedBody = encodeURIComponent(sanitizeInput(emailBody, 1200));
-      const targetEmail = contactEmail;
-      if (!targetEmail) {
-        setValidationError("Alamat email tujuan belum dikonfigurasi di environment variable.");
-        return;
-      }
+      const tujuan = `/go/email?subject=${encodedSubject}&body=${encodedBody}`;
 
-      // Buka Gmail Web Compose langsung di tab baru (kompatibel semua OS & browser)
-      const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${targetEmail}&su=${encodedSubject}&body=${encodedBody}`;
-      const mailtoUrl = `mailto:${targetEmail}?subject=${encodedSubject}&body=${encodedBody}`;
-
-      const win = window.open(gmailWebUrl, "_blank");
+      // Kalau popup diblokir, pindah di tab yang sama ke alamat yang persis
+      // sama. Perantaranya yang nentuin tujuan akhir, jadi cadangan ini
+      // nggak perlu tahu alamat emailnya juga.
+      const win = window.open(tujuan, "_blank");
       if (!win || win.closed || typeof win.closed === "undefined") {
-        window.location.href = mailtoUrl;
+        // Sengaja navigasi peramban beneran, bukan router Next.js.
+        // /go/email bukan halaman Next — di produksi dia Netlify Function
+        // yang balikin 302. Router client-side nggak akan pernah nyampe ke
+        // server, jadi redirect-nya nggak bakal kejadian.
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+        window.location.href = tujuan;
       }
     }
   };
@@ -289,10 +279,10 @@ ${actualName}`;
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 px-2 sm:px-0">
           <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-stone-900 tracking-tight text-balance">
-            Konsultasikan Tugas Kamu ke Haidir
+            Ceritain Tugas Kamu ke Saya
           </h2>
           <p className="text-stone-600 text-xs sm:text-sm mt-1.5 sm:mt-2 leading-relaxed text-balance">
-            Klik bagian teks yang disorot di bawah untuk mengisi data, lalu klik tombol kirim.
+            Isi bagian yang disorot, nanti teksnya nempel di WhatsApp kamu dan masih bisa kamu edit sebelum kirim.
           </p>
 
           {/* Medium Switcher / Toggle Pills */}
@@ -391,16 +381,6 @@ ${actualName}`;
                 {/* Authentic WhatsApp Date Badge */}
                 <div className="relative z-10 self-center mb-2.5 px-3 py-0.5 rounded-md bg-[#182229] text-[11px] font-medium text-[#8696a0] shadow-xs select-none">
                   Hari Ini
-                </div>
-
-                {/* Authentic WhatsApp Yellow Security / Reassurance Banner */}
-                <div className="relative z-10 self-center mb-3 max-w-[95%] sm:max-w-[88%] bg-[#182229]/95 border border-[#ffd279]/20 rounded-lg px-3.5 py-2 text-center shadow-md">
-                  <p className="text-[11px] sm:text-xs text-[#ffd279] leading-relaxed flex items-center justify-center gap-1.5 flex-wrap font-sans">
-                    <Lock className="w-3.5 h-3.5 text-[#ffd279] shrink-0 inline" />
-                    <span>
-                      Pesan aman &amp; tidak langsung terkirim. Teks hanya ditempel di chat bar WA kamu dan masih bisa diedit sebelum dikirim.
-                    </span>
-                  </p>
                 </div>
 
                 {/* Interactive Guide Tooltip Badge */}

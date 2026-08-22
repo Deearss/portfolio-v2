@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ArrowUpRight, Menu, X, FolderGit2, Workflow, Share2, MessageSquare } from "lucide-react";
+import { ArrowUpRight, Menu, X, FolderGit2, Workflow, MessageSquare } from "lucide-react";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -83,12 +83,16 @@ export function Navbar() {
                 }`}
               >
                 Haidir Aditya
+                <span className="hidden sm:inline font-semibold opacity-70">
+                  {" "}· @deearss
+                </span>
               </span>
               <span
                 className={`text-[10px] sm:text-[11px] font-medium leading-tight truncate transition-colors nav-brand-subtitle ${
                   isScrolled || mobileMenuOpen ? "text-stone-600" : "text-[#58a6ff]"
                 }`}
               >
+                <span className="sm:hidden">@deearss · </span>
                 Systems &amp; Software Engineer
               </span>
             </div>
@@ -106,7 +110,7 @@ export function Navbar() {
                 isScrolled ? "hover:text-[#1f6feb]" : "hover:text-white"
               }`}
             >
-              Portofolio
+              Kerjaan
             </a>
             <a
               href="#workflow"
@@ -117,12 +121,12 @@ export function Navbar() {
               Cara Kerja
             </a>
             <a
-              href="#sosmed"
+              href="#kontak"
               className={`nav-desktop-link transition-colors ${
                 isScrolled ? "hover:text-[#1f6feb]" : "hover:text-white"
               }`}
             >
-              Sosial Media
+              Kontak
             </a>
           </nav>
 
@@ -171,7 +175,7 @@ export function Navbar() {
                 className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-stone-100/80 active:bg-stone-200/60 hover:text-[#1976D2] transition-colors group"
               >
                 <FolderGit2 className="w-4 h-4 text-stone-400 group-hover:text-[#1976D2] transition-colors shrink-0" />
-                <span>Portofolio Projek</span>
+                <span>Kerjaan</span>
               </a>
               <a
                 href="#workflow"
@@ -181,15 +185,6 @@ export function Navbar() {
                 <Workflow className="w-4 h-4 text-stone-400 group-hover:text-[#1976D2] transition-colors shrink-0" />
                 <span>Cara &amp; Alur Kerja</span>
               </a>
-              <a
-                href="#sosmed"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-stone-100/80 active:bg-stone-200/60 hover:text-[#1976D2] transition-colors group"
-              >
-                <Share2 className="w-4 h-4 text-stone-400 group-hover:text-[#1976D2] transition-colors shrink-0" />
-                <span>Platform Resmi</span>
-              </a>
-
               {/* Mobile Contact CTA Button */}
               <div className="pt-2 border-t border-stone-200/80 mt-1">
                 <a

@@ -3,122 +3,41 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import {
-  GitCommit,
-  GitBranch,
   ExternalLink,
   Code2,
-  Activity,
   FolderGit2,
   RefreshCw,
-  Zap,
-  Flame,
-  Terminal,
+  GitGraph,
+  Star,
   Check,
 } from "lucide-react";
 
 interface GithubUserData {
   public_repos: number;
-  followers: number;
-  following: number;
   avatar_url: string;
   html_url: string;
-  login: string;
-  name: string;
   bio: string;
 }
 
-interface GithubEvent {
-  id: string;
-  type: string;
-  repoName: string;
-  detail: string;
-  timeAgo: string;
-}
+const GITHUB_URL = "https://github.com/Deearss";
+const PROJECTS_URL =
+  "https://projects.co.id/public/browse_users/view/2eaf56/dier-dieeerrr";
 
-interface RawGithubEvent {
-  id?: string | number;
-  type?: string;
-  repo?: { name?: string };
-  payload?: {
-    commits?: Array<{ message?: string }>;
-    ref_type?: string;
-  };
-  created_at?: string;
-}
+// Nama tampilan & handle dikunci di sini, bukan diambil dari API.
+// Alasannya: field `name` di profil GitHub bisa berisi apa saja, sedangkan
+// permukaan kepercayaan wajib selalu terbaca "Haidir Aditya · @deearss".
+const DISPLAY_NAME = "Haidir Aditya";
+const DISPLAY_HANDLE = "@deearss";
 
 const FALLBACK_PROFILE: GithubUserData = {
-  login: "Deearss",
-  name: "Dir",
   avatar_url: "/avatar.webp",
   bio: "Systems & Software Engineer",
   public_repos: 80,
-  followers: 12,
-  following: 5,
-  html_url: "https://github.com/Deearss",
+  html_url: GITHUB_URL,
 };
-
-const FALLBACK_EVENTS: GithubEvent[] = [
-  {
-    id: "95b0fff",
-    type: "PushEvent",
-    repoName: "Deearss/portfolio-v2",
-    detail: "docs: add next session agenda for mobile UI/UX responsiveness",
-    timeAgo: "23j yang lalu",
-  },
-  {
-    id: "ebbcbc0",
-    type: "PushEvent",
-    repoName: "Deearss/portfolio-v2",
-    detail: "fix(a11y): resolve heading hierarchy, missing link labels, and empty table headers",
-    timeAgo: "23j yang lalu",
-  },
-  {
-    id: "1ce6951",
-    type: "PushEvent",
-    repoName: "Deearss/portfolio-v2",
-    detail: "perf: optimize web performance, compress assets to webp, and improve a11y",
-    timeAgo: "1h yang lalu",
-  },
-];
-
-// Helper to format ISO timestamp into relative Indonesian time
-function formatRelativeTime(dateString?: string): string {
-  if (!dateString) return "Baru saja";
-  const createdDate = new Date(dateString);
-  if (isNaN(createdDate.getTime())) return "Baru saja";
-  const now = new Date();
-  const diffMs = now.getTime() - createdDate.getTime();
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  if (diffHours >= 24) {
-    return `${Math.floor(diffHours / 24)}h yang lalu`;
-  } else if (diffHours >= 1) {
-    return `${diffHours}j yang lalu`;
-  } else {
-    const diffMinutes = Math.floor(diffMs / (1000 * 60));
-    return diffMinutes > 0 ? `${diffMinutes}m yang lalu` : "Baru saja";
-  }
-}
-
-// GitHub Authentic Dark Mode Matrix Activity Pattern
-// 4 rows (weeks) × 12 columns (months) — Jan to Dec 2026
-// Future months (Sep-Dec) are 0 since we're in Aug 2026
-const MATRIX_PATTERN = [
-  // Week 1 (1-7):   Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
-  [3, 2, 4, 1, 3, 2, 4, 2, 0, 0, 0, 0],
-  // Week 2 (8-14):
-  [2, 3, 1, 4, 2, 3, 2, 1, 0, 0, 0, 0],
-  // Week 3 (15-21):
-  [4, 1, 3, 2, 4, 1, 3, 0, 0, 0, 0, 0],
-  // Week 4 (22-end):
-  [1, 4, 2, 3, 1, 4, 2, 0, 0, 0, 0, 0],
-];
-
-const MONTH_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const DAYS_IN_MONTH_2026 = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 export function GithubStatsCard() {
   const [userData, setUserData] = useState<GithubUserData | null>(null);
-  const [events, setEvents] = useState<GithubEvent[]>(FALLBACK_EVENTS);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -128,7 +47,6 @@ export function GithubStatsCard() {
       setRefreshing(true);
     }
     try {
-      // 1. Fetch Live Profile
       const profileRes = await fetch("https://api.github.com/users/Deearss");
       if (profileRes.ok) {
         const data = await profileRes.json();
@@ -137,113 +55,15 @@ export function GithubStatsCard() {
             typeof data.public_repos === "number"
               ? data.public_repos
               : FALLBACK_PROFILE.public_repos,
-          followers:
-            typeof data.followers === "number"
-              ? data.followers
-              : FALLBACK_PROFILE.followers,
-          following:
-            typeof data.following === "number"
-              ? data.following
-              : FALLBACK_PROFILE.following,
           avatar_url: data.avatar_url || FALLBACK_PROFILE.avatar_url,
           html_url: data.html_url || FALLBACK_PROFILE.html_url,
-          login: data.login || FALLBACK_PROFILE.login,
-          name: data.name || FALLBACK_PROFILE.name,
           bio: data.bio || FALLBACK_PROFILE.bio,
         });
       } else {
         setUserData(FALLBACK_PROFILE);
       }
-
-      // 2. Fetch Live Commits from Primary Active Repo (Gives 100% Real Commit Messages)
-      let commitEventsParsed = false;
-      try {
-        const commitsRes = await fetch(
-          "https://api.github.com/repos/Deearss/portfolio-v2/commits?per_page=3"
-        );
-        if (commitsRes.ok) {
-          const commitsData = await commitsRes.json();
-          if (Array.isArray(commitsData) && commitsData.length > 0) {
-            interface GithubCommitItem {
-              sha?: string;
-              commit?: {
-                message?: string;
-                author?: { date?: string };
-                committer?: { date?: string };
-              };
-            }
-            const parsed = (commitsData as GithubCommitItem[])
-              .slice(0, 3)
-              .map((item: GithubCommitItem, idx: number) => {
-                const rawMsg = item?.commit?.message || "Commit update";
-                const firstLine = rawMsg.split("\n")[0].trim();
-                const dateStr =
-                  item?.commit?.author?.date || item?.commit?.committer?.date;
-                return {
-                  id: item?.sha ? item.sha.substring(0, 7) : String(idx),
-                  type: "PushEvent",
-                  repoName: "Deearss/portfolio-v2",
-                  detail: firstLine,
-                  timeAgo: formatRelativeTime(dateStr),
-                };
-              });
-            setEvents(parsed);
-            commitEventsParsed = true;
-          }
-        }
-      } catch {
-        // Continue to public events endpoint if commits API fails
-      }
-
-      // 3. Fallback to /events/public if commit endpoint was not used
-      if (!commitEventsParsed) {
-        const eventsRes = await fetch(
-          "https://api.github.com/users/Deearss/events/public"
-        );
-        if (eventsRes.ok) {
-          const eventsData = await eventsRes.json();
-          if (Array.isArray(eventsData) && eventsData.length > 0) {
-            const parsedEvents: GithubEvent[] = (eventsData as RawGithubEvent[])
-              .slice(0, 3)
-              .map((item: RawGithubEvent, idx: number) => {
-                const repo = item?.repo?.name || "Deearss/repo";
-                let detail = "Aktivitas repositori";
-
-                if (
-                  item?.type === "PushEvent" &&
-                  Array.isArray(item?.payload?.commits) &&
-                  item.payload.commits.length > 0
-                ) {
-                  const rawMsg = item.payload.commits[0]?.message;
-                  detail =
-                    typeof rawMsg === "string" && rawMsg.trim()
-                      ? rawMsg.split("\n")[0].trim()
-                      : "Commit update";
-                } else if (item?.type === "CreateEvent") {
-                  detail = `feat: setup ${item?.payload?.ref_type || "repository"} structure`;
-                } else if (item?.type === "WatchEvent") {
-                  detail = `chore: update repository star count`;
-                }
-
-                return {
-                  id: item?.id ? String(item.id) : String(idx),
-                  type: item?.type || "Event",
-                  repoName: repo,
-                  detail,
-                  timeAgo: formatRelativeTime(item?.created_at),
-                };
-              });
-            setEvents(parsedEvents);
-          } else {
-            setEvents(FALLBACK_EVENTS);
-          }
-        } else {
-          setEvents(FALLBACK_EVENTS);
-        }
-      }
     } catch {
       setUserData(FALLBACK_PROFILE);
-      setEvents(FALLBACK_EVENTS);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -263,12 +83,11 @@ export function GithubStatsCard() {
   }, [fetchGithubData]);
 
   const activeUser = userData || FALLBACK_PROFILE;
-  const activeEvents = events.length > 0 ? events : FALLBACK_EVENTS;
 
   return (
     <div className="w-full max-w-4xl mx-auto my-6 bg-[#0d1117] rounded-xl border border-[#30363d] shadow-[0_8px_40px_rgba(0,0,0,0.45)] overflow-hidden text-left font-sans text-[#c9d1d9]">
       {/* Header Bar - Dark Mode IDE Style */}
-      <div className="px-4 py-3 bg-[#161b22] border-b border-[#30363d] flex items-center justify-between gap-3">
+      <div className="px-3 sm:px-4 py-2.5 sm:py-3 bg-[#161b22] border-b border-[#30363d] flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1.5 mr-2">
             <span className="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
@@ -281,361 +100,213 @@ export function GithubStatsCard() {
           </span>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="relative group inline-flex items-center">
-            <button
-              onClick={() => fetchGithubData(true)}
-              disabled={refreshing}
-              aria-label="Refresh Data GitHub"
-              className="p-1 rounded text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#30363d] transition-all disabled:opacity-50"
-            >
-              <RefreshCw
-                className={`w-3.5 h-3.5 ${refreshing ? "animate-spin text-[#58a6ff]" : ""}`}
-              />
-            </button>
-            <div className="absolute top-full mt-2 right-0 px-2.5 py-1 bg-[#161b22] border border-[#30363d] text-[#f0f6fc] text-[10px] font-mono font-medium rounded-md shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-30">
-              Refresh Data GitHub
-              <div className="absolute bottom-full right-2 border-4 border-transparent border-b-[#30363d]" />
-            </div>
+        <div className="relative group inline-flex items-center">
+          <button
+            onClick={() => fetchGithubData(true)}
+            disabled={refreshing}
+            aria-label="Muat ulang data GitHub"
+            className="p-1 rounded text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#30363d] transition-all disabled:opacity-50"
+          >
+            <RefreshCw
+              className={`w-3.5 h-3.5 ${refreshing ? "animate-spin text-[#58a6ff]" : ""}`}
+            />
+          </button>
+          <div className="absolute top-full mt-2 right-0 px-2.5 py-1 bg-[#161b22] border border-[#30363d] text-[#f0f6fc] text-[10px] font-mono font-medium rounded-md shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-30">
+            Muat ulang data GitHub
+            <div className="absolute bottom-full right-2 border-4 border-transparent border-b-[#30363d]" />
           </div>
         </div>
       </div>
 
-      {/* Main Bento Grid Layout */}
+      {/* Body */}
       <div className="p-3 sm:p-5 flex flex-col gap-3 sm:gap-4">
-        {/* Top Row: Left Profile Card (5 Cols) + Right Activity Log (7 Cols) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 items-stretch">
-          {/* Left Column: Developer Profile Card (Compact Height) */}
-          <div className="lg:col-span-6 p-3 sm:p-4 bg-[#161b22] rounded-lg border border-[#30363d] flex flex-col justify-between">
-            {/* Top Profile Header */}
-            <div className="flex items-start gap-2.5 sm:gap-3.5 pb-2.5 sm:pb-3 border-b border-[#30363d]">
-              <div className="relative shrink-0">
-                {!imgError ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    src={activeUser.avatar_url}
-                    alt={activeUser.name}
-                    onError={() => setImgError(true)}
-                    className="size-14 sm:size-20 rounded-xl border-2 border-[#30363d] shadow-xs object-cover bg-[#0d1117]"
-                  />
-                ) : (
-                  <div className="size-14 sm:size-20 rounded-xl border-2 border-[#30363d] shadow-xs bg-[#388bfd]/20 text-[#58a6ff] font-bold font-mono text-base sm:text-xl flex items-center justify-center">
-                    D
-                  </div>
-                )}
-                <span className="absolute -bottom-1 -right-1 w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-[#238636] border-2 border-[#161b22] flex items-center justify-center text-white shadow-xs">
-                  <Check className="w-2 h-2 sm:w-2.5 sm:h-2.5 stroke-3" />
-                </span>
+        {/* Profile Row */}
+        <div className="p-3 sm:p-4 bg-[#161b22] rounded-lg border border-[#30363d] flex items-start gap-3 sm:gap-3.5">
+          <div className="relative shrink-0">
+            {!imgError ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={activeUser.avatar_url}
+                alt={`Foto profil ${DISPLAY_NAME}`}
+                onError={() => setImgError(true)}
+                className="size-14 sm:size-20 rounded-xl border-2 border-[#30363d] shadow-xs object-cover bg-[#0d1117]"
+              />
+            ) : (
+              <div className="size-14 sm:size-20 rounded-xl border-2 border-[#30363d] shadow-xs bg-[#388bfd]/20 text-[#58a6ff] font-bold font-mono text-base sm:text-xl flex items-center justify-center">
+                D
               </div>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-1">
-                  <p className="font-bold text-sm sm:text-base text-[#f0f6fc] truncate">
-                    {activeUser.name}
-                  </p>
-                  <div className="relative group inline-flex items-center">
-                    <a
-                      href={activeUser.html_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Buka Profil GitHub Deearss"
-                      className="text-[#8b949e] hover:text-[#58a6ff] transition-colors p-1"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                    <div className="absolute bottom-full mb-2 right-0 px-2.5 py-1 bg-[#161b22] border border-[#30363d] text-[#f0f6fc] text-[10px] font-mono font-medium rounded-md shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-30">
-                      Open GitHub Profile
-                      <div className="absolute top-full right-2 border-4 border-transparent border-t-[#30363d]" />
-                    </div>
-                  </div>
-                </div>
-                <p className="text-[11px] sm:text-xs font-semibold text-[#58a6ff]">
-                  @{activeUser.login}
-                </p>
-                <div className="flex items-center gap-2 mt-0.5 sm:mt-1">
-                  <p className="text-[10.5px] sm:text-xs text-[#8b949e] line-clamp-2 leading-relaxed flex-1">
-                    {activeUser.bio}
-                  </p>
-                  {/* AI Collaborator Avatars */}
-                  <div className="flex items-center -space-x-1.5 sm:-space-x-2 shrink-0">
-                    <div className="relative group/claude z-10">
-                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full border-2 border-[#161b22] bg-[#0d1117] p-1 sm:p-1.5 flex items-center justify-center">
-                        <Image
-                          src="/claude.webp"
-                          alt="Claude AI"
-                          width={24}
-                          height={24}
-                          className="w-full h-full object-contain"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-[#161b22] border border-[#30363d] text-[#f0f6fc] text-[9px] font-mono font-medium rounded-md shadow-xl opacity-0 group-hover/claude:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-40">
-                        Claude AI
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#30363d]" />
-                      </div>
-                    </div>
-                    <div className="relative group/agy z-0">
-                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full border-2 border-[#161b22] bg-white p-1 sm:p-1.5 flex items-center justify-center">
-                        <Image
-                          src="/antigravity.webp"
-                          alt="Antigravity AI"
-                          width={24}
-                          height={24}
-                          className="w-full h-full object-contain"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-[#161b22] border border-[#30363d] text-[#f0f6fc] text-[9px] font-mono font-medium rounded-md shadow-xl opacity-0 group-hover/agy:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-40">
-                        Antigravity AI
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#30363d]" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Metrics Grid */}
-            <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-2.5 sm:mt-3">
-              <div className="p-1.5 sm:p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
-                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-medium text-[#8b949e]">
-                  <FolderGit2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#58a6ff]" />
-                  <span>Public Repos</span>
-                </div>
-                <p className="text-xs sm:text-sm font-extrabold text-[#f0f6fc] mt-0.5 font-mono">
-                  {loading ? "..." : activeUser.public_repos}
-                </p>
-              </div>
-
-              <div className="p-1.5 sm:p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
-                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-medium text-[#8b949e]">
-                  <Code2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#58a6ff]" />
-                  <span>Primary Stack</span>
-                </div>
-                <p className="text-[10px] sm:text-[11px] font-bold text-[#c9d1d9] mt-0.5 truncate">
-                  TypeScript / PHP
-                </p>
-              </div>
-
-              <div className="p-1.5 sm:p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
-                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-medium text-[#8b949e]">
-                  <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400" />
-                  <span>Workflow</span>
-                </div>
-                <p className="text-[10px] sm:text-[11px] font-bold text-amber-300 mt-0.5">
-                  AI-Augmented
-                </p>
-              </div>
-
-              <div className="p-1.5 sm:p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
-                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-medium text-[#8b949e]">
-                  <Activity className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#3fb950]" />
-                  <span>Commit Rate</span>
-                </div>
-                <p className="text-[10px] sm:text-[11px] font-bold text-[#3fb950] mt-0.5">
-                  High Daily
-                </p>
-              </div>
-
-              <div className="p-1.5 sm:p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
-                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-medium text-[#8b949e]">
-                  <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-orange-400" />
-                  <span>Dev Streak</span>
-                </div>
-                <p className="text-[10px] sm:text-[11px] font-bold text-orange-400 mt-0.5">
-                  365+ Days
-                </p>
-              </div>
-
-              <div className="p-1.5 sm:p-2 rounded-md bg-[#0d1117] border border-[#30363d]">
-                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-medium text-[#8b949e]">
-                  <Terminal className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-400" />
-                  <span>Environment</span>
-                </div>
-                <p className="text-[10px] sm:text-[11px] font-bold text-purple-300 mt-0.5 truncate">
-                  Linux Ubuntu
-                </p>
-              </div>
-            </div>
+            )}
+            <span className="absolute -bottom-1 -right-1 w-4.5 h-4.5 rounded-full bg-[#238636] border-2 border-[#161b22] flex items-center justify-center text-white shadow-xs">
+              <Check className="w-2.5 h-2.5 stroke-3" />
+            </span>
           </div>
 
-          {/* Right Column: Live Recent Commit / Event Stream (7 Cols) */}
-          <div className="lg:col-span-6 p-3 sm:p-4 bg-[#161b22] rounded-lg border border-[#30363d] flex flex-col justify-between">
-            <div className="flex items-center gap-2 pb-1.5 mb-2 border-b border-[#30363d]">
-              <GitCommit className="w-3.5 h-3.5 text-[#58a6ff]" />
-              <p className="text-[10px] sm:text-xs font-bold text-[#f0f6fc] tracking-wide uppercase font-mono">
-                Live GitHub Activity Log
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center justify-between gap-2">
+              <p className="font-bold text-sm sm:text-base text-[#f0f6fc] truncate">
+                {DISPLAY_NAME}
+              </p>
+              <div className="relative group inline-flex items-center shrink-0">
+                <a
+                  href={activeUser.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Buka profil GitHub @deearss di tab baru"
+                  className="text-[#8b949e] hover:text-[#58a6ff] transition-colors p-1"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+                <div className="absolute bottom-full mb-2 right-0 px-2.5 py-1 bg-[#161b22] border border-[#30363d] text-[#f0f6fc] text-[10px] font-mono font-medium rounded-md shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-30">
+                  Buka profil GitHub
+                  <div className="absolute top-full right-2 border-4 border-transparent border-t-[#30363d]" />
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs font-semibold text-[#58a6ff]">
+              {DISPLAY_HANDLE}
+            </p>
+
+            <p className="text-xs text-[#8b949e] line-clamp-2 leading-relaxed mt-1">
+              {activeUser.bio}
+            </p>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+          {/* Repositori publik — wajib bisa diklik ke daftar repo */}
+          <a
+            href={`${GITHUB_URL}?tab=repositories`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Buka daftar repositori publik @deearss di GitHub"
+            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#58a6ff]/60 hover:bg-[#1c2128] transition-all"
+          >
+            <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
+              <FolderGit2 className="w-3.5 h-3.5 text-[#58a6ff] shrink-0" />
+              <span className="truncate">Repositori publik</span>
+              <ExternalLink className="w-2.5 h-2.5 shrink-0 ml-auto text-[#8b949e] group-hover:text-[#58a6ff] transition-colors" />
+            </div>
+            <p className="text-xl font-extrabold text-[#f0f6fc] mt-1 font-mono leading-none">
+              {loading ? "…" : activeUser.public_repos}
+            </p>
+          </a>
+
+          {/* Kontribusi — wajib bisa diklik ke GitHub */}
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Cek 1.967 kontribusi setahun terakhir di profil GitHub @deearss"
+            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#3fb950]/60 hover:bg-[#1c2128] transition-all"
+          >
+            <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
+              <GitGraph className="w-3.5 h-3.5 text-[#3fb950] shrink-0" />
+              <span className="truncate">Kontribusi setahun</span>
+              <ExternalLink className="w-2.5 h-2.5 shrink-0 ml-auto text-[#8b949e] group-hover:text-[#3fb950] transition-colors" />
+            </div>
+            <p className="text-xl font-extrabold text-[#3fb950] mt-1 font-mono leading-none">
+              1.967
+            </p>
+          </a>
+
+          {/* Stack utama */}
+          <div className="p-3 rounded-lg bg-[#161b22] border border-[#30363d] col-span-2 sm:col-span-1">
+            <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
+              <Code2 className="w-3.5 h-3.5 text-[#58a6ff] shrink-0" />
+              <span>Stack utama</span>
+            </div>
+            <p className="text-sm font-bold text-[#c9d1d9] mt-1.5 leading-none">
+              TypeScript / PHP
+            </p>
+          </div>
+
+          {/* Ulasan klien — wajib bisa diklik ke projects.co.id */}
+          <a
+            href={PROJECTS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Cek ulasan klien bernilai 10,00 dari 10 di profil Projects.co.id"
+            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#e3b341]/60 hover:bg-[#1c2128] transition-all"
+          >
+            <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
+              <Star className="w-3.5 h-3.5 text-[#e3b341] shrink-0" />
+              <span className="truncate">Ulasan klien</span>
+              <ExternalLink className="w-2.5 h-2.5 shrink-0 ml-auto text-[#8b949e] group-hover:text-[#e3b341] transition-colors" />
+            </div>
+            <p className="text-xl font-extrabold text-[#e3b341] mt-1 font-mono leading-none">
+              10,00
+              <span className="text-xs font-bold text-[#8b949e]"> / 10</span>
+            </p>
+          </a>
+
+          {/* Cara kerja — Bareng AI */}
+          <div className="p-3 rounded-lg bg-[#161b22] border border-[#30363d] flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <p className="text-[10px] font-medium text-[#8b949e] truncate">
+                Cara kerja
+              </p>
+              <p className="text-sm font-bold text-[#a371f7] mt-1 leading-none">
+                Bareng AI
+              </p>
+              <p className="text-[10px] text-[#8b949e] mt-1 leading-tight">
+                Dibuka dari awal
               </p>
             </div>
 
-            <div className="space-y-2">
-              {activeEvents.map((evt) => (
-                <div
-                  key={evt.id}
-                  className="relative overflow-hidden p-2 sm:p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#388bfd]/60 transition-all group/item shadow-sm"
-                >
-                  {/* Left Content (Repo Pill, Time Ago, Commit Message) */}
-                  <div className="relative z-10 pr-14 sm:pr-20">
-                    <div className="flex items-center gap-1.5 sm:gap-2 mb-1 min-w-0">
-                      <span className="px-1.5 sm:px-2 py-0.5 rounded-md text-[8.5px] sm:text-[10px] font-mono font-bold bg-[#388bfd]/20 text-[#58a6ff] border border-[#388bfd]/40 flex items-center gap-1 shrink min-w-0 max-w-[140px] sm:max-w-none">
-                        <GitBranch className="w-2.5 h-2.5 shrink-0" />
-                        <span className="truncate">{evt.repoName}</span>
-                      </span>
-                      <span className="text-[8.5px] sm:text-[10px] text-[#8b949e] font-mono whitespace-nowrap shrink-0">
-                        {evt.timeAgo}
-                      </span>
-                    </div>
-                    <p className="text-[#c9d1d9] text-[10px] sm:text-xs font-medium font-mono leading-tight sm:leading-snug line-clamp-2">
-                      {evt.detail}
-                    </p>
-                  </div>
-
-                  {/* Sticking-Out Tilted Antigravity Mini Card (Elevated & Top-Aligned Icon) */}
-                  <div className="absolute -bottom-4 sm:-bottom-6 right-5 sm:right-8 w-8 h-13 sm:w-12 sm:h-19 bg-white/95 rounded-xl shadow-xl border border-stone-200/80 flex items-start justify-center pt-1.5 sm:pt-2.5 transform rotate-6 translate-y-1 group-hover/item:rotate-2 group-hover/item:translate-y-0 transition-all duration-300 pointer-events-none z-0">
-                    <Image
-                      src="/antigravity.webp"
-                      alt="Antigravity AI"
-                      width={24}
-                      height={24}
-                      className="w-3.5 h-3.5 sm:w-5.5 sm:h-5.5 object-contain"
-                      loading="lazy"
-                    />
-                  </div>
+            <div className="flex items-center -space-x-2 shrink-0">
+              <div className="relative group/claude z-10">
+                <div className="w-8 h-8 rounded-full border-2 border-[#161b22] bg-[#0d1117] p-1.5 flex items-center justify-center">
+                  <Image
+                    src="/claude.webp"
+                    alt="Claude AI"
+                    width={24}
+                    height={24}
+                    className="w-full h-full object-contain"
+                    loading="lazy"
+                  />
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Row: Full 12-Column Width Yearly Activity Heatmap */}
-        <div className="p-3.5 sm:p-4 bg-[#161b22] rounded-lg border border-[#30363d]">
-          {/* Custom Dark Scrollbar Styles for GitHub Card */}
-          <style jsx global>{`
-            .github-dark-scrollbar::-webkit-scrollbar {
-              height: 5px;
-            }
-            .github-dark-scrollbar::-webkit-scrollbar-track {
-              background: #0d1117;
-              border-radius: 4px;
-            }
-            .github-dark-scrollbar::-webkit-scrollbar-thumb {
-              background: #30363d;
-              border-radius: 4px;
-            }
-            .github-dark-scrollbar::-webkit-scrollbar-thumb:hover {
-              background: #58a6ff;
-            }
-          `}</style>
-
-          <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-            <div className="flex items-center gap-2">
-              <Activity className="w-3.5 h-3.5 text-[#58a6ff]" />
-              <span className="text-[11px] sm:text-xs font-bold text-[#f0f6fc] font-mono">
-                Yearly Activity Heatmap
-              </span>
-              <span className="px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-mono font-bold bg-[#388bfd]/20 text-[#58a6ff] border border-[#388bfd]/40">
-                2026
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] text-[#8b949e] font-mono leading-none">
-              <span className="leading-none">Less</span>
-              <div className="inline-flex items-center gap-1">
-                <span className="w-2.5 sm:w-3 aspect-4/3 rounded-xs bg-[#161b22] border border-[#30363d] shrink-0 inline-block"></span>
-                <span className="w-2.5 sm:w-3 aspect-4/3 rounded-xs bg-[#0e4429] shrink-0 inline-block"></span>
-                <span className="w-2.5 sm:w-3 aspect-4/3 rounded-xs bg-[#006d32] shrink-0 inline-block"></span>
-                <span className="w-2.5 sm:w-3 aspect-4/3 rounded-xs bg-[#26a641] shrink-0 inline-block"></span>
-                <span className="w-2.5 sm:w-3 aspect-4/3 rounded-xs bg-[#39d353] shrink-0 inline-block"></span>
+                <div className="absolute bottom-full mb-2 right-0 px-2 py-0.5 bg-[#0d1117] border border-[#30363d] text-[#f0f6fc] text-[9px] font-mono font-medium rounded-md shadow-xl opacity-0 group-hover/claude:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-40">
+                  Claude AI
+                  <div className="absolute top-full right-2 border-4 border-transparent border-t-[#30363d]" />
+                </div>
               </div>
-              <span className="leading-none">More</span>
-            </div>
-          </div>
-
-          {/* Matrix Squares Grid — 4 rows (weeks) × 12 columns (months) */}
-          <div className="w-full pt-4 sm:pt-6 pb-1">
-            <div className="w-full flex flex-col gap-1 sm:gap-1.5">
-              {MATRIX_PATTERN.map((row, rIdx) => (
-                <div key={rIdx} className="grid grid-cols-12 gap-1 sm:gap-1.5 w-full">
-                  {row.map((val, cIdx) => {
-                    let colorClass = "bg-[#161b22] border border-[#30363d]/40";
-                    if (val === 1) colorClass = "bg-[#0e4429]";
-                    if (val === 2) colorClass = "bg-[#006d32]";
-                    if (val === 3) colorClass = "bg-[#26a641]";
-                    if (val === 4) colorClass = "bg-[#39d353]";
-
-                    const isRightEdge = cIdx > 9;
-                    const isLeftEdge = cIdx < 2;
-
-                    // Calculate date range for this cell
-                    const weekStart = rIdx * 7 + 1;
-                    const lastDay = DAYS_IN_MONTH_2026[cIdx] || 31;
-                    const weekEnd = rIdx === 3 ? lastDay : Math.min(weekStart + 6, lastDay);
-                    const dateLabel = `${weekStart}-${weekEnd} ${MONTH_SHORT[cIdx]}`;
-
-                    return (
-                      <div key={cIdx} className="relative group/square w-full">
-                        <div
-                          className={`w-full aspect-4/3 rounded-xs ${colorClass} hover:opacity-80 transition-opacity cursor-pointer`}
-                        />
-                        <div
-                          className={`absolute bottom-full mb-2 ${
-                            isRightEdge
-                              ? "right-0"
-                              : isLeftEdge
-                                ? "left-0"
-                                : "left-1/2 -translate-x-1/2"
-                          } px-2 py-0.5 bg-[#161b22] border border-[#30363d] text-[#f0f6fc] text-[9px] font-mono font-medium rounded-xs shadow-xl opacity-0 group-hover/square:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-40`}
-                        >
-                          Level - {val} ({dateLabel})
-                          <div
-                            className={`absolute top-full ${
-                              isRightEdge
-                                ? "right-2"
-                                : isLeftEdge
-                                  ? "left-2"
-                                  : "left-1/2 -translate-x-1/2"
-                            } border-3 border-transparent border-t-[#30363d]`}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
+              <div className="relative group/agy z-0">
+                <div className="w-8 h-8 rounded-full border-2 border-[#161b22] bg-white p-1.5 flex items-center justify-center">
+                  <Image
+                    src="/antigravity.webp"
+                    alt="Antigravity AI"
+                    width={24}
+                    height={24}
+                    className="w-full h-full object-contain"
+                    loading="lazy"
+                  />
                 </div>
-              ))}
-              {/* Month Labels (12 Columns) */}
-              <div className="grid grid-cols-12 gap-1 sm:gap-1.5 w-full mt-1">
-                {MONTH_SHORT.map((m) => (
-                  <span key={m} className="w-full text-center text-[8px] sm:text-[9px] font-mono text-[#8b949e] truncate">
-                    {m}
-                  </span>
-                ))}
+                <div className="absolute bottom-full mb-2 right-0 px-2 py-0.5 bg-[#0d1117] border border-[#30363d] text-[#f0f6fc] text-[9px] font-mono font-medium rounded-md shadow-xl opacity-0 group-hover/agy:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-40">
+                  Antigravity AI
+                  <div className="absolute top-full right-2 border-4 border-transparent border-t-[#30363d]" />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Terminal Footer Strip */}
-      <div className="px-3.5 sm:px-4 py-2.5 bg-[#161b22] border-t border-[#30363d] text-[#8b949e] font-mono text-[10px] sm:text-[11px] flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-2">
-        <div className="flex items-center gap-1.5 sm:gap-2 truncate w-full sm:w-auto min-w-0">
-          <span className="text-[#3fb950] font-bold shrink-0">$</span>
-          <span className="text-[#8b949e] shrink-0">git log -1</span>
-          <span className="text-[#30363d] shrink-0">→</span>
-          <span className="text-[#c9d1d9] truncate">
-            <span className="text-[#f0883e]">{activeEvents[0]?.id || "95b0fff"}</span>{" "}
-            {activeEvents[0]?.detail || "docs: add next session agenda for mobile UI/UX responsiveness"}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-3 shrink-0 self-end sm:self-auto">
-          <a
-            href="https://github.com/Deearss"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[10px] sm:text-[11px] text-[#58a6ff] hover:underline flex items-center gap-1 font-mono"
-          >
-            <span>github.com/Deearss</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
-        </div>
+      {/* Footer Strip */}
+      <div className="px-4 py-2.5 bg-[#161b22] border-t border-[#30363d] text-[#8b949e] font-mono text-[11px] flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span className="text-center sm:text-left">
+          Angka di atas per Agustus 2026. Silakan cek sendiri lewat tautannya.
+        </span>
+        <a
+          href={activeUser.html_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-[#58a6ff] hover:text-white font-semibold transition-colors shrink-0"
+        >
+          <span>github.com/Deearss</span>
+          <ExternalLink className="w-3 h-3" />
+        </a>
       </div>
     </div>
   );

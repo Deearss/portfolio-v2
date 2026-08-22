@@ -25,9 +25,25 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
   - **Neutrals**: Stone (`#FAFAF9`, `#F5F5F4`, `#E7E5E4`, `#1C1917`)
   - **Excel Theme (Showcase 2)**: Microsoft Excel Light Mode `#107C41`
 - **Keamanan & Privasi**:
-  - Zero hardcoded contact credentials di repo publik.
-  - Menggunakan server-side environment variable `WHATSAPP_PHONE` dan client env `NEXT_PUBLIC_CONTACT_EMAIL`.
-  - Template konfigurasi tersedia di `.env.example`.
+  - **Nomor WhatsApp dan alamat email dua-duanya nggak ada di repo maupun di
+    bundle browser.** Tombolnya nunjuk ke `/go/wa` dan `/go/email`; perantara
+    di sisi server yang baca `WHATSAPP_PHONE` / `CONTACT_EMAIL` dari env lalu
+    balikin redirect 302 ke `wa.me` / Gmail compose.
+  - Logikanya satu berkas, `lib/kontak-redirect.ts`, dipakai bareng oleh dua
+    pintu masuk supaya nggak bisa diam-diam beda perilaku:
+    `netlify/functions/*.mts` (produksi) dan `app/go/*/route.dev.ts` (waktu
+    `npm run dev`). Berkas `route.dev.ts` cuma dikenali sebagai route waktu
+    dev — lihat `pageExtensions` di `next.config.ts`.
+  - Masukan dibersihin dari karakter kontrol sebelum nempel di header
+    `Location` (cegah suntik header), isi dipotong di 1.200 karakter, subjek
+    di 200. Jawabannya `cache-control: no-store, private` supaya nggak
+    nyangkut di CDN atau cache peramban.
+  - Dua env var itu **sengaja tanpa awalan `NEXT_PUBLIC_`**. Awalan itu bikin
+    Next.js nyelipin nilainya ke bundle yang diunduh tiap pengunjung.
+  - **Batas yang jujur:** pengunjung yang beneran mengklik tombolnya tetap
+    lihat nomor/email di bilah alamat setelah diarahkan — memang nggak bisa
+    dihindari, WhatsApp dan Gmail butuh alamat tujuan. Yang dicegat adalah
+    pemanen otomatis yang cuma baca HTML/JS halaman.
 
 ---
 
@@ -114,8 +130,8 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 
 | Variable Name | Keterangan | Lokasi Konfigurasi |
 | :--- | :--- | :--- |
-| `WHATSAPP_PHONE` | Nomor WhatsApp tujuan (Format internasional tanpa '+') | Netlify Dashboard & `.env.local` |
-| `NEXT_PUBLIC_CONTACT_EMAIL` | Alamat email tujuan konsultasi | Netlify Dashboard & `.env.local` |
+| `WHATSAPP_PHONE` | Nomor WhatsApp tujuan (format internasional tanpa '+'). **Server-side only** — dibaca `netlify/functions/wa.mts`, sengaja tanpa awalan `NEXT_PUBLIC_` | Netlify Dashboard & `.env.local` |
+| `CONTACT_EMAIL` | Alamat email tujuan konsultasi. **Server-side only** — dibaca `lib/kontak-redirect.ts`, sengaja tanpa awalan `NEXT_PUBLIC_` | Netlify Dashboard & `.env.local` |
 
 ---
 

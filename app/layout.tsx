@@ -13,17 +13,16 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://deearss.netlify.app"),
   title: "Haidir Aditya — Systems & Software Engineer",
   description:
-    "Portofolio Haidir Aditya. Membantu pembuatan aplikasi web kencang, restrukturisasi Excel, dan otomatisasi sistem digital dengan performa tinggi.",
+    "Kerjaan manual yang berantakan, saya ubah jadi sistem yang jalan sendiri. Data, dokumen, dan aplikasi web \u2014 hasilnya bisa kamu cek sendiri, bukan yang harus kamu percaya begitu saja.",
   keywords: [
     "Haidir Aditya",
-    "Dier",
-    "Deearss",
+    "deearss",
     "Systems Engineer",
     "Software Engineer",
-    "Full-Stack Developer",
+    "Freelance Indonesia",
     "Next.js",
-    "Excel Automation",
-    "Shopee WooCommerce Migration",
+    "Otomatisasi Excel",
+    "Restrukturisasi Pembukuan",
     "Web Performance Optimization",
   ],
   authors: [{ name: "Haidir Aditya", url: "https://github.com/Deearss" }],
@@ -39,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Haidir Aditya — Systems & Software Engineer",
     description:
-      "Membantu pembuatan aplikasi web kencang, restrukturisasi Excel, dan otomatisasi sistem digital dengan performa tinggi.",
+      "Kerjaan manual yang berantakan, saya ubah jadi sistem yang jalan sendiri. Data, dokumen, dan aplikasi web.",
     url: "https://deearss.netlify.app",
     siteName: "Haidir Aditya — Portfolio",
     locale: "id_ID",

@@ -26,40 +26,40 @@ interface WorkflowStep {
 const WORKFLOW_STEPS: WorkflowStep[] = [
   {
     num: "01",
-    title: "Cari Tau Klien Maunya Apa",
-    desc: "Diskusi mendalam mengenai kebutuhan, fitur utama, preferensi desain, dan target penyelesaian projek agar hasil tepat sasaran.",
+    title: "Saya tanya dulu, bukan langsung ngerjain",
+    desc: "Saya cari tahu kamu sebenernya butuh apa, deadline-nya kapan, dan hasilnya nanti dipakai siapa. Sering yang kamu minta dan yang kamu butuh itu beda, dan lebih murah ketahuannya sekarang daripada nanti.",
     icon: Search,
     image: "/roadmap-image/alur-1.webp",
     highlight: "Konsultasi & Discovery",
   },
   {
     num: "02",
-    title: "Pilih Solusi Terbaik Buat Masalah Klien",
-    desc: "Menentukan arsitektur sistem, stack teknologi yang efisien, estimasi biaya hemat (anti-boncos), dan roadmap pengerjaan yang jelas.",
+    title: "Saya pilih cara yang paling masuk akal",
+    desc: "Saya tentuin cara kerjanya, alat yang dipakai, dan berapa lama. Kalau masalah kamu selesai pakai satu file Excel, saya nggak akan nawarin bikin aplikasi. Saya juga bilang di depan kalau ada bagian yang di luar jangkauan saya.",
     icon: Compass,
     image: "/roadmap-image/alur-2.webp",
     highlight: "Solusi & Strategi",
   },
   {
     num: "03",
-    title: "Eksekusi Kilat Bareng AI",
-    desc: "Pengembangan kode secara cepat dan presisi menggunakan workflow AI engineering mutakhir, clean code, serta performa tinggi.",
+    title: "Saya kerja bareng AI, dan itu saya buka dari awal",
+    desc: "Saya pakai AI di dalam alur kerja saya, bukan sebagai pengganti saya. Efeknya buat kamu ada dua: revisi kecil biasanya balik di hari yang sama, dan tiap hasil datang bareng cara ngeceknya, karena saya sendiri nggak percaya keluaran AI tanpa diverifikasi. Kalau projek kamu ada klausa kerahasiaan, bilang di awal. Saya pindah ke alat lokal dan itu ngubah estimasi waktunya.",
     icon: Zap,
     image: "/roadmap-image/alur-3.webp",
-    highlight: "AI-Powered Coding",
+    highlight: "Revisi Cepat & Bisa Dicek",
   },
   {
     num: "04",
-    title: "Tanya Klien Udah Pas Atau Belum",
-    desc: "Uji coba fungsional, demo live ke klien, dan penyesuaian iteratif berdasarkan feedback langsung sampai kamu benar-benar puas.",
+    title: "Saya kirim versi jalan, kamu yang nilai",
+    desc: "Saya kasih versi yang beneran bisa dipakai, bukan gambar. Kamu coba sendiri, saya benerin sesuai masukan kamu, diulang sampai kamu puas.",
     icon: MessageCircle,
     image: "/roadmap-image/alur-4.webp",
     highlight: "Review & Validasi",
   },
   {
     num: "05",
-    title: "Beres, Hasil Rapi Siap Pakai",
-    desc: "Penyerahan source code bersih, dokumentasi lengkap, panduan deployment, dan dukungan awal agar projek langsung siap go-live.",
+    title: "Saya serahkan lengkap, plus cara ngeceknya",
+    desc: "Source code bersih, dokumentasi, panduan pakai, dan penjelasan cara mengecek hasilnya sendiri. Setelah serah terima saya masih bisa dihubungi buat pertanyaan seputar yang saya kerjain.",
     icon: CheckCircle2,
     image: "/roadmap-image/alur-5.webp",
     highlight: "Delivery & Serah Terima",
@@ -204,10 +204,10 @@ export function GeneralWorkflow() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 px-2 sm:px-0">
           <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-stone-900 font-sans text-balance">
-            Gimana Cara Saya Ngerjain Tugasmu?
+            Cara Saya Ngerjain Tugas Kamu
           </h2>
           <p className="text-stone-600 text-xs sm:text-sm mt-1.5 sm:mt-2 text-balance">
-            Alur simpel, terstruktur, dan transparan dari pertama kali konsultasi hingga serah terima hasil.
+            Lima langkah, dari chat pertama sampai serah terima. Nggak ada yang saya sembunyikan di antaranya.
           </p>
         </div>
 
@@ -253,7 +253,7 @@ export function GeneralWorkflow() {
           onMouseMove={handleMouseMove}
           onMouseUp={endDrag}
           onMouseLeave={endDrag}
-          className={`flex gap-4 sm:gap-6 overflow-x-auto pb-6 pt-2 select-none touch-pan-x overscroll-x-contain ${
+          className={`flex gap-4 sm:gap-6 overflow-x-auto pb-6 pt-2 select-none touch-pan-x touch-pan-y overscroll-x-contain ${
             isDragging
               ? "cursor-grabbing scroll-auto snap-none"
               : "cursor-grab scroll-smooth snap-x snap-mandatory"

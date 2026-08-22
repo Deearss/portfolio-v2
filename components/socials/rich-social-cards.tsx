@@ -13,7 +13,7 @@ export function RichSocialCards() {
         
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 px-2 sm:px-0">
           <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-stone-900 font-sans text-balance">
-            Temukan Haidir di Platform Resmi
+            Temukan Saya di Platform Resmi
           </h2>
           <p className="text-stone-600 text-xs sm:text-sm mt-1.5 sm:mt-2 text-balance">
             Jejak karier profesional dan histori portofolio publik.
@@ -33,6 +33,7 @@ export function RichSocialCards() {
               href="https://www.linkedin.com/in/haidir-aditya-487b44279/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Buka profil LinkedIn saya di tab baru"
               className="flex flex-col h-full bg-white rounded-xl border border-stone-200 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group"
             >
               {/* Top Bar */}
@@ -73,7 +74,7 @@ export function RichSocialCards() {
             {/* Custom Brand Kit Tooltip Preview (Desktop only) */}
             {hoveredCard === "linkedin" && (
               <div className="hidden md:block absolute left-1/2 -translate-x-1/2 -top-12 z-30 px-3 py-1.5 bg-stone-900 text-white text-xs rounded shadow-md pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95">
-                Lihat foto & profil lengkap Haidir di LinkedIn ↗
+                Lihat foto & profil lengkap saya di LinkedIn ↗
               </div>
             )}
           </div>
@@ -88,6 +89,7 @@ export function RichSocialCards() {
               href="https://projects.co.id/public/browse_users/view/2eaf56/dier-dieeerrr"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Buka profil Projects.co.id saya di tab baru"
               className="flex flex-col h-full bg-white rounded-xl border border-stone-200 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group"
             >
               {/* Top Bar */}
@@ -128,7 +130,7 @@ export function RichSocialCards() {
             {/* Custom Brand Kit Tooltip Preview (Desktop only) */}
             {hoveredCard === "projects" && (
               <div className="hidden md:block absolute left-1/2 -translate-x-1/2 -top-12 z-30 px-3 py-1.5 bg-stone-900 text-white text-xs rounded shadow-md pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95">
-                Lihat profil lengkap Haidir di Projects.co.id ↗
+                Lihat profil lengkap saya di Projects.co.id ↗
               </div>
             )}
           </div>
