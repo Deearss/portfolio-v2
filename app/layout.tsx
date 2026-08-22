@@ -11,12 +11,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: "Haidir Aditya — Systems & Software Engineer",
-  description: "Portofolio Haidir Aditya. Membantu pembuatan aplikasi web kencang, restrukturisasi Excel, dan otomatisasi sistem digital dengan performa tinggi.",
-  keywords: ["Haidir Aditya", "Systems Engineer", "Software Engineer", "Full-Stack Developer", "Next.js", "Shopee WooCommerce Migration", "Excel Data Restructuring"],
+  description: "Kerjaan manual yang berantakan, saya ubah jadi sistem yang jalan sendiri. Data, dokumen, dan aplikasi web \u2014 hasilnya bisa kamu cek sendiri.",
+  keywords: ["Haidir Aditya", "deearss", "Systems Engineer", "Software Engineer", "Freelance Indonesia", "Next.js", "Otomatisasi Excel", "Restrukturisasi Pembukuan"],
   authors: [{ name: "Haidir Aditya" }],
   openGraph: {
     title: "Haidir Aditya — Systems & Software Engineer",
-    description: "Portofolio Haidir Aditya. Solusi digital cepat, presisi, dan terstruktur.",
+    description: "Kerjaan manual yang berantakan, saya ubah jadi sistem yang jalan sendiri. Data, dokumen, dan aplikasi web.",
     url: "https://my.id",
     siteName: "Haidir Aditya Portfolio",
     type: "website",

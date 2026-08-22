@@ -34,7 +34,7 @@ export function Navbar() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://avatars.githubusercontent.com/u/111673708?v=4"
-            alt="Haidir Aditya Avatar"
+            alt="Foto profil Haidir Aditya"
             className={`w-8 h-8 rounded-md object-cover shadow-xs group-hover:scale-105 transition-all ${
               isScrolled ? "border border-stone-200" : "border border-[#30363d]"
             }`}
@@ -47,7 +47,7 @@ export function Navbar() {
                   : "text-white group-hover:text-[#58a6ff]"
               }`}
             >
-              Haidir Aditya
+              Haidir Aditya <span className="font-semibold opacity-70">· @deearss</span>
             </span>
             <span
               className={`text-[11px] font-medium leading-tight transition-colors ${
@@ -71,7 +71,7 @@ export function Navbar() {
               isScrolled ? "hover:text-[#1f6feb] transition-colors" : "hover:text-white transition-colors"
             }
           >
-            Portofolio
+            Kerjaan
           </a>
           <a
             href="#workflow"
@@ -82,12 +82,12 @@ export function Navbar() {
             Cara Kerja
           </a>
           <a
-            href="#sosmed"
+            href="#kontak"
             className={
               isScrolled ? "hover:text-[#1f6feb] transition-colors" : "hover:text-white transition-colors"
             }
           >
-            Sosial Media
+            Kontak
           </a>
         </nav>
 
