@@ -214,7 +214,7 @@ export function GeneralWorkflow() {
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2 text-xs text-stone-500 font-medium">
             <MoveHorizontal className="w-4 h-4 text-stone-400 animate-pulse" />
-            <span>Geser mouse atau seret layar untuk menjelajah alur</span>
+            <span>Geser layarnya ke samping buat lihat langkah berikutnya</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -252,7 +252,7 @@ export function GeneralWorkflow() {
           onMouseMove={handleMouseMove}
           onMouseUp={endDrag}
           onMouseLeave={endDrag}
-          className={`flex gap-6 overflow-x-auto pb-6 pt-2 select-none touch-pan-y ${
+          className={`flex gap-6 overflow-x-auto pb-6 pt-2 select-none touch-pan-x touch-pan-y ${
             isDragging
               ? "cursor-grabbing scroll-auto snap-none"
               : "cursor-grab scroll-smooth snap-x snap-mandatory"
