@@ -234,22 +234,12 @@ ${actualName}`;
     }
 
     if (method === "whatsapp") {
+      // Nomornya sengaja nggak ada di sini. Perantara /go/wa yang jalan di
+      // sisi Netlify yang nyusun URL wa.me-nya, jadi nomor itu nggak pernah
+      // ikut ke bundle browser maupun ke repo publik.
+      // Lihat netlify/functions/wa.mts.
       const encodedText = encodeURIComponent(waText);
-      const targetNum = atob("BASE64-NOMOR-WA-DIHAPUS");
-      window.open(`https://wa.me/${targetNum}?text=${encodedText}`, "_blank");
-
-      // Logging background API
-      fetch("/api/contact/whatsapp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: sanitizeInput(name, 60),
-          purpose: sanitizeInput(purpose, 80),
-          topic: sanitizeInput(topic, 100),
-          budget: sanitizeInput(budget, 60),
-          message: sanitizeInput(message, 800),
-        }),
-      }).catch(() => {});
+      window.open(`/go/wa?text=${encodedText}`, "_blank");
     } else {
       const encodedSubject = encodeURIComponent(sanitizeInput(emailSubject, 150));
       const encodedBody = encodeURIComponent(sanitizeInput(emailBody, 1200));

@@ -25,9 +25,22 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
   - **Neutrals**: Stone (`#FAFAF9`, `#F5F5F4`, `#E7E5E4`, `#1C1917`)
   - **Excel Theme (Showcase 2)**: Microsoft Excel Light Mode `#107C41`
 - **Keamanan & Privasi**:
-  - Zero hardcoded contact credentials di repo publik.
-  - Menggunakan server-side environment variable `WHATSAPP_PHONE` dan client env `NEXT_PUBLIC_CONTACT_EMAIL`.
+  - Nomor WhatsApp **tidak ada di repo maupun di bundle browser**. Tombol WA
+    nunjuk ke `/go/wa`, sebuah Netlify Function (`netlify/functions/wa.mts`)
+    yang baca `WHATSAPP_PHONE` dari env server lalu balikin redirect 302 ke
+    `wa.me`. Teksnya dibersihin dari karakter kontrol (cegah suntik header
+    `Location`) dan dipotong di 1.200 karakter.
+  - **Batas yang jujur:** pengunjung yang mengklik tombolnya tetap lihat
+    nomornya di bilah alamat setelah diarahkan — itu memang nggak bisa
+    dihindari, karena WhatsApp butuh nomor tujuan. Yang dicegat adalah
+    pemanen otomatis yang cuma baca HTML/JS halaman. Nomor lama juga masih
+    tersimpan di riwayat git (commit `e4e20fe`, 20 Agt 2026) dan cuma bisa
+    hilang lewat penulisan ulang riwayat.
+  - `NEXT_PUBLIC_CONTACT_EMAIL` memang dibaca browser, jadi wajar ikut bundle.
   - Template konfigurasi tersedia di `.env.example`.
+  - Konsekuensi buat development: tombol WhatsApp **nggak jalan di
+    `next dev` biasa**, karena Netlify Function cuma hidup waktu dideploy
+    atau waktu dijalanin lewat `npx netlify dev`.
 
 ---
 
@@ -114,7 +127,7 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 
 | Variable Name | Keterangan | Lokasi Konfigurasi |
 | :--- | :--- | :--- |
-| `WHATSAPP_PHONE` | Nomor WhatsApp tujuan (Format internasional tanpa '+') | Netlify Dashboard & `.env.local` |
+| `WHATSAPP_PHONE` | Nomor WhatsApp tujuan (format internasional tanpa '+'). **Server-side only** — dibaca `netlify/functions/wa.mts`, sengaja tanpa awalan `NEXT_PUBLIC_` | Netlify Dashboard & `.env.local` |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Alamat email tujuan konsultasi | Netlify Dashboard & `.env.local` |
 
 ---
