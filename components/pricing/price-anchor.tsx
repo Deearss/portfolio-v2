@@ -19,7 +19,7 @@ const PRICE_TIERS: PriceTier[] = [
     icon: FileSpreadsheet,
     promise: "Satu file Excel berhenti bikin kamu ngitung manual tiap malam.",
     detail:
-      "Rumusnya konsisten, kolomnya nggak lari sendiri, rekapnya jalan tiap kamu nambah baris.",
+      "Rumusnya konsisten, kolomnya nggak lari, rekapnya jalan tiap nambah baris.",
   },
   {
     id: "landing",
@@ -43,8 +43,8 @@ export function PriceAnchor() {
             Kira-Kira Berapa?
           </h2>
           <p className="text-stone-600 text-sm mt-2 leading-relaxed">
-            Saya nggak bisa pasang harga mati, karena porsi tiap kerjaan beda.
-            Tapi kamu berhak tahu kelasnya sebelum ngajak ngobrol.
+            Porsi tiap kerjaan beda, jadi nggak ada harga mati. Tapi kamu berhak
+            tahu kelasnya sebelum ngajak ngobrol.
           </p>
         </div>
 
@@ -84,11 +84,11 @@ export function PriceAnchor() {
             aria-hidden="true"
           />
           <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">
-            Kebanyakan projek saya selesai{" "}
+            Kebanyakan projek selesai{" "}
             <span className="font-bold text-stone-900">2 sampai 7 hari kerja</span>.
             Angka di atas titik mulai, bukan tarif tetap. Begitu saya lihat berkas
-            atau kebutuhan kamu, saya kasih angka pasti sebelum mulai, dan angka itu
-            nggak berubah di tengah jalan.
+            kamu, saya kasih angka pasti \u2014 dan angka itu nggak berubah di tengah
+            jalan.
           </p>
         </div>
 
@@ -101,10 +101,9 @@ export function PriceAnchor() {
           />
           <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">
             <span className="font-bold text-stone-900">Yang saya nggak ambil:</span>{" "}
-            kerjaan yang butuh datang ke lokasi, ngajar atau presentasi live, dan
-            dokumen hukum atau pajak. Bukan karena nggak bisa, tapi karena hasilnya
-            nggak bisa saya verifikasi sendiri, dan saya nggak mau nyerahin yang saya
-            nggak yakin.
+            datang ke lokasi, ngajar atau presentasi live, dan dokumen hukum atau
+            pajak. Bukan nggak bisa \u2014 hasilnya nggak bisa saya verifikasi sendiri,
+            dan saya nggak mau nyerahin yang saya nggak yakin.
           </p>
         </div>
 

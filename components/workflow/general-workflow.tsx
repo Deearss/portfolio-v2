@@ -27,7 +27,7 @@ const WORKFLOW_STEPS: WorkflowStep[] = [
   {
     num: "01",
     title: "Saya tanya dulu, bukan langsung ngerjain",
-    desc: "Saya cari tahu kamu sebenernya butuh apa, deadline-nya kapan, dan hasilnya nanti dipakai siapa. Sering yang kamu minta dan yang kamu butuh itu beda, dan lebih murah ketahuannya sekarang daripada nanti.",
+    desc: "Saya cari tahu kamu butuh apa, deadline-nya kapan, dan hasilnya dipakai siapa. Yang kamu minta dan yang kamu butuh sering beda \u2014 lebih murah ketahuan sekarang.",
     icon: Search,
     image: "/roadmap-image/alur-1.webp",
     highlight: "Konsultasi & Discovery",
@@ -35,7 +35,7 @@ const WORKFLOW_STEPS: WorkflowStep[] = [
   {
     num: "02",
     title: "Saya pilih cara yang paling masuk akal",
-    desc: "Saya tentuin cara kerjanya, alat yang dipakai, dan berapa lama. Kalau masalah kamu selesai pakai satu file Excel, saya nggak akan nawarin bikin aplikasi. Saya juga bilang di depan kalau ada bagian yang di luar jangkauan saya.",
+    desc: "Saya tentuin caranya, alatnya, dan berapa lama. Kalau satu file Excel udah cukup, saya nggak akan nawarin bikin aplikasi. Yang di luar jangkauan saya, saya bilang di depan.",
     icon: Compass,
     image: "/roadmap-image/alur-2.webp",
     highlight: "Solusi & Strategi",
@@ -43,7 +43,7 @@ const WORKFLOW_STEPS: WorkflowStep[] = [
   {
     num: "03",
     title: "Saya kerja bareng AI, dan itu saya buka dari awal",
-    desc: "Saya pakai AI di dalam alur kerja saya, bukan sebagai pengganti saya. Efeknya buat kamu ada dua: revisi kecil biasanya balik di hari yang sama, dan tiap hasil datang bareng cara ngeceknya, karena saya sendiri nggak percaya keluaran AI tanpa diverifikasi. Kalau projek kamu ada klausa kerahasiaan, bilang di awal. Saya pindah ke alat lokal dan itu ngubah estimasi waktunya.",
+    desc: "AI saya pakai di alur kerja, bukan buat gantiin saya. Revisi kecil balik hari itu juga, dan tiap hasil datang bareng cara ngeceknya. Ada klausa kerahasiaan? Saya pindah ke alat lokal.",
     icon: Zap,
     image: "/roadmap-image/alur-3.webp",
     highlight: "Revisi Cepat & Bisa Dicek",
@@ -51,7 +51,7 @@ const WORKFLOW_STEPS: WorkflowStep[] = [
   {
     num: "04",
     title: "Saya kirim versi jalan, kamu yang nilai",
-    desc: "Saya kasih versi yang beneran bisa dipakai, bukan gambar. Kamu coba sendiri, saya benerin sesuai masukan kamu, diulang sampai kamu puas.",
+    desc: "Saya kasih versi yang beneran jalan, bukan gambar. Kamu coba, saya benerin sesuai masukan kamu, diulang sampai puas.",
     icon: MessageCircle,
     image: "/roadmap-image/alur-4.webp",
     highlight: "Review & Validasi",
@@ -59,7 +59,7 @@ const WORKFLOW_STEPS: WorkflowStep[] = [
   {
     num: "05",
     title: "Saya serahkan lengkap, plus cara ngeceknya",
-    desc: "Source code bersih, dokumentasi, panduan pakai, dan penjelasan cara mengecek hasilnya sendiri. Setelah serah terima saya masih bisa dihubungi buat pertanyaan seputar yang saya kerjain.",
+    desc: "Source code bersih, dokumentasi, panduan pakai, plus cara ngecek hasilnya sendiri. Habis serah terima saya masih bisa dihubungi.",
     icon: CheckCircle2,
     image: "/roadmap-image/alur-5.webp",
     highlight: "Delivery & Serah Terima",

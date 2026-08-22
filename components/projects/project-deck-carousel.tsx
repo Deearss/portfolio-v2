@@ -112,7 +112,7 @@ export function ProjectDeckCarousel() {
             Saya Bisa Bantu Apa?
           </h2>
           <p className="text-xs sm:text-base text-stone-600 mt-2 sm:mt-3 leading-relaxed text-balance">
-            Dua rak di bawah ini beda status, dan saya pisahin sengaja. Rak pertama kerjaan yang sudah dibayar orang. Rak kedua demo yang saya bikin sendiri buat nunjukin standar kerja saya.
+            Rak pertama kerjaan yang sudah dibayar orang. Sisanya demo yang saya bikin sendiri buat nunjukin standar kerja saya.
           </p>
         </div>
 
@@ -142,21 +142,21 @@ export function ProjectDeckCarousel() {
               <div className="p-3.5 sm:p-4 rounded-lg bg-white border border-stone-200 shadow-xs">
                 <p className="text-xs font-bold text-stone-900 mb-1.5">Masalahnya.</p>
                 <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                  Timesheet bongkar muat kapal itu puluhan baris catatan jam mentah. Buat nagih ke pihak lain, jam yang hilang harus ketahuan sampai ke barisnya, bukan cuma totalnya. Selama masih dihitung manual, selisih beberapa jam gampang lolos.
+                  Timesheet bongkar muat itu puluhan baris jam mentah. Buat nagih, jam yang hilang harus ketahuan sampai ke barisnya. Dihitung manual, selisih beberapa jam gampang lolos.
                 </p>
               </div>
 
               <div className="p-3.5 sm:p-4 rounded-lg bg-white border border-stone-200 shadow-xs">
                 <p className="text-xs font-bold text-stone-900 mb-1.5">Yang saya bangun.</p>
                 <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                  Satu berkas Excel yang narik timesheet mentah jadi report jadi: jam operasi per crane, per palka, dan satu tab audit yang nunjukin tiap jam yang nggak tercatat lengkap sama nomor barisnya. Kamu nggak perlu percaya angkanya, tab auditnya yang buktiin.
+                  Satu file Excel: timesheet mentah masuk, report keluar. Jam operasi per crane, per palka, plus tab audit yang nunjukin tiap jam hilang sampai ke nomor barisnya.
                 </p>
               </div>
 
               <div className="p-3.5 sm:p-4 rounded-lg bg-[#E3F2FD] border border-[#BBDEFB] shadow-xs flex flex-col">
                 <p className="text-xs font-bold text-stone-900 mb-1.5">Buktinya.</p>
                 <p className="text-xs sm:text-sm text-stone-700 leading-relaxed flex-1">
-                  Projek ini saya kerjain lewat projects.co.id dan sudah dibayar lunas. Ada satu ulasan bernilai 10,00 di profil saya. Silakan baca sendiri di sana, jangan percaya kutipan saya.
+                  Dikerjain lewat projects.co.id, sudah dibayar lunas, dapat ulasan 10,00. Jangan percaya kutipan saya \u2014 baca sendiri di sana.
                 </p>
                 <a
                   href="https://projects.co.id/public/browse_users/view/2eaf56/dier-dieeerrr"
@@ -223,7 +223,7 @@ export function ProjectDeckCarousel() {
             <div className="p-3.5 sm:p-4 rounded-lg bg-stone-100 border border-stone-200">
               <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">
                 <span className="font-bold text-stone-900">Catatan.</span>{" "}
-                Peraga di atas bukan berkas klien saya. Ini templat yang sama, saya isi ulang pakai data pelayaran karangan. Berkas klien nggak akan pernah saya pajang di mana pun, punya kamu juga nanti begitu.
+                Peraga di atas bukan berkas klien saya \u2014 templat yang sama, diisi ulang pakai data karangan. Berkas klien nggak akan pernah saya pajang, punya kamu juga nanti begitu.
               </p>
             </div>
           </div>
@@ -242,7 +242,7 @@ export function ProjectDeckCarousel() {
                 </h3>
               </div>
               <p className="text-xs sm:text-sm text-stone-600 max-w-md mx-auto sm:mx-0 text-balance">
-                Tiga usaha di bawah ini fiktif, saya karang sendiri sebagai bahan latih. Yang nggak fiktif adalah kodenya: ketiganya beneran online, beneran responsif, dan beneran selesai muat di bawah satu detik. Silakan buka dan uji sendiri.
+                Tiga usahanya fiktif, saya karang sendiri. Kodenya nggak: ketiganya beneran online, responsif, dan muat di bawah satu detik. Buka dan uji sendiri.
               </p>
             </div>
 
@@ -488,7 +488,7 @@ export function ProjectDeckCarousel() {
                 </h3>
               </div>
               <p className="text-xs sm:text-sm text-stone-600 max-w-md mx-auto sm:mx-0 text-balance">
-                Angka di bawah karangan saya, tokonya nggak ada. Yang saya tunjukin bukan omsetnya, tapi bedanya: sebelah kiri file yang harus kamu jumlah manual tiap malam, sebelah kanan file yang rekapnya jalan sendiri tiap kamu nambah satu baris.
+                Angkanya karangan saya, tokonya nggak ada. Yang saya tunjukin bukan omsetnya, tapi bedanya: kiri dijumlah manual tiap malam, kanan ngitung sendiri.
               </p>
             </div>
 

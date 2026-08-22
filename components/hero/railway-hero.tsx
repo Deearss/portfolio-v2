@@ -24,7 +24,7 @@ export function RailwayHero() {
           Kerjaan manual yang berantakan, saya ubah jadi sistem yang jalan sendiri.
         </p>
         <p className="max-w-xl text-xs sm:text-base text-stone-300 leading-relaxed font-sans mb-6 sm:mb-8 px-2">
-          Data, dokumen, dan aplikasi web. Hasilnya saya serahkan dalam bentuk yang bisa kamu cek sendiri, bukan yang harus kamu percaya begitu saja.
+          Data, dokumen, dan aplikasi web. Hasilnya saya serahkan bareng cara ngeceknya, jadi kamu nggak perlu percaya begitu saja.
         </p>
 
         {/* Dual CTA Buttons */}
