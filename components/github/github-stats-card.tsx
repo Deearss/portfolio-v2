@@ -175,16 +175,23 @@ export function GithubStatsCard() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-          {/* Repositori publik */}
-          <div className="p-3 rounded-lg bg-[#161b22] border border-[#30363d]">
+          {/* Repositori publik — wajib bisa diklik ke daftar repo */}
+          <a
+            href={`${GITHUB_URL}?tab=repositories`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Buka daftar repositori publik @deearss di GitHub"
+            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#58a6ff]/60 hover:bg-[#1c2128] transition-all"
+          >
             <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
               <FolderGit2 className="w-3.5 h-3.5 text-[#58a6ff] shrink-0" />
-              <span>Repositori publik</span>
+              <span className="truncate">Repositori publik</span>
+              <ExternalLink className="w-2.5 h-2.5 shrink-0 ml-auto text-[#8b949e] group-hover:text-[#58a6ff] transition-colors" />
             </div>
             <p className="text-xl font-extrabold text-[#f0f6fc] mt-1 font-mono leading-none">
               {loading ? "…" : activeUser.public_repos}
             </p>
-          </div>
+          </a>
 
           {/* Kontribusi — wajib bisa diklik ke GitHub */}
           <a
