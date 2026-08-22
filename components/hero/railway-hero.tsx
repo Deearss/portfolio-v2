@@ -19,12 +19,8 @@ export function RailwayHero() {
           Systems &amp; Software Engineer
         </p>
 
-        {/* Static Concise Value Proposition */}
-        <p className="max-w-2xl text-sm sm:text-lg font-bold text-white leading-snug font-sans mb-2.5 sm:mb-3 px-2">
+        <p className="max-w-2xl text-sm sm:text-lg font-bold text-white leading-snug font-sans mb-6 sm:mb-8 px-2">
           Kerjaan manual yang berantakan, saya ubah jadi sistem yang jalan sendiri.
-        </p>
-        <p className="max-w-xl text-xs sm:text-base text-stone-300 leading-relaxed font-sans mb-6 sm:mb-8 px-2">
-          Data, dokumen, dan aplikasi web. Hasilnya saya serahkan bareng cara ngeceknya, jadi kamu nggak perlu percaya begitu saja.
         </p>
 
         {/* Dual CTA Buttons */}

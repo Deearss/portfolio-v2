@@ -83,16 +83,12 @@ export function Navbar() {
                 }`}
               >
                 Haidir Aditya
-                <span className="hidden sm:inline font-semibold opacity-70">
-                  {" "}· @deearss
-                </span>
               </span>
               <span
                 className={`text-[10px] sm:text-[11px] font-medium leading-tight truncate transition-colors nav-brand-subtitle ${
                   isScrolled || mobileMenuOpen ? "text-stone-600" : "text-[#58a6ff]"
                 }`}
               >
-                <span className="sm:hidden">@deearss · </span>
                 Systems &amp; Software Engineer
               </span>
             </div>

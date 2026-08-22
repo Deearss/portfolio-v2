@@ -193,13 +193,24 @@ export function GithubStatsCard() {
             </p>
           </a>
 
+          {/* Stack utama */}
+          <div className="p-3 rounded-lg bg-[#161b22] border border-[#30363d]">
+            <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
+              <Code2 className="w-3.5 h-3.5 text-[#58a6ff] shrink-0" />
+              <span className="truncate">Stack utama</span>
+            </div>
+            <p className="text-sm font-bold text-[#c9d1d9] mt-1.5 leading-none">
+              TypeScript / PHP
+            </p>
+          </div>
+
           {/* Kontribusi — wajib bisa diklik ke GitHub */}
           <a
             href={GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Cek 1.967 kontribusi setahun terakhir di profil GitHub @deearss"
-            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#3fb950]/60 hover:bg-[#1c2128] transition-all"
+            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#3fb950]/60 hover:bg-[#1c2128] transition-all col-span-2 sm:col-span-1"
           >
             <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
               <GitGraph className="w-3.5 h-3.5 text-[#3fb950] shrink-0" />
@@ -210,17 +221,6 @@ export function GithubStatsCard() {
               1.967
             </p>
           </a>
-
-          {/* Stack utama */}
-          <div className="p-3 rounded-lg bg-[#161b22] border border-[#30363d] col-span-2 sm:col-span-1">
-            <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
-              <Code2 className="w-3.5 h-3.5 text-[#58a6ff] shrink-0" />
-              <span>Stack utama</span>
-            </div>
-            <p className="text-sm font-bold text-[#c9d1d9] mt-1.5 leading-none">
-              TypeScript / PHP
-            </p>
-          </div>
 
           {/* Ulasan klien — wajib bisa diklik ke projects.co.id */}
           <a
