@@ -48,18 +48,93 @@
   font-family: var(--font-serif), "PT Serif", serif;
 }
 
-/* Subtle scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* Modern Responsive Scrollbar System */
+/* Hide root scrollbar on mobile / touch viewports (< 768px) to prevent layout squishing / gutter anomaly */
+@media (max-width: 768px) {
+  html,
+  body {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
 }
-::-webkit-scrollbar-track {
-  background: #F5F5F4;
+
+/* Subtle non-intrusive overlay scrollbar on desktop viewports */
+@media (min-width: 769px) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #D6D3D1 transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #D6D3D1;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #A8A29E;
+  }
 }
-::-webkit-scrollbar-thumb {
-  background: #D6D3D1;
-  border-radius: 4px;
+
+/* Excel Table Sleek Horizontal Scrollbar */
+.excel-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #94A3B8 #F1F5F9;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #A8A29E;
+.excel-scrollbar::-webkit-scrollbar {
+  height: 6px;
 }
+.excel-scrollbar::-webkit-scrollbar-track {
+  background: #F1F5F9;
+  border-radius: 9999px;
+}
+.excel-scrollbar::-webkit-scrollbar-thumb {
+  background: #94A3B8;
+  border-radius: 9999px;
+}
+.excel-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #107C41;
+}
+
+/* Bulletproof Scrolled Navbar Styles */
+header#main-navbar[data-scrolled="true"] {
+  background-color: rgba(250, 250, 249, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(231, 229, 228, 0.85) !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+}
+header#main-navbar[data-scrolled="true"] .nav-brand-title {
+  color: #1c1917 !important;
+}
+header#main-navbar[data-scrolled="true"] .nav-brand-subtitle {
+  color: #78716c !important;
+}
+header#main-navbar[data-scrolled="true"] .nav-brand-avatar {
+  border-color: #e7e5e4 !important;
+}
+header#main-navbar[data-scrolled="true"] .nav-desktop-link {
+  color: #57534e !important;
+}
+header#main-navbar[data-scrolled="true"] .nav-desktop-link:hover {
+  color: #1f6feb !important;
+}
+header#main-navbar[data-scrolled="true"] .nav-hamburger {
+  color: #1c1917 !important;
+}
+header#main-navbar[data-scrolled="true"] .nav-hamburger:hover {
+  background-color: rgba(231, 229, 228, 0.6) !important;
+}
+
+
 

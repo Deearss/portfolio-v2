@@ -11,6 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   MoveHorizontal,
+  ArrowRight,
 } from "lucide-react";
 
 interface WorkflowStep {
@@ -107,7 +108,7 @@ export function GeneralWorkflow() {
     };
   }, [checkScrollState]);
 
-  // Smooth Drag Handlers
+  // Smooth Drag Handlers (Desktop Mouse Dragging)
   const handleMouseDown = (e: React.MouseEvent) => {
     const container = scrollContainerRef.current;
     if (!container) return;
@@ -197,62 +198,62 @@ export function GeneralWorkflow() {
   };
 
   return (
-    <section id="workflow" className="py-16 bg-[#FAFAF9] border-b border-stone-200/60 overflow-hidden">
-      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
+    <section id="workflow" className="scroll-mt-16 sm:scroll-mt-20 py-14 sm:py-16 bg-[#FAFAF9] border-b border-stone-200/60 overflow-hidden font-sans">
+      <div className="w-full max-w-[1600px] mx-auto px-3.5 sm:px-6 lg:px-10">
         
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 font-sans">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 px-2 sm:px-0">
+          <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-stone-900 font-sans text-balance">
             Cara Saya Ngerjain Tugas Kamu
           </h2>
-          <p className="text-stone-600 text-sm mt-2">
+          <p className="text-stone-600 text-xs sm:text-sm mt-1.5 sm:mt-2 text-balance">
             Lima langkah, dari chat pertama sampai serah terima. Nggak ada yang saya sembunyikan di antaranya.
           </p>
         </div>
 
         {/* Carousel Navigation Top Controls (Visible on all screens) */}
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-2 text-xs text-stone-500 font-medium">
-            <MoveHorizontal className="w-4 h-4 text-stone-400 animate-pulse" />
-            <span>Geser layarnya ke samping buat lihat langkah berikutnya</span>
+        <div className="flex items-center justify-between mb-4 sm:mb-5">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-stone-500 font-medium">
+            <MoveHorizontal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-stone-400 animate-pulse shrink-0" />
+            <span>Geser atau seret layar untuk menjelajah alur</span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={() => scrollByDirection("left")}
               disabled={!canScrollLeft}
               aria-label="Langkah Sebelumnya"
-              className={`p-2.5 rounded-full border border-stone-200 bg-white shadow-xs transition-all ${
+              className={`p-2 sm:p-2.5 rounded-full border border-stone-200 bg-white shadow-xs transition-all ${
                 canScrollLeft
                   ? "text-stone-700 hover:bg-stone-100 hover:border-stone-300 active:scale-95 cursor-pointer"
                   : "text-stone-300 opacity-50 cursor-not-allowed"
               }`}
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
             <button
               onClick={() => scrollByDirection("right")}
               disabled={!canScrollRight}
               aria-label="Langkah Selanjutnya"
-              className={`p-2.5 rounded-full border border-stone-200 bg-white shadow-xs transition-all ${
+              className={`p-2 sm:p-2.5 rounded-full border border-stone-200 bg-white shadow-xs transition-all ${
                 canScrollRight
                   ? "text-stone-700 hover:bg-stone-100 hover:border-stone-300 active:scale-95 cursor-pointer"
                   : "text-stone-300 opacity-50 cursor-not-allowed"
               }`}
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           </div>
         </div>
 
-        {/* Full-Width Smooth Draggable Carousel Container */}
+        {/* Full-Width Smooth Native Draggable Carousel Container */}
         <div
           ref={scrollContainerRef}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={endDrag}
           onMouseLeave={endDrag}
-          className={`flex gap-6 overflow-x-auto pb-6 pt-2 select-none touch-pan-x touch-pan-y ${
+          className={`flex gap-4 sm:gap-6 overflow-x-auto pb-6 pt-2 select-none touch-pan-x touch-pan-y overscroll-x-contain ${
             isDragging
               ? "cursor-grabbing scroll-auto snap-none"
               : "cursor-grab scroll-smooth snap-x snap-mandatory"
@@ -265,41 +266,41 @@ export function GeneralWorkflow() {
             return (
               <div
                 key={idx}
-                className="w-[85vw] max-w-[360px] sm:max-w-none sm:w-[400px] md:w-[420px] lg:w-[440px] shrink-0 snap-start bg-white rounded-2xl border border-stone-200 shadow-xs hover:shadow-md hover:border-blue-200 transition-all duration-300 flex flex-col justify-between overflow-hidden p-5 sm:p-6 group"
+                className="w-[82vw] max-w-[320px] sm:max-w-none sm:w-[400px] md:w-[420px] lg:w-[440px] shrink-0 snap-start bg-white rounded-2xl border border-stone-200 shadow-xs hover:shadow-md hover:border-blue-200 transition-all duration-300 flex flex-col justify-between overflow-hidden p-4 sm:p-6 group"
               >
                 <div>
                   {/* Top Bar: Step Badge & Icon */}
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="px-2.5 py-0.5 rounded-full bg-[#E3F2FD] text-[#1565C0] text-xs font-mono font-extrabold border border-blue-100">
+                  <div className="flex items-center justify-between mb-2.5 sm:mb-3">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <span className="inline-flex items-center justify-center px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-[#E3F2FD] text-[#1565C0] text-[10px] sm:text-xs font-bold leading-none border border-blue-100 shadow-2xs">
                         Langkah {step.num}
                       </span>
-                      <span className="text-[11px] font-semibold text-stone-500">
+                      <span className="text-[10px] sm:text-[11px] font-semibold text-stone-500">
                         {step.highlight}
                       </span>
                     </div>
-                    <div className="w-8 h-8 rounded-lg bg-stone-50 border border-stone-100 flex items-center justify-center text-[#1976D2] group-hover:bg-[#E3F2FD] transition-colors">
-                      <Icon className="w-4 h-4" />
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-stone-50 border border-stone-100 flex items-center justify-center text-[#1976D2] group-hover:bg-[#E3F2FD] transition-colors shrink-0">
+                      <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </div>
                   </div>
 
-                  {/* Illustration Container (1:1 Ratio, Static Crisp Render) */}
-                  <div className="w-full h-80 rounded-xl mb-4 flex items-center justify-center overflow-hidden relative">
+                  {/* Illustration Container (Responsive Height for Ergonomic Proportions) */}
+                  <div className="w-full h-52 sm:h-80 rounded-xl mb-3 sm:mb-4 flex items-center justify-center overflow-hidden relative">
                     <Image
                       src={step.image}
                       alt={step.title}
                       width={400}
                       height={400}
                       className={`w-full h-full object-contain pointer-events-none ${
-                        idx === 1 || idx === 4 ? "scale-[0.95] translate-y-2.5" : "scale-[0.95] translate-y-0.5"
-                      } ${idx === 0 ? "scale-[0.95]! -translate-y-4.5!" : ""}`}
+                        idx === 1 || idx === 4 ? "scale-[0.95] translate-y-2" : "scale-[0.95] translate-y-0.5"
+                      } ${idx === 0 ? "scale-[0.95]! -translate-y-3!" : ""}`}
                       draggable={false}
                       loading="lazy"
                     />
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="font-bold text-base sm:text-lg lg:text-xl text-stone-900 mb-2 leading-snug group-hover:text-[#1565C0] transition-colors">
+                  <h3 className="font-bold text-sm sm:text-lg lg:text-xl text-stone-900 mb-1.5 sm:mb-2 leading-snug group-hover:text-[#1565C0] transition-colors">
                     {step.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-sans">
@@ -308,10 +309,20 @@ export function GeneralWorkflow() {
                 </div>
 
                 {/* Bottom Step Indicator Bar */}
-                <div className="pt-4 mt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500 font-medium">
+                <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-stone-100 flex items-center justify-between text-[11px] sm:text-xs text-stone-500 font-medium">
                   <span>Tahap {idx + 1} dari {WORKFLOW_STEPS.length}</span>
-                  <span className={`font-semibold ${isActive ? "text-[#1976D2]" : "text-stone-500"}`}>
-                    {idx === WORKFLOW_STEPS.length - 1 ? "Selesai ✨" : "Lanjut ➔"}
+                  <span className={`font-semibold inline-flex items-center gap-1.5 ${isActive ? "text-[#1976D2]" : "text-stone-600"}`}>
+                    {idx === WORKFLOW_STEPS.length - 1 ? (
+                      <>
+                        <span>Selesai</span>
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      </>
+                    ) : (
+                      <>
+                        <span>Lanjut</span>
+                        <ArrowRight className="w-3.5 h-3.5 shrink-0" />
+                      </>
+                    )}
                   </span>
                 </div>
               </div>
@@ -320,18 +331,22 @@ export function GeneralWorkflow() {
         </div>
 
         {/* Carousel Pagination Dots */}
-        <div className="flex items-center justify-center gap-2 mt-5">
+        <div className="flex items-center justify-center gap-1 mt-3 sm:mt-4">
           {WORKFLOW_STEPS.map((_, dotIdx) => (
             <button
               key={dotIdx}
               onClick={() => scrollToStep(dotIdx)}
               aria-label={`Buka Langkah ${dotIdx + 1}`}
-              className={`transition-all duration-300 rounded-full h-2 ${
-                activeIndex === dotIdx
-                  ? "w-8 bg-[#1976D2]"
-                  : "w-2 bg-stone-300 hover:bg-stone-400 cursor-pointer"
-              }`}
-            />
+              className="p-2 cursor-pointer inline-flex items-center justify-center min-w-[28px] min-h-[28px]"
+            >
+              <span
+                className={`transition-all duration-300 rounded-full h-1.5 sm:h-2 ${
+                  activeIndex === dotIdx
+                    ? "w-6 sm:w-8 bg-[#1976D2]"
+                    : "w-1.5 sm:w-2 bg-stone-300 hover:bg-stone-400"
+                }`}
+              />
+            </button>
           ))}
         </div>
 

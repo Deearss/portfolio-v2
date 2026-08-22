@@ -30,7 +30,7 @@ const DISPLAY_NAME = "Haidir Aditya";
 const DISPLAY_HANDLE = "@deearss";
 
 const FALLBACK_PROFILE: GithubUserData = {
-  avatar_url: "https://avatars.githubusercontent.com/u/111673708?v=4",
+  avatar_url: "/avatar.webp",
   bio: "Systems & Software Engineer",
   public_repos: 80,
   html_url: GITHUB_URL,
@@ -87,7 +87,7 @@ export function GithubStatsCard() {
   return (
     <div className="w-full max-w-4xl mx-auto my-6 bg-[#0d1117] rounded-xl border border-[#30363d] shadow-[0_8px_40px_rgba(0,0,0,0.45)] overflow-hidden text-left font-sans text-[#c9d1d9]">
       {/* Header Bar - Dark Mode IDE Style */}
-      <div className="px-4 py-3 bg-[#161b22] border-b border-[#30363d] flex items-center justify-between gap-3">
+      <div className="px-3 sm:px-4 py-2.5 sm:py-3 bg-[#161b22] border-b border-[#30363d] flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1.5 mr-2">
             <span className="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
@@ -119,9 +119,9 @@ export function GithubStatsCard() {
       </div>
 
       {/* Body */}
-      <div className="p-4 sm:p-5 flex flex-col gap-4">
+      <div className="p-3 sm:p-5 flex flex-col gap-3 sm:gap-4">
         {/* Profile Row */}
-        <div className="p-4 bg-[#161b22] rounded-lg border border-[#30363d] flex items-start gap-3.5">
+        <div className="p-3 sm:p-4 bg-[#161b22] rounded-lg border border-[#30363d] flex items-start gap-3 sm:gap-3.5">
           <div className="relative shrink-0">
             {!imgError ? (
               /* eslint-disable-next-line @next/next/no-img-element */
@@ -129,10 +129,10 @@ export function GithubStatsCard() {
                 src={activeUser.avatar_url}
                 alt={`Foto profil ${DISPLAY_NAME}`}
                 onError={() => setImgError(true)}
-                className="size-16 sm:size-20 rounded-xl border-2 border-[#30363d] shadow-xs object-cover bg-[#0d1117]"
+                className="size-14 sm:size-20 rounded-xl border-2 border-[#30363d] shadow-xs object-cover bg-[#0d1117]"
               />
             ) : (
-              <div className="size-16 sm:size-20 rounded-xl border-2 border-[#30363d] shadow-xs bg-[#388bfd]/20 text-[#58a6ff] font-bold font-mono text-xl flex items-center justify-center">
+              <div className="size-14 sm:size-20 rounded-xl border-2 border-[#30363d] shadow-xs bg-[#388bfd]/20 text-[#58a6ff] font-bold font-mono text-base sm:text-xl flex items-center justify-center">
                 D
               </div>
             )}
