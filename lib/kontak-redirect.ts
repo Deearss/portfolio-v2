@@ -24,19 +24,35 @@ export const BATAS_SUBJEK = 200;
 /**
  * Buang karakter kontrol lalu potong di panjang maksimum.
  *
- * Karakter kontrol wajib hilang sebelum nilainya nempel di header
- * `Location`: CR dan LF di sana bisa dipakai nyuntik header tambahan.
+ * Tab (\t), baris baru (\n), dan carriage return (\r) SENGAJA dilewatin.
+ * Ketiganya bagian sah dari isi pesan — template WhatsApp dan email pakai
+ * baris baru buat misahin paragraf, dan kalau ikut dibuang seluruh pesan
+ * nempel jadi satu paragraf. Aman dilewatin karena nilainya selalu
+ * di-percent-encode dulu (`%0A`) sebelum masuk header `Location`, jadi
+ * nggak bisa dipakai nyuntik header. Sisanya, yang nggak pernah sah di
+ * teks manusia, tetap dibuang.
+ *
+ * Rentangnya disamain sama `sanitizeInput` di lib/sanitize.ts biar dua
+ * lapis pembersihan ini nggak beda aturan.
  */
 export function bersihin(mentah: string, batas: number): string {
-  return mentah.replace(/[\u0000-\u001F\u007F]/g, "").slice(0, batas);
+  return mentah
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "")
+    .slice(0, batas);
 }
 
 /** Jawaban 302 yang nggak boleh nyangkut di cache mana pun. */
 function arahkan(tujuan: string): Response {
+  // Pengaman terakhir. Semua nilai di atas udah di-percent-encode, jadi
+  // baris ini mestinya nggak pernah ngubah apa-apa — tapi kalau suatu hari
+  // ada jalur baru yang lupa encode, header `Location` tetap nggak bisa
+  // dibelah jadi dua.
+  const aman = tujuan.replace(/[\r\n]/g, "");
+
   return new Response(null, {
     status: 302,
     headers: {
-      location: tujuan,
+      location: aman,
       // Jawaban ini mengandung alamat kontak. Jangan sampai kesimpan di
       // CDN Netlify atau di cache browser pengunjung.
       "cache-control": "no-store, private",

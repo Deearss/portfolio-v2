@@ -193,7 +193,7 @@ export function WhatsappForm() {
   const emailBody = actualMessage
     ? `Halo Haidir,
 
-Perkenalkan nama saya ${actualName}. Saya ingin ${purposeVerb} mengenai ${actualTopic} dengan estimasi budget ${actualBudget}.
+Perkenalkan nama saya ${actualName}. Saya ingin ${purposeVerb} ${actualTopic} dengan estimasi budget ${actualBudget}.
 
 Deskripsi Tambahan / Pesan:
 ${actualMessage}
@@ -202,7 +202,7 @@ Terima kasih,
 ${actualName}`
     : `Halo Haidir,
 
-Perkenalkan nama saya ${actualName}. Saya ingin ${purposeVerb} mengenai ${actualTopic} dengan estimasi budget ${actualBudget}.
+Perkenalkan nama saya ${actualName}. Saya ingin ${purposeVerb} ${actualTopic} dengan estimasi budget ${actualBudget}.
 
 Terima kasih,
 ${actualName}`;
