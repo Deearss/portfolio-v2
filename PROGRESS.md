@@ -25,22 +25,25 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
   - **Neutrals**: Stone (`#FAFAF9`, `#F5F5F4`, `#E7E5E4`, `#1C1917`)
   - **Excel Theme (Showcase 2)**: Microsoft Excel Light Mode `#107C41`
 - **Keamanan & Privasi**:
-  - Nomor WhatsApp **tidak ada di repo maupun di bundle browser**. Tombol WA
-    nunjuk ke `/go/wa`, sebuah Netlify Function (`netlify/functions/wa.mts`)
-    yang baca `WHATSAPP_PHONE` dari env server lalu balikin redirect 302 ke
-    `wa.me`. Teksnya dibersihin dari karakter kontrol (cegah suntik header
-    `Location`) dan dipotong di 1.200 karakter.
-  - **Batas yang jujur:** pengunjung yang mengklik tombolnya tetap lihat
-    nomornya di bilah alamat setelah diarahkan — itu memang nggak bisa
-    dihindari, karena WhatsApp butuh nomor tujuan. Yang dicegat adalah
-    pemanen otomatis yang cuma baca HTML/JS halaman. Nomor lama juga masih
-    tersimpan di riwayat git (commit `e4e20fe`, 20 Agt 2026) dan cuma bisa
-    hilang lewat penulisan ulang riwayat.
-  - `NEXT_PUBLIC_CONTACT_EMAIL` memang dibaca browser, jadi wajar ikut bundle.
-  - Template konfigurasi tersedia di `.env.example`.
-  - Konsekuensi buat development: tombol WhatsApp **nggak jalan di
-    `next dev` biasa**, karena Netlify Function cuma hidup waktu dideploy
-    atau waktu dijalanin lewat `npx netlify dev`.
+  - **Nomor WhatsApp dan alamat email dua-duanya nggak ada di repo maupun di
+    bundle browser.** Tombolnya nunjuk ke `/go/wa` dan `/go/email`; perantara
+    di sisi server yang baca `WHATSAPP_PHONE` / `CONTACT_EMAIL` dari env lalu
+    balikin redirect 302 ke `wa.me` / Gmail compose.
+  - Logikanya satu berkas, `lib/kontak-redirect.ts`, dipakai bareng oleh dua
+    pintu masuk supaya nggak bisa diam-diam beda perilaku:
+    `netlify/functions/*.mts` (produksi) dan `app/go/*/route.dev.ts` (waktu
+    `npm run dev`). Berkas `route.dev.ts` cuma dikenali sebagai route waktu
+    dev — lihat `pageExtensions` di `next.config.ts`.
+  - Masukan dibersihin dari karakter kontrol sebelum nempel di header
+    `Location` (cegah suntik header), isi dipotong di 1.200 karakter, subjek
+    di 200. Jawabannya `cache-control: no-store, private` supaya nggak
+    nyangkut di CDN atau cache peramban.
+  - Dua env var itu **sengaja tanpa awalan `NEXT_PUBLIC_`**. Awalan itu bikin
+    Next.js nyelipin nilainya ke bundle yang diunduh tiap pengunjung.
+  - **Batas yang jujur:** pengunjung yang beneran mengklik tombolnya tetap
+    lihat nomor/email di bilah alamat setelah diarahkan — memang nggak bisa
+    dihindari, WhatsApp dan Gmail butuh alamat tujuan. Yang dicegat adalah
+    pemanen otomatis yang cuma baca HTML/JS halaman.
 
 ---
 
@@ -128,7 +131,7 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 | Variable Name | Keterangan | Lokasi Konfigurasi |
 | :--- | :--- | :--- |
 | `WHATSAPP_PHONE` | Nomor WhatsApp tujuan (format internasional tanpa '+'). **Server-side only** — dibaca `netlify/functions/wa.mts`, sengaja tanpa awalan `NEXT_PUBLIC_` | Netlify Dashboard & `.env.local` |
-| `NEXT_PUBLIC_CONTACT_EMAIL` | Alamat email tujuan konsultasi | Netlify Dashboard & `.env.local` |
+| `CONTACT_EMAIL` | Alamat email tujuan konsultasi. **Server-side only** — dibaca `lib/kontak-redirect.ts`, sengaja tanpa awalan `NEXT_PUBLIC_` | Netlify Dashboard & `.env.local` |
 
 ---
 

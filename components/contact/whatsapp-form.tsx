@@ -62,7 +62,6 @@ export function WhatsappForm() {
   const [validationError, setValidationError] = useState<string | null>(null);
 
   // Email kontak diambil dari Environment Variable publik
-  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "";
 
   // Modal State for interactive placeholder click
   const [activeModal, setActiveModal] = useState<ActiveModalField>(null);
@@ -241,21 +240,23 @@ ${actualName}`;
       const encodedText = encodeURIComponent(waText);
       window.open(`/go/wa?text=${encodedText}`, "_blank");
     } else {
+      // Alamat emailnya sengaja nggak ada di sini, sama alasannya kayak
+      // nomor WA di atas. Perantara /go/email yang nyusun URL Gmail-nya.
       const encodedSubject = encodeURIComponent(sanitizeInput(emailSubject, 150));
       const encodedBody = encodeURIComponent(sanitizeInput(emailBody, 1200));
-      const targetEmail = contactEmail;
-      if (!targetEmail) {
-        setValidationError("Alamat email tujuan belum dikonfigurasi di environment variable.");
-        return;
-      }
+      const tujuan = `/go/email?subject=${encodedSubject}&body=${encodedBody}`;
 
-      // Buka Gmail Web Compose langsung di tab baru (kompatibel semua OS & browser)
-      const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${targetEmail}&su=${encodedSubject}&body=${encodedBody}`;
-      const mailtoUrl = `mailto:${targetEmail}?subject=${encodedSubject}&body=${encodedBody}`;
-
-      const win = window.open(gmailWebUrl, "_blank");
+      // Kalau popup diblokir, pindah di tab yang sama ke alamat yang persis
+      // sama. Perantaranya yang nentuin tujuan akhir, jadi cadangan ini
+      // nggak perlu tahu alamat emailnya juga.
+      const win = window.open(tujuan, "_blank");
       if (!win || win.closed || typeof win.closed === "undefined") {
-        window.location.href = mailtoUrl;
+        // Sengaja navigasi peramban beneran, bukan router Next.js.
+        // /go/email bukan halaman Next — di produksi dia Netlify Function
+        // yang balikin 302. Router client-side nggak akan pernah nyampe ke
+        // server, jadi redirect-nya nggak bakal kejadian.
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+        window.location.href = tujuan;
       }
     }
   };
