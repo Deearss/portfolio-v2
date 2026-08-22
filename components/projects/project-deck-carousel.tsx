@@ -193,15 +193,15 @@ export function ProjectDeckCarousel() {
           <div className="space-y-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200/80 pb-4">
               <div>
-                <span className="text-xs font-bold text-[#1565C0] uppercase tracking-wider block mb-1">
+                <span className="text-xs font-bold text-stone-500 uppercase tracking-wider block mb-1">
                   02. Demo Buatan Sendiri
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-stone-900">
-                  Landing Page buatan Haidir
+                  Landing Page yang Saya Bikin buat Nunjukin Standar
                 </h3>
               </div>
               <p className="text-xs sm:text-sm text-stone-600 max-w-md">
-                Koleksi website landing page dengan desain responsif, load instan di bawah 1 detik, dan antarmuka profesional.
+                Tiga usaha di bawah ini fiktif, saya karang sendiri sebagai bahan latih. Yang nggak fiktif adalah kodenya: ketiganya beneran online, beneran responsif, dan beneran selesai muat di bawah satu detik. Silakan buka dan uji sendiri.
               </p>
             </div>
 
@@ -305,15 +305,15 @@ export function ProjectDeckCarousel() {
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200/80 pb-4">
               <div>
-                <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider block mb-1">
+                <span className="text-xs font-bold text-stone-500 uppercase tracking-wider block mb-1">
                   03. Demo Buatan Sendiri
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-stone-900">
-                  Rapikan &amp; Permak File Excel
+                  Pembukuan Toko yang Berhenti Dihitung Manual
                 </h3>
               </div>
               <p className="text-xs sm:text-sm text-stone-600 max-w-md">
-                Mengubah file pembukuan &amp; stok toko sembako yang berhamburan menjadi sistem data yang teratur, otomatis, dan gampang digunakan.
+                Angka di bawah karangan saya, tokonya nggak ada. Yang saya tunjukin bukan omsetnya, tapi bedanya: sebelah kiri file yang harus kamu jumlah manual tiap malam, sebelah kanan file yang rekapnya jalan sendiri tiap kamu nambah satu baris.
               </p>
             </div>
 
