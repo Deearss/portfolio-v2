@@ -3,6 +3,7 @@ import { Navbar } from "@/components/navbar/navbar";
 import { RailwayHero } from "@/components/hero/railway-hero";
 import { ProjectDeckCarousel } from "@/components/projects/project-deck-carousel";
 import { GeneralWorkflow } from "@/components/workflow/general-workflow";
+import { PriceAnchor } from "@/components/pricing/price-anchor";
 import { RichSocialCards } from "@/components/socials/rich-social-cards";
 import { WhatsappForm } from "@/components/contact/whatsapp-form";
 import { Footer } from "@/components/footer/footer";
@@ -15,6 +16,7 @@ export default function Home() {
         <RailwayHero />
         <ProjectDeckCarousel />
         <GeneralWorkflow />
+        <PriceAnchor />
         <RichSocialCards />
         <WhatsappForm />
       </main>
