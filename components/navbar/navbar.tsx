@@ -6,6 +6,7 @@ import { ArrowUpRight, Menu, X, FolderGit2, Workflow, MessageSquare } from "luci
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMenuToggling, setIsMenuToggling] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,13 +30,26 @@ export function Navbar() {
     };
   }, []);
 
+  const toggleMobileMenu = () => {
+    setIsMenuToggling(true);
+    setMobileMenuOpen((prev) => !prev);
+    setTimeout(() => setIsMenuToggling(false), 200);
+  };
+
   const closeMobileMenu = () => {
+    if (!mobileMenuOpen) return;
+    setIsMenuToggling(true);
     setMobileMenuOpen(false);
+    setTimeout(() => setIsMenuToggling(false), 200);
   };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMobileMenuOpen(false);
+      if (e.key === "Escape") {
+        setIsMenuToggling(true);
+        setMobileMenuOpen(false);
+        setTimeout(() => setIsMenuToggling(false), 200);
+      }
     };
     if (mobileMenuOpen) {
       window.addEventListener("keydown", handleKeyDown);
@@ -45,16 +59,31 @@ export function Navbar() {
     };
   }, [mobileMenuOpen]);
 
+  const shouldTransition = !mobileMenuOpen && !isMenuToggling;
+
   return (
     <>
       <header
         id="main-navbar"
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled || mobileMenuOpen
-            ? "bg-[#FAFAF9]/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs"
-            : "bg-transparent border-b border-transparent"
-        }`}
+        className="fixed top-0 left-0 right-0 z-50"
       >
+        {/* Scroll Background Layer (ONLY animates fade in/out on scroll) */}
+        <div
+          className={`absolute inset-0 h-15 sm:h-16 pointer-events-none -z-10 ${
+            shouldTransition
+              ? "transition-[background-color,border-color,box-shadow] duration-300"
+              : "transition-none"
+          } ${
+            isScrolled
+              ? "bg-[#FAFAF9]/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs"
+              : "bg-transparent border-b border-transparent"
+          }`}
+        />
+
+        {/* Mobile Open Menu Header Background (instant, zero transition delay) */}
+        {mobileMenuOpen && (
+          <div className="absolute inset-x-0 top-0 h-15 sm:h-16 bg-[#FAFAF9] border-b border-stone-200 -z-10 md:hidden" />
+        )}
         <div className="max-w-6xl mx-auto px-3.5 sm:px-6 h-15 sm:h-16 flex items-center justify-between gap-3">
           {/* Brand Badge */}
           <button
@@ -70,13 +99,17 @@ export function Navbar() {
               alt="Haidir Aditya"
               width={34}
               height={34}
-              className={`w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full object-cover shadow-2xs transition-colors shrink-0 ${
+              className={`w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full object-cover shadow-2xs shrink-0 ${
+                shouldTransition ? "transition-colors duration-300" : "transition-none"
+              } ${
                 isScrolled || mobileMenuOpen ? "border border-stone-200" : "border border-[#30363d]"
               }`}
             />
             <div className="flex flex-col text-left min-w-0">
               <span
-                className={`font-bold text-xs sm:text-sm tracking-tight leading-tight truncate transition-colors nav-brand-title ${
+                className={`font-bold text-xs sm:text-sm tracking-tight leading-tight truncate nav-brand-title ${
+                  shouldTransition ? "transition-colors duration-300" : "transition-none"
+                } ${
                   isScrolled || mobileMenuOpen
                     ? "text-stone-900 group-hover:text-[#1f6feb]"
                     : "text-white group-hover:text-[#58a6ff]"
@@ -85,7 +118,9 @@ export function Navbar() {
                 Haidir Aditya
               </span>
               <span
-                className={`text-[10px] sm:text-[11px] font-medium leading-tight truncate transition-colors nav-brand-subtitle ${
+                className={`text-[10px] sm:text-[11px] font-medium leading-tight truncate nav-brand-subtitle ${
+                  shouldTransition ? "transition-colors duration-300" : "transition-none"
+                } ${
                   isScrolled || mobileMenuOpen ? "text-stone-600" : "text-[#58a6ff]"
                 }`}
               >
@@ -96,13 +131,17 @@ export function Navbar() {
 
           {/* Desktop Navigation Links */}
           <nav
-            className={`hidden md:flex items-center gap-6 text-xs font-semibold transition-colors ${
+            className={`hidden md:flex items-center gap-6 text-xs font-semibold ${
+              shouldTransition ? "transition-colors duration-300" : "transition-none"
+            } ${
               isScrolled ? "text-stone-600" : "text-stone-300"
             }`}
           >
             <a
               href="#projek"
-              className={`nav-desktop-link transition-colors ${
+              className={`nav-desktop-link ${
+                shouldTransition ? "transition-colors duration-300" : "transition-none"
+              } ${
                 isScrolled ? "hover:text-[#1f6feb]" : "hover:text-white"
               }`}
             >
@@ -110,7 +149,9 @@ export function Navbar() {
             </a>
             <a
               href="#workflow"
-              className={`nav-desktop-link transition-colors ${
+              className={`nav-desktop-link ${
+                shouldTransition ? "transition-colors duration-300" : "transition-none"
+              } ${
                 isScrolled ? "hover:text-[#1f6feb]" : "hover:text-white"
               }`}
             >
@@ -118,7 +159,9 @@ export function Navbar() {
             </a>
             <a
               href="#kontak"
-              className={`nav-desktop-link transition-colors ${
+              className={`nav-desktop-link ${
+                shouldTransition ? "transition-colors duration-300" : "transition-none"
+              } ${
                 isScrolled ? "hover:text-[#1f6feb]" : "hover:text-white"
               }`}
             >
@@ -147,10 +190,12 @@ export function Navbar() {
             {/* Mobile Menu Toggle Button */}
             <button
               type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={toggleMobileMenu}
               aria-label={mobileMenuOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
               aria-expanded={mobileMenuOpen}
-              className={`md:hidden p-2 rounded-lg transition-colors nav-hamburger ${
+              className={`md:hidden p-2 rounded-lg nav-hamburger ${
+                shouldTransition ? "transition-colors duration-300" : "transition-none"
+              } ${
                 isScrolled || mobileMenuOpen
                   ? "text-stone-800 hover:bg-stone-200/60 active:bg-stone-200"
                   : "text-stone-200 hover:text-white hover:bg-white/10 active:bg-white/20"

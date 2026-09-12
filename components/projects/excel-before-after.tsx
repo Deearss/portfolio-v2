@@ -16,7 +16,7 @@ export function ExcelBeforeAfter() {
         <div className="flex items-center gap-2">
           <FileSpreadsheet className="w-4 h-4 sm:w-5 sm:h-5 text-white shrink-0" />
           <span className="text-xs sm:text-sm font-bold tracking-wide leading-tight">
-            Microsoft Excel — Pembukuan &amp; Stok Sembako
+            Microsoft Excel (Pembukuan dan Stok Sembako)
           </span>
         </div>
 
@@ -128,7 +128,7 @@ export function ExcelBeforeAfter() {
 
             {/* Bottom Insight */}
             <p className="text-xs text-stone-500 italic">
-              *Tampilan lama toko sembako: Data penjualan tercampur dengan satuan teks, omset harian tidak bisa dihitung otomatis, dan stok sering selisih.
+              Pada versi lama toko sembako, data penjualan tercampur dengan satuan teks sehingga omset harian gagal terhitung otomatis dan stok rawan selisih.
             </p>
           </div>
         ) : (
@@ -183,7 +183,7 @@ export function ExcelBeforeAfter() {
 
             {/* Bottom Note */}
             <div className="flex flex-wrap items-center justify-between text-xs text-stone-600 pt-1 gap-2">
-              <span>*Tampilan baru toko sembako: Pemisahan angka &amp; satuan otomatis, omset terekap akurat, &amp; stok terpantau instan.</span>
+              <span>Pada versi baru toko sembako, angka dan satuan dipisah otomatis agar omset harian terekap akurat dan stok terpantau langsung.</span>
               <button
                 onClick={() => setMode("before")}
                 className="text-[#107C41] font-bold hover:underline inline-flex items-center gap-1 text-xs cursor-pointer"

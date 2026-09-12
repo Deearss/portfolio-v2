@@ -8,7 +8,6 @@ import {
   FolderGit2,
   RefreshCw,
   GitGraph,
-  Star,
   Check,
 } from "lucide-react";
 
@@ -20,8 +19,6 @@ interface GithubUserData {
 }
 
 const GITHUB_URL = "https://github.com/Deearss";
-const PROJECTS_URL =
-  "https://projects.co.id/public/browse_users/view/2eaf56/dier-dieeerrr";
 
 // Nama tampilan & handle dikunci di sini, bukan diambil dari API.
 // Alasannya: field `name` di profil GitHub bisa berisi apa saja, sedangkan
@@ -174,7 +171,7 @@ export function GithubStatsCard() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-2 gap-2.5">
           {/* Repositori publik — wajib bisa diklik ke daftar repo */}
           <a
             href={`${GITHUB_URL}?tab=repositories`}
@@ -210,7 +207,7 @@ export function GithubStatsCard() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Cek 1.967 kontribusi setahun terakhir di profil GitHub @deearss"
-            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#3fb950]/60 hover:bg-[#1c2128] transition-all col-span-2 sm:col-span-1"
+            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#3fb950]/60 hover:bg-[#1c2128] transition-all col-span-2"
           >
             <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
               <GitGraph className="w-3.5 h-3.5 text-[#3fb950] shrink-0" />
@@ -222,27 +219,8 @@ export function GithubStatsCard() {
             </p>
           </a>
 
-          {/* Ulasan klien — wajib bisa diklik ke projects.co.id */}
-          <a
-            href={PROJECTS_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Cek ulasan klien bernilai 10,00 dari 10 di profil Projects.co.id"
-            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#e3b341]/60 hover:bg-[#1c2128] transition-all"
-          >
-            <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
-              <Star className="w-3.5 h-3.5 text-[#e3b341] shrink-0" />
-              <span className="truncate">Ulasan klien</span>
-              <ExternalLink className="w-2.5 h-2.5 shrink-0 ml-auto text-[#8b949e] group-hover:text-[#e3b341] transition-colors" />
-            </div>
-            <p className="text-xl font-extrabold text-[#e3b341] mt-1 font-mono leading-none">
-              10,00
-              <span className="text-xs font-bold text-[#8b949e]"> / 10</span>
-            </p>
-          </a>
-
           {/* Cara kerja — Bareng AI */}
-          <div className="p-3 rounded-lg bg-[#161b22] border border-[#30363d] flex items-center justify-between gap-2">
+          <div className="p-3 rounded-lg bg-[#161b22] border border-[#30363d] flex items-center justify-between gap-2 col-span-2">
             <div className="min-w-0">
               <p className="text-[10px] font-medium text-[#8b949e] truncate">
                 Cara kerja
@@ -251,7 +229,7 @@ export function GithubStatsCard() {
                 Bareng AI
               </p>
               <p className="text-[10px] text-[#8b949e] mt-1 leading-tight">
-                Dibuka dari awal
+                Secara terbuka
               </p>
             </div>
 
@@ -296,7 +274,7 @@ export function GithubStatsCard() {
       {/* Footer Strip */}
       <div className="px-4 py-2.5 bg-[#161b22] border-t border-[#30363d] text-[#8b949e] font-mono text-[11px] flex flex-col sm:flex-row items-center justify-between gap-2">
         <span className="text-center sm:text-left">
-          Angka di atas per Agustus 2026. Silakan cek sendiri lewat tautannya.
+          Angka di atas per September 2026. Silakan cek sendiri lewat tautannya.
         </span>
         <a
           href={activeUser.html_url}
