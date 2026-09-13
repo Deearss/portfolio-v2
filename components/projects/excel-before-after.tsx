@@ -54,8 +54,8 @@ export function ExcelBeforeAfter() {
         </div>
       </div>
 
-      {/* Selisih kerja — kelihatan di dua mode, ini inti peraganya */}
-      <div className="px-4 sm:px-5 pt-4 bg-[#F9FAFB] grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+      {/* Selisih kerja: kelihatan di layar sm ke atas */}
+      <div className="hidden sm:grid sm:grid-cols-2 gap-2.5 px-4 sm:px-5 pt-4 bg-[#F9FAFB]">
         <div className="p-3 rounded-lg bg-white border border-stone-200 shadow-2xs">
           <span className="text-[11px] font-bold text-stone-500 block mb-0.5">Sebelum</span>
           <span className="text-xs sm:text-sm font-semibold text-stone-800 leading-snug block">
@@ -82,7 +82,7 @@ export function ExcelBeforeAfter() {
 
             {/* Simulated Raw Messy Table */}
             <div className="border border-stone-300 rounded-lg overflow-x-auto shadow-2xs bg-white excel-scrollbar">
-              <table className="w-full text-xs text-stone-700 font-mono border-collapse min-w-[620px] whitespace-nowrap">
+              <table className="w-full text-xs text-stone-700 font-mono border-collapse min-w-155 whitespace-nowrap">
                 <thead>
                   <tr className="bg-[#F3F4F6] text-stone-600 border-b border-stone-300">
                     <th scope="col" className="w-10 p-2 text-center border-r border-stone-300">#</th>
@@ -141,7 +141,7 @@ export function ExcelBeforeAfter() {
 
             {/* Clean Professional Modern Table */}
             <div className="border border-stone-200 rounded-lg overflow-x-auto shadow-xs bg-white excel-scrollbar">
-              <table className="w-full text-xs text-stone-800 font-sans border-collapse min-w-[620px] whitespace-nowrap">
+              <table className="w-full text-xs text-stone-800 font-sans border-collapse min-w-155 whitespace-nowrap">
                 <thead>
                   <tr className="bg-[#107C41] text-white font-semibold">
                     <th scope="col" className="w-10 p-2 text-center border-r border-emerald-600/50 bg-[#0c6133]">#</th>
@@ -154,7 +154,7 @@ export function ExcelBeforeAfter() {
                 </thead>
                 <tbody className="font-mono">
                   <tr className="bg-white border-b border-stone-100 hover:bg-stone-50">
-                    <td className="p-2 text-center font-bold text-stone-500 bg-[#F3F4F6] border-r border-stone-300 font-sans">1</td>
+                    <td className="p-2 text-center font-bold text-stone-500 bg-[#F3F4F6] border-r border-stone-300">1</td>
                     <td className="px-3 py-2 border-r border-stone-200 font-semibold text-[#107C41]">12 Mei 2026</td>
                     <td className="px-3 py-2 border-r border-stone-200 font-bold text-stone-900">Beras Ramos Setra</td>
                     <td className="px-3 py-2 border-r border-stone-200 text-right">10 Sak (25kg)</td>
@@ -162,7 +162,7 @@ export function ExcelBeforeAfter() {
                     <td className="px-3 py-2 font-bold text-right text-[#107C41] bg-emerald-50/60">Rp 1.400.000</td>
                   </tr>
                   <tr className="bg-stone-50/50 border-b border-stone-100 hover:bg-stone-50">
-                    <td className="p-2 text-center font-bold text-stone-500 bg-[#F3F4F6] border-r border-stone-300 font-sans">2</td>
+                    <td className="p-2 text-center font-bold text-stone-500 bg-[#F3F4F6] border-r border-stone-300">2</td>
                     <td className="px-3 py-2 border-r border-stone-200 font-semibold text-[#107C41]">13 Mei 2026</td>
                     <td className="px-3 py-2 border-r border-stone-200 font-bold text-stone-900">Minyak Goreng 2L</td>
                     <td className="px-3 py-2 border-r border-stone-200 text-right">5 Pouch</td>
@@ -170,7 +170,7 @@ export function ExcelBeforeAfter() {
                     <td className="px-3 py-2 font-bold text-right text-[#107C41] bg-emerald-50/60">Rp 170.000</td>
                   </tr>
                   <tr className="bg-white hover:bg-stone-50">
-                    <td className="p-2 text-center font-bold text-stone-500 bg-[#F3F4F6] border-r border-stone-300 font-sans">3</td>
+                    <td className="p-2 text-center font-bold text-stone-500 bg-[#F3F4F6] border-r border-stone-300">3</td>
                     <td className="px-3 py-2 border-r border-stone-200 font-semibold text-[#107C41]">14 Mei 2026</td>
                     <td className="px-3 py-2 border-r border-stone-200 font-bold text-stone-900">Gula Pasir 1 kg</td>
                     <td className="px-3 py-2 border-r border-stone-200 text-right">18 kg</td>

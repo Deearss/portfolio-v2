@@ -29,7 +29,7 @@ const WORKFLOW_STEPS: WorkflowStep[] = [
     title: "Saya tanya dulu, bukan langsung ngerjain",
     desc: "Saya cari tahu kamu butuh apa, deadline-nya kapan, dan hasilnya dipakai siapa. Yang kamu minta dan yang kamu butuh sering berbeda, dan jauh lebih murah kalau ketahuan sejak awal.",
     icon: Search,
-    image: "/roadmap-image/alur-1.webp",
+    image: "/roadmap-image/alur-1-new.webp",
     highlight: "Konsultasi & Discovery",
   },
   {
@@ -37,7 +37,7 @@ const WORKFLOW_STEPS: WorkflowStep[] = [
     title: "Saya rancang pendekatan yang tepat sasaran",
     desc: "Saya pilihkan metode dan alat yang proporsional dengan skala masalah. Kalau spreadsheet rapi sudah cukup, tidak perlu memaksakan sistem rumit yang tidak kamu butuhkan.",
     icon: Compass,
-    image: "/roadmap-image/alur-2.webp",
+    image: "/roadmap-image/alur-2-new.webp",
     highlight: "Solusi & Strategi",
   },
   {
@@ -257,7 +257,7 @@ export function GeneralWorkflow() {
             isDragging
               ? "cursor-grabbing scroll-auto snap-none"
               : "cursor-grab scroll-smooth snap-x snap-mandatory"
-          } [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
+          } scrollbar-none [&::-webkit-scrollbar]:hidden`}
         >
           {WORKFLOW_STEPS.map((step, idx) => {
             const Icon = step.icon;
@@ -266,7 +266,7 @@ export function GeneralWorkflow() {
             return (
               <div
                 key={idx}
-                className="w-[82vw] max-w-[320px] sm:max-w-none sm:w-[400px] md:w-[420px] lg:w-[440px] shrink-0 snap-start bg-white rounded-2xl border border-stone-200 shadow-xs hover:shadow-md hover:border-blue-200 transition-all duration-300 flex flex-col justify-between overflow-hidden p-4 sm:p-6 group"
+                className="w-[82vw] max-w-[320px] sm:max-w-none sm:w-100 md:w-105 lg:w-110 shrink-0 snap-start bg-white rounded-2xl border border-stone-200 shadow-xs hover:shadow-md hover:border-blue-200 transition-all duration-300 flex flex-col justify-between overflow-hidden p-4 sm:p-6 group"
               >
                 <div>
                   {/* Top Bar: Step Badge & Icon */}
@@ -292,8 +292,14 @@ export function GeneralWorkflow() {
                       width={400}
                       height={400}
                       className={`w-full h-full object-contain pointer-events-none ${
-                        idx === 1 || idx === 4 ? "scale-[0.95] translate-y-2" : "scale-[0.95] translate-y-0.5"
-                      } ${idx === 0 ? "scale-[0.95]! -translate-y-3!" : ""}`}
+                        idx === 0
+                          ? "scale-100 translate-y-7 sm:translate-y-8"
+                          : idx === 1
+                          ? "scale-[1.12] sm:scale-[1.14] translate-y-6 sm:translate-y-7"
+                          : idx === 4
+                          ? "scale-[0.95] translate-y-2"
+                          : "scale-[0.95] translate-y-0.5"
+                      }`}
                       draggable={false}
                       loading="lazy"
                     />
@@ -337,7 +343,7 @@ export function GeneralWorkflow() {
               key={dotIdx}
               onClick={() => scrollToStep(dotIdx)}
               aria-label={`Buka Langkah ${dotIdx + 1}`}
-              className="p-2 cursor-pointer inline-flex items-center justify-center min-w-[28px] min-h-[28px]"
+              className="p-2 cursor-pointer inline-flex items-center justify-center min-w-7 min-h-7"
             >
               <span
                 className={`transition-all duration-300 rounded-full h-1.5 sm:h-2 ${

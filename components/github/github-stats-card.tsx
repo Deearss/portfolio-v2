@@ -172,13 +172,13 @@ export function GithubStatsCard() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-2.5">
-          {/* Repositori publik — wajib bisa diklik ke daftar repo */}
+          {/* Repositori publik: wajib bisa diklik ke daftar repo */}
           <a
             href={`${GITHUB_URL}?tab=repositories`}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Buka daftar repositori publik @deearss di GitHub"
-            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#58a6ff]/60 hover:bg-[#1c2128] transition-all"
+            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#58a6ff]/60 hover:bg-[#1c2128] transition-all flex flex-col justify-between"
           >
             <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
               <FolderGit2 className="w-3.5 h-3.5 text-[#58a6ff] shrink-0" />
@@ -191,7 +191,7 @@ export function GithubStatsCard() {
           </a>
 
           {/* Stack utama */}
-          <div className="p-3 rounded-lg bg-[#161b22] border border-[#30363d]">
+          <div className="p-3 rounded-lg bg-[#161b22] border border-[#30363d] flex flex-col justify-between">
             <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
               <Code2 className="w-3.5 h-3.5 text-[#58a6ff] shrink-0" />
               <span className="truncate">Stack utama</span>
@@ -201,13 +201,13 @@ export function GithubStatsCard() {
             </p>
           </div>
 
-          {/* Kontribusi — wajib bisa diklik ke GitHub */}
+          {/* Kontribusi: wajib bisa diklik ke GitHub */}
           <a
             href={GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Cek 1.967 kontribusi setahun terakhir di profil GitHub @deearss"
-            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#3fb950]/60 hover:bg-[#1c2128] transition-all col-span-2"
+            className="group p-3 rounded-lg bg-[#161b22] border border-[#30363d] hover:border-[#3fb950]/60 hover:bg-[#1c2128] transition-all col-span-2 sm:col-span-1 flex flex-col justify-between"
           >
             <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#8b949e]">
               <GitGraph className="w-3.5 h-3.5 text-[#3fb950] shrink-0" />
@@ -219,8 +219,8 @@ export function GithubStatsCard() {
             </p>
           </a>
 
-          {/* Cara kerja — Bareng AI */}
-          <div className="p-3 rounded-lg bg-[#161b22] border border-[#30363d] flex items-center justify-between gap-2 col-span-2">
+          {/* Cara kerja: Bareng AI */}
+          <div className="p-3 rounded-lg bg-[#161b22] border border-[#30363d] flex items-center justify-between gap-2 col-span-2 sm:col-span-1">
             <div className="min-w-0">
               <p className="text-[10px] font-medium text-[#8b949e] truncate">
                 Cara kerja

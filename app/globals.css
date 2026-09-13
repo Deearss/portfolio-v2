@@ -48,6 +48,11 @@
   font-family: var(--font-serif), "PT Serif", serif;
 }
 
+.font-mono,
+.font-chivo-mono {
+  font-family: var(--font-chivo-mono), "Chivo Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
 /* Modern Responsive Scrollbar System */
 /* Hide root scrollbar on mobile / touch viewports (< 768px) to prevent layout squishing / gutter anomaly */
 @media (max-width: 768px) {

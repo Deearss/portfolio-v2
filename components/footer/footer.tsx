@@ -15,8 +15,7 @@ export function Footer() {
         
         <div className="text-center sm:text-left">
           <p className="font-bold text-stone-100 text-sm">
-            Haidir Aditya{" "}
-            <span className="font-semibold text-stone-400">· @deearss</span>
+            Haidir Aditya
           </p>
           <p className="text-stone-400 mt-0.5 text-xs">
             Systems &amp; Software Engineer
