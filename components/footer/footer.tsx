@@ -10,15 +10,15 @@ export function Footer() {
   };
 
   return (
-    <footer className="py-7 sm:py-8 bg-stone-900 text-stone-300 text-xs border-t border-stone-800 font-sans">
-      <div className="max-w-5xl mx-auto px-3.5 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+    <footer className="py-7 sm:py-8 bg-[#2D2A28] text-[#E3DDD5] text-xs border-t border-[#3D3A37]">
+      <div className="max-w-5xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
         
         <div className="text-center sm:text-left">
-          <p className="font-bold text-stone-100 text-sm">
+          <p className="font-bold text-[#FAF7F2] text-sm">
             Haidir Aditya
           </p>
-          <p className="text-stone-400 mt-0.5 text-xs">
-            Systems &amp; Software Engineer
+          <p className="text-[#B8AEA4] mt-0.5 text-xs">
+            Fullstack Developer
           </p>
         </div>
 

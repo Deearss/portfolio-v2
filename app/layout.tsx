@@ -1,35 +1,36 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Chivo_Mono } from "next/font/google";
+import { Cactus_Classical_Serif, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-sans",
+const cactusClassicalSerif = Cactus_Classical_Serif({
+  variable: "--font-cactus",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
+const sourceSerif4 = Source_Serif_4({
+  variable: "--font-source-serif",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
-const chivoMono = Chivo_Mono({
-  variable: "--font-chivo-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://deearss.netlify.app"),
-  title: "Haidir Aditya | Systems & Software Engineer",
+  title: "Haidir Aditya | Fullstack Developer",
   description:
-    "Kerjaan manual yang berantakan, saya ubah jadi sistem yang jalan sendiri. Data, dokumen, dan aplikasi web dengan hasil yang bisa kamu uji langsung.",
+    "I build scalable web apps with a rigorous Definition of Done and clean systems architecture. Powered by modern AI tools daily.",
   keywords: [
     "Haidir Aditya",
     "deearss",
-    "Systems Engineer",
+    "Fullstack Developer",
     "Software Engineer",
+    "Systems Designer",
     "Freelance Indonesia",
     "Next.js",
-    "Otomatisasi Excel",
-    "Restrukturisasi Pembukuan",
+    "TypeScript",
+    "React",
     "Web Performance Optimization",
   ],
   authors: [{ name: "Haidir Aditya", url: "https://github.com/Deearss" }],
@@ -43,9 +44,9 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
-    title: "Haidir Aditya | Systems & Software Engineer",
+    title: "Haidir Aditya | Fullstack Developer",
     description:
-      "Kerjaan manual yang berantakan, saya ubah jadi sistem yang jalan sendiri. Data, dokumen, dan aplikasi web.",
+      "I build scalable web apps with a rigorous Definition of Done and clean systems architecture. Powered by modern AI tools daily.",
     url: "https://deearss.netlify.app",
     siteName: "Haidir Aditya Portfolio",
     locale: "id_ID",
@@ -55,15 +56,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Haidir Aditya Portfolio Preview",
+        alt: "Haidir Aditya | Fullstack Developer Portfolio Preview",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Haidir Aditya | Systems & Software Engineer",
+    title: "Haidir Aditya | Fullstack Developer",
     description:
-      "Membantu pembuatan aplikasi web kencang, restrukturisasi Excel, dan otomatisasi sistem digital dengan performa tinggi.",
+      "I build scalable web apps with a rigorous Definition of Done and clean systems architecture. Powered by modern AI tools daily.",
     images: ["/og-image.png"],
     creator: "@Deearss",
   },
@@ -81,9 +82,9 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${plusJakartaSans.variable} ${chivoMono.variable} h-full antialiased`}
+      className={`${cactusClassicalSerif.variable} ${sourceSerif4.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#FAFAF9] text-[#1C1917]">
+      <body className="min-h-full flex flex-col bg-[#FAF7F2] text-[#2D2A28]">
         {children}
       </body>
     </html>

@@ -2,31 +2,58 @@
 
 @layer base {
   :root {
-    --background: #FAFAF9;
-    --foreground: #1C1917;
+    --background: #FAF7F2;
+    --foreground: #2D2A28;
 
-    --brand-50: #E3F2FD;
-    --brand-100: #BBDEFB;
-    --brand-200: #90CAF9;
-    --brand-300: #64B5F6;
-    --brand-400: #42A5F5;
-    --brand-500: #2196F3;
-    --brand-600: #1E88E5;
-    --brand-700: #1976D2;
-    --brand-800: #1565C0;
-    --brand-900: #0D47A1;
+    /* Warm Pebble Palette */
+    --pebble-50: #FAF7F2;
+    --pebble-100: #E3DDD5;
+    --pebble-200: #B8AEA4;
+    --pebble-300: #7A6F66;
+    --pebble-400: #2D2A28;
+    --pebble-dark: #1F1C1B;
+
+    --brand-accent: #2D2A28;
+    --brand-yellow: #FFDF00;
+    --brand-almond: #c48b6d;
+  }
+
+  /* Custom Brand Selection Highlight (Almond Nuts) */
+  ::selection {
+    background-color: #c48b6d;
+    color: #FAF7F2;
+  }
+
+  ::-moz-selection {
+    background-color: #c48b6d;
+    color: #FAF7F2;
   }
 
   html {
     color-scheme: light;
     scroll-behavior: smooth;
+    font-family: var(--font-cactus), Georgia, serif;
   }
 
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    font-family: var(--font-cactus), Georgia, serif;
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* Headings & Highlight text use Source Serif 4 */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-header,
+  .font-display,
+  .font-highlight {
+    font-family: var(--font-source-serif), Georgia, serif !important;
+    font-weight: 600;
   }
 
   button,
@@ -36,21 +63,30 @@
   }
 }
 
-.font-display {
-  font-family: var(--font-display), "Patua One", serif;
+/* Default typography mapping: Cactus Classical Serif for text, Source Serif 4 for headers */
+body,
+p,
+span,
+a,
+button,
+input,
+textarea,
+.font-sans,
+.font-serif,
+.font-body {
+  font-family: var(--font-cactus), Georgia, serif;
 }
 
-.font-sans {
-  font-family: var(--font-sans), "Plus Jakarta Sans", sans-serif;
-}
-
-.font-serif {
-  font-family: var(--font-serif), "PT Serif", serif;
-}
-
-.font-mono,
-.font-chivo-mono {
-  font-family: var(--font-chivo-mono), "Chivo Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-header,
+.font-display,
+.font-highlight {
+  font-family: var(--font-source-serif), Georgia, serif !important;
 }
 
 /* Modern Responsive Scrollbar System */
@@ -111,35 +147,28 @@
   background: #107C41;
 }
 
-/* Bulletproof Scrolled Navbar Styles */
+/* Scrolled Navbar Styles (Clean Solid Warm Pebble, No Glassmorphism) */
+header#main-navbar {
+  background-color: #FAF7F2;
+  border-bottom: 1px solid #E3DDD5;
+}
 header#main-navbar[data-scrolled="true"] {
-  background-color: rgba(250, 250, 249, 0.95) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border-bottom: 1px solid rgba(231, 229, 228, 0.85) !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
-}
-header#main-navbar[data-scrolled="true"] .nav-brand-title {
-  color: #1c1917 !important;
-}
-header#main-navbar[data-scrolled="true"] .nav-brand-subtitle {
-  color: #78716c !important;
-}
-header#main-navbar[data-scrolled="true"] .nav-brand-avatar {
-  border-color: #e7e5e4 !important;
-}
-header#main-navbar[data-scrolled="true"] .nav-desktop-link {
-  color: #57534e !important;
-}
-header#main-navbar[data-scrolled="true"] .nav-desktop-link:hover {
-  color: #1f6feb !important;
-}
-header#main-navbar[data-scrolled="true"] .nav-hamburger {
-  color: #1c1917 !important;
-}
-header#main-navbar[data-scrolled="true"] .nav-hamburger:hover {
-  background-color: rgba(231, 229, 228, 0.6) !important;
+  background-color: #FAF7F2 !important;
+  border-bottom: 1px solid #B8AEA4 !important;
+  box-shadow: 0 1px 3px 0 rgba(45, 42, 40, 0.05) !important;
 }
 
+/* Headline Underline Smooth Entrance Animation */
+@keyframes underline-expand {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
 
-
+.animate-underline-expand {
+  transform-origin: left;
+  animation: underline-expand 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}

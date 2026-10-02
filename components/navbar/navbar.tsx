@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ArrowUpRight, Menu, X, FolderGit2, Workflow, MessageSquare } from "lucide-react";
+import { Menu, UserPlus, X } from "lucide-react";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isMenuToggling, setIsMenuToggling] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,190 +15,95 @@ export function Navbar() {
         document.documentElement.scrollTop ||
         document.body.scrollTop ||
         0;
-      setIsScrolled(scrollPos > 20);
+      setIsScrolled(scrollPos > 10);
     };
 
     handleScroll();
-
     window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleMobileMenu = () => {
-    setIsMenuToggling(true);
-    setMobileMenuOpen((prev) => !prev);
-    setTimeout(() => setIsMenuToggling(false), 200);
-  };
+  const closeMobileMenu = () => setMobileMenuOpen(false);
 
-  const closeMobileMenu = () => {
-    if (!mobileMenuOpen) return;
-    setIsMenuToggling(true);
-    setMobileMenuOpen(false);
-    setTimeout(() => setIsMenuToggling(false), 200);
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setIsMenuToggling(true);
-        setMobileMenuOpen(false);
-        setTimeout(() => setIsMenuToggling(false), 200);
-      }
-    };
-    if (mobileMenuOpen) {
-      window.addEventListener("keydown", handleKeyDown);
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    closeMobileMenu();
+    const elem = document.getElementById(id);
+    if (elem) {
+      elem.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [mobileMenuOpen]);
-
-  const shouldTransition = !mobileMenuOpen && !isMenuToggling;
+  };
 
   return (
     <>
       <header
         id="main-navbar"
-        className="fixed top-0 left-0 right-0 z-50"
+        data-scrolled={isScrolled ? "true" : "false"}
+        className="fixed top-0 left-0 right-0 z-50 bg-[#FAF7F2] border-b border-[#E3DDD5] transition-colors duration-200"
       >
-        {/* Scroll Background Layer (ONLY animates fade in/out on scroll) */}
-        <div
-          className={`absolute inset-0 h-15 sm:h-16 pointer-events-none -z-10 ${
-            shouldTransition
-              ? "transition-[background-color,border-color,box-shadow] duration-300"
-              : "transition-none"
-          } ${
-            isScrolled
-              ? "bg-[#FAFAF9]/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs"
-              : "bg-transparent border-b border-transparent"
-          }`}
-        />
-
-        {/* Mobile Open Menu Header Background (instant, zero transition delay) */}
-        {mobileMenuOpen && (
-          <div className="absolute inset-x-0 top-0 h-15 sm:h-16 bg-[#FAFAF9] border-b border-stone-200 -z-10 md:hidden" />
-        )}
-        <div className="max-w-6xl mx-auto px-3.5 sm:px-6 h-15 sm:h-16 flex items-center justify-between gap-3">
-          {/* Brand Badge */}
-          <button
-            onClick={() => {
-              window.scrollTo({ top: 0, behavior: "smooth" });
-              closeMobileMenu();
-            }}
-            className="flex items-center gap-2.5 group transition-transform active:scale-95 text-left min-w-0 cursor-pointer"
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+          {/* Brand Name (Minimalist Editorial Typography) */}
+          <a
+            href="#about"
+            onClick={(e) => scrollToSection(e, "about")}
+            className="text-xl sm:text-2xl font-bold tracking-tight text-[#2D2A28] hover:text-[#7A6F66] transition-colors select-none"
+            aria-label="Deearss Home"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/avatar.webp"
-              alt="Haidir Aditya"
-              width={34}
-              height={34}
-              className={`w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full object-cover shadow-2xs shrink-0 ${
-                shouldTransition ? "transition-colors duration-300" : "transition-none"
-              } ${
-                isScrolled || mobileMenuOpen ? "border border-stone-200" : "border border-[#30363d]"
-              }`}
-            />
-            <div className="flex flex-col text-left min-w-0">
-              <span
-                className={`font-bold text-xs sm:text-sm tracking-tight leading-tight truncate nav-brand-title ${
-                  shouldTransition ? "transition-colors duration-300" : "transition-none"
-                } ${
-                  isScrolled || mobileMenuOpen
-                    ? "text-stone-900 group-hover:text-[#1f6feb]"
-                    : "text-white group-hover:text-[#58a6ff]"
-                }`}
-              >
-                Haidir Aditya
-              </span>
-              <span
-                className={`text-[10px] sm:text-[11px] font-medium leading-tight truncate nav-brand-subtitle ${
-                  shouldTransition ? "transition-colors duration-300" : "transition-none"
-                } ${
-                  isScrolled || mobileMenuOpen ? "text-stone-600" : "text-[#58a6ff]"
-                }`}
-              >
-                Systems &amp; Software Engineer
-              </span>
-            </div>
-          </button>
+            Deearss
+          </a>
 
           {/* Desktop Navigation Links */}
-          <nav
-            className={`hidden md:flex items-center gap-6 text-xs font-semibold ${
-              shouldTransition ? "transition-colors duration-300" : "transition-none"
-            } ${
-              isScrolled ? "text-stone-600" : "text-stone-300"
-            }`}
-          >
+          <nav className="hidden md:flex items-center gap-8 lg:gap-10">
             <a
-              href="#projek"
-              className={`nav-desktop-link ${
-                shouldTransition ? "transition-colors duration-300" : "transition-none"
-              } ${
-                isScrolled ? "hover:text-[#1f6feb]" : "hover:text-white"
-              }`}
+              href="#about"
+              onClick={(e) => scrollToSection(e, "about")}
+              className="text-xs font-semibold uppercase tracking-widest text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
             >
-              Kerjaan
+              ABOUT
             </a>
             <a
-              href="#workflow"
-              className={`nav-desktop-link ${
-                shouldTransition ? "transition-colors duration-300" : "transition-none"
-              } ${
-                isScrolled ? "hover:text-[#1f6feb]" : "hover:text-white"
-              }`}
+              href="#skills"
+              onClick={(e) => scrollToSection(e, "skills")}
+              className="text-xs font-semibold uppercase tracking-widest text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
             >
-              Cara Kerja
+              SKILLS
             </a>
             <a
-              href="#kontak"
-              className={`nav-desktop-link ${
-                shouldTransition ? "transition-colors duration-300" : "transition-none"
-              } ${
-                isScrolled ? "hover:text-[#1f6feb]" : "hover:text-white"
-              }`}
+              href="#work"
+              onClick={(e) => scrollToSection(e, "work")}
+              className="text-xs font-semibold uppercase tracking-widest text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
             >
-              Kontak
+              WORK
+            </a>
+            <a
+              href="#contact"
+              onClick={(e) => scrollToSection(e, "contact")}
+              className="text-xs font-semibold uppercase tracking-widest text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
+            >
+              CONTACT
             </a>
           </nav>
 
-          {/* Right Actions: Desktop Direct Contact Button + Mobile Hamburger Button */}
-          <div className="flex items-center gap-2 shrink-0">
-            {/* Desktop-only Direct Contact Button */}
+          {/* Right Action: Minimalist CTA Button */}
+          <div className="flex items-center gap-3">
             <a
-              href="#kontak"
-              onClick={() => {
-                closeMobileMenu();
-                window.dispatchEvent(
-                  new CustomEvent("switch-contact-tab", { detail: "whatsapp" })
-                );
-              }}
-              aria-label="Diskusi Projek (Buka Form Kontak)"
-              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold bg-[#1f6feb] text-white hover:bg-[#388bfd] active:scale-95 transition-all shadow-xs"
+              href="#contact"
+              onClick={(e) => scrollToSection(e, "contact")}
+              className="hidden sm:inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2 rounded-md bg-[#2D2A28] hover:bg-[#403B37] text-[#FAF7F2] font-semibold text-xs sm:text-sm uppercase tracking-wider transition-all shadow-xs active:scale-95 select-none leading-none"
             >
-              <span>Diskusi Projek</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
+              <UserPlus className="w-3.5 h-3.5 shrink-0" strokeWidth={1.8} aria-hidden="true" />
+              <span className="leading-none">HIRE ME</span>
             </a>
 
-            {/* Mobile Menu Toggle Button */}
+            {/* Mobile Hamburger Button */}
             <button
               type="button"
-              onClick={toggleMobileMenu}
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label={mobileMenuOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
               aria-expanded={mobileMenuOpen}
-              className={`md:hidden p-2 rounded-lg nav-hamburger ${
-                shouldTransition ? "transition-colors duration-300" : "transition-none"
-              } ${
-                isScrolled || mobileMenuOpen
-                  ? "text-stone-800 hover:bg-stone-200/60 active:bg-stone-200"
-                  : "text-stone-200 hover:text-white hover:bg-white/10 active:bg-white/20"
-              }`}
+              className="md:hidden p-2 text-[#2D2A28] hover:bg-[#E3DDD5]/60 rounded-md transition-colors"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -208,39 +112,45 @@ export function Navbar() {
 
         {/* Mobile Navigation Dropdown Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-[#FAFAF9] border-b border-stone-200 shadow-xl animate-in slide-in-from-top-2 duration-200 font-sans">
-            <nav className="px-3.5 py-3 flex flex-col gap-1 text-xs font-semibold text-stone-700">
+          <div className="md:hidden bg-[#FAF7F2] border-b border-[#E3DDD5] shadow-sm px-6 py-4">
+            <nav className="flex flex-col gap-3 font-medium text-xs uppercase tracking-wider text-[#2D2A28]">
               <a
-                href="#projek"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-stone-100/80 active:bg-stone-200/60 hover:text-[#1976D2] transition-colors group"
+                href="#about"
+                onClick={(e) => scrollToSection(e, "about")}
+                className="py-1 text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
               >
-                <FolderGit2 className="w-4 h-4 text-stone-400 group-hover:text-[#1976D2] transition-colors shrink-0" />
-                <span>Kerjaan</span>
+                ABOUT
               </a>
               <a
-                href="#workflow"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-stone-100/80 active:bg-stone-200/60 hover:text-[#1976D2] transition-colors group"
+                href="#skills"
+                onClick={(e) => scrollToSection(e, "skills")}
+                className="py-1 text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
               >
-                <Workflow className="w-4 h-4 text-stone-400 group-hover:text-[#1976D2] transition-colors shrink-0" />
-                <span>Cara &amp; Alur Kerja</span>
+                SKILLS
               </a>
-              {/* Mobile Contact CTA Button */}
-              <div className="pt-2 border-t border-stone-200/80 mt-1">
+              <a
+                href="#work"
+                onClick={(e) => scrollToSection(e, "work")}
+                className="py-1 text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
+              >
+                WORK
+              </a>
+              <a
+                href="#contact"
+                onClick={(e) => scrollToSection(e, "contact")}
+                className="py-1 text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
+              >
+                CONTACT
+              </a>
+
+              <div className="pt-3 border-t border-[#E3DDD5] mt-1">
                 <a
-                  href="#kontak"
-                  onClick={() => {
-                    closeMobileMenu();
-                    window.dispatchEvent(
-                      new CustomEvent("switch-contact-tab", { detail: "whatsapp" })
-                    );
-                  }}
-                  className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[#1f6feb] hover:bg-[#388bfd] text-white font-bold text-xs shadow-xs transition-all active:scale-95 text-center"
+                  href="#contact"
+                  onClick={(e) => scrollToSection(e, "contact")}
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-[#2D2A28] text-[#FAF7F2] font-semibold text-xs uppercase tracking-wider active:scale-95 transition-all text-center leading-none"
                 >
-                  <MessageSquare className="w-3.5 h-3.5 shrink-0" />
-                  <span>Diskusi Projek Sekarang</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
+                  <UserPlus className="w-3.5 h-3.5 shrink-0" strokeWidth={1.8} aria-hidden="true" />
+                  <span className="leading-none">HIRE ME</span>
                 </a>
               </div>
             </nav>
@@ -248,11 +158,11 @@ export function Navbar() {
         )}
       </header>
 
-      {/* Dimmed Backdrop Overlay to Close on Outside Click */}
+      {/* Subtle Backdrop Overlay */}
       {mobileMenuOpen && (
         <div
           onClick={closeMobileMenu}
-          className="fixed inset-0 top-15 sm:top-16 bg-black/40 backdrop-blur-2xs z-40 md:hidden animate-in fade-in duration-200"
+          className="fixed inset-0 top-16 bg-black/20 z-40 md:hidden"
           aria-hidden="true"
         />
       )}
