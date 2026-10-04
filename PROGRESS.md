@@ -53,7 +53,7 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 ### 1. Header & Navbar (`components/navbar/navbar.tsx`)
 - **Status**: ✅ **Selesai & Teruji (Minimalist UI)**
 - **Fitur**:
-  - Mengadaptasi layout Luputer: Logo "Deearss" di kiri, menu navigasi `ABOUT`, `SKILLS`, `WORK`, `CONTACT` di tengah, dan CTA `HIRE ME` di kanan.
+  - Mengadaptasi layout Luputer: Logo "Deearss" di kiri, menu navigasi `EDUCATION`, `TECHSTACK`, `PROJECTS`, `CONTACT` di tengah (labelnya disamain sama judul section tujuannya), dan CTA `HIRE ME` di kanan.
   - Teks navigasi dikalibrasi ke ukuran sweet spot `text-xs font-semibold tracking-widest` (12px) dengan kontras tegas dan keterbacaan tinggi.
   - Tombol CTA `HIRE ME` dilengkapi ikon `UserPlus` dari `lucide-react` (`w-3.5 h-3.5`, `strokeWidth={1.8}`) dengan posisi center vertikal presisi (`leading-none`).
   - Gaya visual 100% Minimalist UI: Tombol charcoal padat, border 1px stone, bebas efek neobrutalisme / drop-shadow blok.
@@ -120,11 +120,13 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
   - Kartu preview dan tautan Live Demo menggunakan visual Warm Pebble minimalis.
 
 ### 5. Komunikasi & Kontak (`components/contact/minimal-contact.tsx`)
-- **Status**: ✅ **Selesai & Teruji (Baru)**
+- **Status**: 🟡 **Header & ikon beres (4 Okt 2026), sisa isinya belum dicek Dier**
 - **Fitur**:
-  - Menggantikan *GeneralWorkflow* dan *WhatsappForm* yang telah dihapus total.
-  - Tombol akses instan langsung ke WhatsApp dan Email resmi.
-  - Kartu profil eksternal: GitHub `@Deearss`, LinkedIn, dan Projects.co.id.
+  - Menggantikan *GeneralWorkflow* dan *WhatsappForm* (berkasnya sudah dihapus dari repo).
+  - Header disamain formatnya sama Education/Techstack/Featured Projects: overline dibuang, judul *"Get In Touch"* (sama kayak tombol hero yang ngarah ke sini), deskripsi 2 baris (satu kalimat per baris, dipisah `<br />`).
+  - Deskripsi: *"Ready to join my first development team. Know of a remote opening? Let's talk."* Gantiin versi lama yang nawarin jasa *technical consulting* (kesannya kayak programmer senior). Arahnya: jujur belum pernah kerja bareng tim programmer + lagi nyari lowongan remote, tanpa nada melas.
+  - Tombol WhatsApp pakai logo WhatsApp (`SiWhatsapp`); tombol Email sekarang juga buka tab baru (`target="_blank"`) + panah, seragam sama tombol WhatsApp.
+  - Kartu profil eksternal: GitHub `@Deearss` (`SiGithub`), LinkedIn (`FaLinkedin`), dan Projects.co.id (`public/footer-image/icon-projectscoid.webp`), masing-masing dengan logo di kiri biar pengunjung tahu tujuannya.
 
 ### 6. Footer (`components/footer/footer.tsx`)
 - **Status**: ✅ **Selesai & Teruji**
@@ -134,16 +136,16 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 
 ### 9. Rencana Fitur Transisi Evolusi Portofolio
 - **Status**: ❌ **Dibatalkan (Deprecated)**
-- **Keterangan**: Dibatalkan permanen atas instruksi user (tidak relevan dan tidak diperlukan).
+- **Keterangan**: Dibatalkan permanen atas instruksi user (tidak relevan dan tidak diperlukan). Surat tugasnya (`SURAT_TUGAS_TRANSISI_EVOLUSI.md`) dan screenshot `public/evolution/` sudah dihapus 4 Okt 2026.
 
 ### 7. Metadata, Brand Favicon & Open Graph Banner
 - **Status**: ✅ **Selesai & Teruji**
 - **Fitur**:
-  - Seluruh avatar biru lama diganti total dengan avatar chibi baru ([public/new-avatar.png](file:///home/dier/Ngoding/vibe-coding/gemini-code/portfolio-v2/public/new-avatar.png)).
+  - Seluruh avatar biru lama diganti total dengan avatar chibi baru (`public/avatar-chibi.webp`). Berkas sumber resolusi tingginya (`new-avatar.png`, `new-avatar-bw.png`) sudah dihapus dari folder kerja 4 Okt 2026, ambil lagi dari riwayat git kalau perlu.
   - Favicon bulat (circular mask): `public/favicon.ico` dan `app/favicon.ico` dibuat dalam format multi-size RGBA 32-bit (`16x16`, `32x32`, `48x48`) dengan mask lingkaran antialiased dan sudut transparan (`alpha=0`) agar tampil bulat natural di tab browser dark/light mode.
   - Ikon PNG bulat: `public/icon.png` (`32x32` RGBA) dan `public/apple-touch-icon.png` (`180x180` RGBA) memakai mask lingkaran antialiased transparan.
-  - Open Graph Banner: `public/og-image.png` (`1200x630`) di-render presisi di runtime Next.js dengan palet Warm Pebble `#FAF7F2`, kartu profil putih `#FFFFFF`, kanvas gelap `#2D2A28`, serta tipografi identik Source Serif 4 + Cactus Classical Serif.
-  - Metadata layout: `app/layout.tsx` disinkronkan deskripsi dan OpenGraph-nya mengikuti tagline resmi Hero Section.
+  - Open Graph Banner: `public/og-image.png` (`1200x630`, ~80 KB) dirender dari templat `scripts/og-image.html` lewat `npm run og` (`scripts/render-og.mjs`). Isinya nyontek hero: palet Warm Pebble, kartu profil dengan pil "Open to Work", tipografi Source Serif 4 + Cactus Classical Serif. Script-nya ngendaliin Brave/Chrome headless lewat DevTools Protocol, karena Brave nyuekin flag `--screenshot`.
+  - Metadata layout: judul & deskripsi di `app/layout.tsx` dipusatin di konstanta `TITLE` / `DESCRIPTION` / `OG_IMAGE`, dipakai bareng sama OpenGraph & Twitter card. Deskripsinya = tagline hero. **Kalau tagline hero berubah:** ubah `DESCRIPTION`, ubah teks di `scripts/og-image.html`, jalanin `npm run og`, lalu naikin `?v=` di `OG_IMAGE` biar WhatsApp/sosmed ngambil banner baru.
 
 ---
 
@@ -184,7 +186,22 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
     - Menghapus badge/label kategori (*Commercial Showcase*, dll) serta field `category` dari interface dan data.
     - Menghapus bagian *Key Engineering Highlights* beserta field `highlights` dari interface dan data.
     - Mempersingkat judul ketiga proyek: *AC Service Landing Page*, *Wedding Organizer Landing Page*, dan *Ice Supply Landing Page*.
-    - Menyeragamkan techstack: `Next.js`, `TypeScript`, dan `Tailwind CSS`.
+    - ~~Menyeragamkan techstack: `Next.js`, `TypeScript`, dan `Tailwind CSS`.~~ **Salah, dikoreksi 4 Okt 2026.** Stack asli tiap demo (dicek dari repo-nya): AC (`Deearss/mycvacku`) dan Es Batu (`Deearss/myesbatuku`) = Astro + TypeScript + CSS biasa; Wedding (`Deearss/myeowoku`) = Next.js + TypeScript + Tailwind CSS.
+
+---
+
+## 🎯 Sesi 4 Okt 2026 (Claude Code): Blocker, CTA, & Bersih-bersih
+- **Aturan yang dikonfirmasi Dier**: aturan klaim dari Agustus tetap berlaku (tiap klaim wajib bisa dibuktiin pengunjung dalam 1 klik), aturan nama gugur ("Deearss" kapital boleh). Rak Timesheet Kapal sengaja dibuang.
+- **Klaim projek dibenerin** (`project-deck-carousel.tsx`): deskripsi modal sebelumnya nyebut kalkulator harga, penjadwalan, dan tracking yang nggak ada di demo. Sekarang isinya cuma yang beneran ada di demo, plus keterangan demo-nya berbahasa Indonesia. Techstack dikoreksi (lihat catatan di atas).
+- **Aksesibilitas**: kartu projek sekarang bisa dibuka pakai keyboard (Tab + Enter/Spasi). Modal: fokus pindah ke tombol tutup pas dibuka, Tab muter di dalam modal, Esc nutup, lalu fokus balik ke kartu. Subjudul Techstack digelapin ke `#655B53` (dulu `#7A6F66` cuma 3,8:1 di latar `#EAE2D5`).
+- **Font**: cuma ada dua font yang kepakai, Cactus Classical Serif + Source Serif 4. Dua kebocoran ditambal di `globals.css`: `kbd` "Esc" di modal (sebelumnya monospace) dan span nama di judul hero (sebelumnya Cactus, padahal judulnya Source Serif 4).
+- **Navbar**: `SKILLS` → `TECHSTACK`, `WORK` → `PROJECTS` (id anchor `#skills` & `#work` tetap).
+- **Bersih-bersih**: 7 berkas kode mati (6 komponen lama + `lib/sanitize.ts`), 24 aset `public/` yang nggak kepakai, CSS sisa tema lama, surat tugas evolusi, dan README bawaan create-next-app (diganti README singkat). Semua masih bisa diambil lagi dari riwayat git.
+- **Section baru "Working with AI"** (`components/ai/ai-workflow-section.tsx`, `#ai`, link navbar `AI`): latar gelap `#1F1C1B` (satu-satunya section gelap), header seformat section lain. Isinya dari jawaban Dier: pembagian kerja (Dier pegang DoD dasar, gaya visual, dan keputusan bisnis; AI ngerjain kode, checklist DoD detail, dan gambar), 4 syarat Definition of Done (cek desktop & HP, tsc/lint/build, klaim cocok fakta, teman dekat udah nggak ada kritik), plus "Receipts": proses avatar chibi (Canva AI dari foto muka Dier → versi warna & hitam-putih, Antigravity nambahin beret/headset/topi), redesain web ini, dan cerita AI ngarang fitur demo yang ketangkep sebelum tayang.
+- **Projek ke-4 di katalog**: web portofolio ini sendiri, dengan tombol "View Source on GitHub" (repo `Deearss/portfolio-v2` publik; repo 3 demo lainnya privat). Thumbnail `public/showcase/portfolio.webp` dipotret pakai fungsi `potret()` dari `scripts/render-og.mjs`. Dots katalog sekarang nandain kartu terakhir pas track mentok kanan.
+- **Metadata**: keyword era freelance (`Freelance Indonesia`, `Systems Designer`, `Web Performance Optimization`, dll) diganti; `twitter:creator "@Deearss"` dibuang (akun X-nya belum dikonfirmasi punya Dier). Pesan otomatis tombol WhatsApp/Email diganti dari "discuss a project" (bahasa klien freelance) jadi soal lowongan.
+- **Link preview produksi masih versi lama**: selama `wip/v2-redesign` belum di-merge, link `deearss.netlify.app` di WhatsApp/sosmed masih nampilin judul "Systems & Software Engineer" + deskripsi Indonesia era freelance.
+- **Blocker yang masih ada**: `public/cv-haidir-aditya.pdf` masih placeholder ("INI BUKAN CV ASLI"). Wajib diganti CV asli sebelum merge ke `main`.
 
 ---
 
@@ -194,6 +211,8 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 npx tsc --noEmit
 
 # Audit aksesibilitas lokal (ringan & cepat)
+# AWAS: jalan di jsdom, jadi kontras warna NGGAK ikut dicek walau hasilnya "100% pass".
+# Buat cek kontras, jalanin axe-core di browser beneran.
 npm run audit:a11y
 
 # Build produksi
