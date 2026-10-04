@@ -31,9 +31,6 @@ export const BATAS_SUBJEK = 200;
  * di-percent-encode dulu (`%0A`) sebelum masuk header `Location`, jadi
  * nggak bisa dipakai nyuntik header. Sisanya, yang nggak pernah sah di
  * teks manusia, tetap dibuang.
- *
- * Rentangnya disamain sama `sanitizeInput` di lib/sanitize.ts biar dua
- * lapis pembersihan ini nggak beda aturan.
  */
 export function bersihin(mentah: string, batas: number): string {
   return mentah
