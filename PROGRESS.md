@@ -161,6 +161,33 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 
 ---
 
+## 🎯 Status Sesi Saat Ini: Redesain Seksi Proyek ("Featured Projects" Horizontal Slider & Detail Modal)
+- **Status**: ✅ **Selesai & Teruji** (Commit `32902d0` di branch `wip/v2-redesign`)
+- **Fitur & Perubahan**:
+  - **Slider Horizontal Interaktif** (`components/projects/project-deck-carousel.tsx`):
+    - Mengganti tumpukan kartu statis (fan deck) menjadi horizontal draggable slider catalog dengan snap points, drag momentum, dan kursor `cursor-grabbing` di seluruh layar saat drag.
+    - Menghapus efek shadow hover pada kartu agar sejalan dengan prinsip minimalis (flat 1px stone border `#E3DDD5` dengan transisi warna halus `#B8AEA4`).
+    - Overlay gelap (`bg-[#1F1C1B]/75`) pada gambar 16:9 dengan transisi fade murni saat di-hover, memunculkan ikon tangan tunjuk (`FaHandPointer`) dan micro-copy `"Click to view details"`.
+  - **Modal Detail Interaktif**:
+    - Memisahkan narasi panjang ke modal popup (mengadopsi pola Luputer) untuk menyelesaikan bentrok antara drag mouse dan seleksi teks (`select-text`).
+    - Gambar polos tanpa dekorasi header jendela palsu atau border putih samping.
+    - Konten modal terfokus: judul, narasi *About the Project*, dan daftar *Technologies & Libraries*.
+    - Tombol close murni ikon `X` minimalis tanpa wrapper kotak putih.
+    - Tombol *Open Live Demo* dibuat lebih proporsional (`px-4 py-2`, `text-xs`) tanpa drop shadow.
+  - **Header & Navigasi**:
+    - Judul section diubah menjadi `"Featured Projects"`.
+    - Padding dan max-width diselaraskan dengan section Techstack (`max-w-lg sm:px-10 mx-auto`).
+    - Deskripsi mobile dipendekkan dan diratakan (`max-sm:px-4`) agar pas 2 baris seimbang.
+    - Kontrol panah chevron (`<` dan `>`) ditata vertikal di bawah hint interaksi, tanpa pembungkus lingkaran putih, dengan warna disabled `#B8AEA4` yang tetap kontras.
+  - **Penyederhanaan Konten & Data**:
+    - Menghapus overline teks *"Featured Works & Demonstrations"*.
+    - Menghapus badge/label kategori (*Commercial Showcase*, dll) serta field `category` dari interface dan data.
+    - Menghapus bagian *Key Engineering Highlights* beserta field `highlights` dari interface dan data.
+    - Mempersingkat judul ketiga proyek: *AC Service Landing Page*, *Wedding Organizer Landing Page*, dan *Ice Supply Landing Page*.
+    - Menyeragamkan techstack: `Next.js`, `TypeScript`, dan `Tailwind CSS`.
+
+---
+
 ## 🚀 Perintah Verifikasi
 ```bash
 # Type check resmi
