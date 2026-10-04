@@ -6,11 +6,17 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  MoveHorizontal,
   ArrowUpRight,
 } from "lucide-react";
 import { FaHandPointer } from "react-icons/fa";
-import { SiNextdotjs, SiTypescript, SiTailwindcss } from "react-icons/si";
+import {
+  SiAstro,
+  SiGithub,
+  SiNetlify,
+  SiNextdotjs,
+  SiTypescript,
+  SiTailwindcss,
+} from "react-icons/si";
 
 interface TechItem {
   name: string;
@@ -28,7 +34,9 @@ interface ProjectItem {
   longDesc: string;
   techList: TechItem[];
   image: string;
-  liveUrl: string;
+  liveUrl?: string;
+  // Only for public repos, so the code itself can back up the description
+  sourceUrl?: string;
 }
 
 const PROJECTS: ProjectItem[] = [
@@ -37,13 +45,12 @@ const PROJECTS: ProjectItem[] = [
     num: "01",
     title: "AC Service Landing Page",
     shortDesc:
-      "Commercial AC service platform built with Next.js, TypeScript & Tailwind CSS.",
+      "AC installation and service landing page built with Astro.js & TypeScript.",
     longDesc:
-      "Engineered as a high-performance web platform tailored for B2B air conditioning installation, scheduled maintenance contracts, and corporate facility service requests. Features an instant multi-parameter quote calculator, structured appointment dispatch, and mobile-first ergonomics.",
+      "A demo landing page for an AC company that supplies, installs, and maintains units for offices, hotels, boarding houses, and schools. Written in Indonesian for local customers, it walks visitors through the services, the AC types on offer, a zoomable gallery of past installations, and a five-step project flow, then sends them to WhatsApp to request a quote.",
     techList: [
-      { name: "Next.js", icon: SiNextdotjs },
+      { name: "Astro.js", icon: SiAstro },
       { name: "TypeScript", icon: SiTypescript },
-      { name: "Tailwind CSS", icon: SiTailwindcss },
     ],
     image: "/showcase/ac.webp",
     liveUrl: "https://demo-jasa-ac.netlify.app",
@@ -55,7 +62,7 @@ const PROJECTS: ProjectItem[] = [
     shortDesc:
       "Wedding organizer landing page built with Next.js, TypeScript & Tailwind CSS.",
     longDesc:
-      "Crafted for an exclusive wedding atelier, this web platform combines aesthetic elegance with responsive client acquisition workflows. Features dynamic wedding package tier calculators, curated vendor coordination portfolios, and direct consultation scheduling.",
+      "A demo landing page for a wedding and event organizer, written in Indonesian. It presents three planning packages with price ranges, explains an open-book budgeting system and a 20/40/40 milestone payment plan, answers common client worries in an FAQ, and sends visitors to WhatsApp for a free first consultation.",
     techList: [
       { name: "Next.js", icon: SiNextdotjs },
       { name: "TypeScript", icon: SiTypescript },
@@ -69,16 +76,32 @@ const PROJECTS: ProjectItem[] = [
     num: "03",
     title: "Ice Supply Landing Page",
     shortDesc:
-      "B2B crystal ice supply and logistics portal built with Next.js, TypeScript & Tailwind CSS.",
+      "Ice subscription and delivery landing page built with Astro.js & TypeScript.",
     longDesc:
-      "Developed to streamline daily order fulfilment for commercial ice supplies across restaurants, coffee chains, and hospitality venues. Features recurring subscription tiering, bulk volume logistics calculations, and direct replenishment tracking.",
+      "A demo landing page for an ice supplier in Banjarmasin that delivers to restaurants, cafes, and small shops on a subscription. Written in Indonesian, it lists four ice types with monthly prices by daily volume, shows the delivery area, previews what ordering over WhatsApp looks like, and explains the four steps to start a subscription.",
+    techList: [
+      { name: "Astro.js", icon: SiAstro },
+      { name: "TypeScript", icon: SiTypescript },
+    ],
+    image: "/showcase/es-batu.webp",
+    liveUrl: "https://demo-es-batu.netlify.app",
+  },
+  {
+    id: "portfolio",
+    num: "04",
+    title: "Personal Portfolio Website",
+    shortDesc:
+      "This portfolio site, built with Next.js, TypeScript & Tailwind CSS.",
+    longDesc:
+      "The site you're looking at right now. I redesigned it in three days with Antigravity, then refined it with Claude Code. It's a static Next.js site on Netlify with one server-side piece: the WhatsApp and email buttons go through a relay, so my number and address never ship to the browser where scrapers could harvest them.",
     techList: [
       { name: "Next.js", icon: SiNextdotjs },
       { name: "TypeScript", icon: SiTypescript },
       { name: "Tailwind CSS", icon: SiTailwindcss },
+      { name: "Netlify", icon: SiNetlify },
     ],
-    image: "/showcase/es-batu.webp",
-    liveUrl: "https://demo-es-batu.netlify.app",
+    image: "/showcase/portfolio.webp",
+    sourceUrl: "https://github.com/Deearss/portfolio-v2",
   },
 ];
 
@@ -91,6 +114,11 @@ export function ProjectDeckCarousel() {
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
     null,
   );
+
+  // Modal focus refs: focus moves into the dialog on open and back to the card on close
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const lastTriggerRef = useRef<HTMLElement | null>(null);
 
   // Drag physics refs (avoid re-renders during 60fps drag)
   const isDownRef = useRef(false);
@@ -110,7 +138,10 @@ export function ProjectDeckCarousel() {
     const card = scrollContainerRef.current
       .firstElementChild as HTMLElement | null;
     const cardWidth = card ? card.offsetWidth + 24 : 420;
-    const index = Math.round(scrollLeft / cardWidth);
+    // At the end of the track the last card is in view even though the track
+    // can't scroll a full card further, so the last dot has to win there.
+    const atEnd = scrollLeft >= scrollWidth - clientWidth - 20;
+    const index = atEnd ? PROJECTS.length - 1 : Math.round(scrollLeft / cardWidth);
     setActiveIndex(Math.min(Math.max(index, 0), PROJECTS.length - 1));
   }, []);
 
@@ -128,15 +159,37 @@ export function ProjectDeckCarousel() {
     };
   }, [checkScrollState]);
 
-  // Lock body scroll when modal is open
+  // Lock body scroll, move focus into the modal, and keep Tab inside it while open
   useEffect(() => {
     if (selectedProject) {
       const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
+      closeButtonRef.current?.focus();
 
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
           setSelectedProject(null);
+          return;
+        }
+        if (e.key !== "Tab" || !dialogRef.current) return;
+
+        const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex="0"]',
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        const active = document.activeElement;
+
+        if (!dialogRef.current.contains(active)) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
+        } else if (e.shiftKey && active === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && active === last) {
+          e.preventDefault();
+          first.focus();
         }
       };
 
@@ -144,6 +197,7 @@ export function ProjectDeckCarousel() {
       return () => {
         document.body.style.overflow = originalOverflow;
         window.removeEventListener("keydown", handleKeyDown);
+        lastTriggerRef.current?.focus({ preventScroll: true });
       };
     }
   }, [selectedProject]);
@@ -266,9 +320,14 @@ export function ProjectDeckCarousel() {
     });
   };
 
-  const handleCardClick = (project: ProjectItem) => {
+  const openProject = (project: ProjectItem, trigger: HTMLElement) => {
+    lastTriggerRef.current = trigger;
+    setSelectedProject(project);
+  };
+
+  const handleCardClick = (project: ProjectItem, trigger: HTMLElement) => {
     if (!hasDraggedRef.current) {
-      setSelectedProject(project);
+      openProject(project, trigger);
     }
   };
 
@@ -345,8 +404,18 @@ export function ProjectDeckCarousel() {
             return (
               <div
                 key={project.id}
-                onClick={() => handleCardClick(project)}
-                className={`w-[84vw] shadow-lg shadow-black/5 p-2 max-w-[340px] sm:max-w-none sm:w-[420px] md:w-[450px] lg:w-[470px] shrink-0 snap-start bg-white rounded-2xl border border-[#E3DDD5] hover:border-[#B8AEA4] transition-colors duration-300 flex flex-col justify-between overflow-hidden group ${
+                role="button"
+                tabIndex={0}
+                aria-haspopup="dialog"
+                aria-label={`View details: ${project.title}`}
+                onClick={(e) => handleCardClick(project, e.currentTarget)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    openProject(project, e.currentTarget);
+                  }
+                }}
+                className={`w-[84vw] shadow-lg shadow-black/5 p-2 max-w-[340px] sm:max-w-none sm:w-[420px] md:w-[450px] lg:w-[470px] shrink-0 snap-start bg-white rounded-2xl border border-[#E3DDD5] hover:border-[#B8AEA4] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#8c4b26] transition-colors duration-300 flex flex-col justify-between overflow-hidden group ${
                   isDragging ? "cursor-grabbing select-none" : "cursor-pointer"
                 }`}
               >
@@ -364,7 +433,7 @@ export function ProjectDeckCarousel() {
                     />
 
                     {/* Dark Overlay & Pure Centered Hand Pointer Icon + Helper Cue (Pure Fade-in / Fade-out, Zero Scaling) */}
-                    <div className="absolute inset-0 bg-[#1F1C1B]/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col items-center justify-center gap-2">
+                    <div className="absolute inset-0 bg-[#1F1C1B]/75 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col items-center justify-center gap-2">
                       <FaHandPointer
                         className="w-8 h-8 sm:w-10 sm:h-10 text-white drop-shadow-md"
                         aria-hidden="true"
@@ -437,10 +506,11 @@ export function ProjectDeckCarousel() {
       {/* Project Detail Modal Dialog (Clean Solid Backdrop & Selectable Text) */}
       {selectedProject && (
         <div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-project-title"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-[#2D2A28]/60 overflow-y-auto animate-fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-[#2D2A28]/60 overflow-y-auto"
           onClick={() => setSelectedProject(null)}
         >
           <div
@@ -459,6 +529,8 @@ export function ProjectDeckCarousel() {
               </div>
 
               <button
+                ref={closeButtonRef}
+                type="button"
                 onClick={() => setSelectedProject(null)}
                 aria-label="Close project details modal"
                 className="p-1 text-[#7A6F66] hover:text-[#2D2A28] transition-colors cursor-pointer shrink-0"
@@ -468,7 +540,12 @@ export function ProjectDeckCarousel() {
             </div>
 
             {/* Modal Content Body */}
-            <div className="p-5 sm:p-6 max-h-[75vh] overflow-y-auto space-y-5">
+            <div
+              tabIndex={0}
+              role="region"
+              aria-label="Project details"
+              className="p-5 sm:p-6 max-h-[75vh] overflow-y-auto space-y-5 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#8c4b26]"
+            >
               {/* Full Image Preview (Plain Square, No Decoration) */}
               <Image
                 src={selectedProject.image}
@@ -518,21 +595,37 @@ export function ProjectDeckCarousel() {
             <div className="px-5 sm:px-6 py-3 bg-[#FAF7F2] border-t border-[#E3DDD5] flex items-center justify-between gap-3">
               <span className="text-xs text-[#7A6F66] hidden sm:inline">
                 Press{" "}
-                <kbd className="px-1.5 py-0.5 rounded bg-white border border-[#E3DDD5] font-mono text-[10px]">
+                <kbd className="px-1.5 py-0.5 rounded bg-white border border-[#E3DDD5] text-[10px]">
                   Esc
                 </kbd>{" "}
                 to close
               </span>
 
-              <a
-                href={selectedProject.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-md bg-[#2D2A28] hover:bg-[#403B37] text-[#FAF7F2] font-semibold text-xs transition-all active:scale-95 ml-auto"
-              >
-                <span>Open Live Demo</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
+              <div className="w-full sm:w-auto flex gap-2 ml-auto">
+                {selectedProject.sourceUrl && (
+                  <a
+                    href={selectedProject.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-md bg-[#2D2A28] hover:bg-[#403B37] text-[#FAF7F2] font-semibold text-xs transition-all active:scale-95"
+                  >
+                    <SiGithub className="w-3.5 h-3.5" aria-hidden="true" />
+                    <span>View Source on GitHub</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                )}
+                {selectedProject.liveUrl && (
+                  <a
+                    href={selectedProject.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-md bg-[#2D2A28] hover:bg-[#403B37] text-[#FAF7F2] font-semibold text-xs transition-all active:scale-95"
+                  >
+                    <span>Open Live Demo</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>
