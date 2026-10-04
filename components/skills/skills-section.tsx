@@ -116,7 +116,8 @@ export function SkillsSection() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#2D2A28] tracking-tight">
             Techstack
           </h2>
-          <p className="text-sm sm:text-base text-[#7A6F66] mt-3 leading-relaxed">
+          {/* Darker than the usual #7A6F66: on this #EAE2D5 background it only reaches 3.8:1 (WCAG AA needs 4.5:1) */}
+          <p className="text-sm sm:text-base text-[#655B53] mt-3 leading-relaxed">
             Core technologies and engineering tools used to build modern web applications.
           </p>
         </div>

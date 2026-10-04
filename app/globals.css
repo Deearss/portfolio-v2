@@ -4,18 +4,6 @@
   :root {
     --background: #FAF7F2;
     --foreground: #2D2A28;
-
-    /* Warm Pebble Palette */
-    --pebble-50: #FAF7F2;
-    --pebble-100: #E3DDD5;
-    --pebble-200: #B8AEA4;
-    --pebble-300: #7A6F66;
-    --pebble-400: #2D2A28;
-    --pebble-dark: #1F1C1B;
-
-    --brand-accent: #2D2A28;
-    --brand-yellow: #FFDF00;
-    --brand-almond: #c48b6d;
   }
 
   /* Custom Brand Selection Highlight (Almond Nuts) */
@@ -48,10 +36,7 @@
   h3,
   h4,
   h5,
-  h6,
-  .font-header,
-  .font-display,
-  .font-highlight {
+  h6 {
     font-family: var(--font-source-serif), Georgia, serif !important;
     font-weight: 600;
   }
@@ -71,21 +56,20 @@ a,
 button,
 input,
 textarea,
+kbd,
 .font-sans,
-.font-serif,
-.font-body {
+.font-serif {
   font-family: var(--font-cactus), Georgia, serif;
 }
 
+/* Everything inside a heading (e.g. the highlighted name span in the hero h1) keeps the heading font */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6,
-.font-header,
-.font-display,
-.font-highlight {
+:is(h1, h2, h3, h4, h5, h6) * {
   font-family: var(--font-source-serif), Georgia, serif !important;
 }
 
@@ -125,26 +109,6 @@ h6,
   ::-webkit-scrollbar-thumb:hover {
     background: #A8A29E;
   }
-}
-
-/* Excel Table Sleek Horizontal Scrollbar */
-.excel-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #94A3B8 #F1F5F9;
-}
-.excel-scrollbar::-webkit-scrollbar {
-  height: 6px;
-}
-.excel-scrollbar::-webkit-scrollbar-track {
-  background: #F1F5F9;
-  border-radius: 9999px;
-}
-.excel-scrollbar::-webkit-scrollbar-thumb {
-  background: #94A3B8;
-  border-radius: 9999px;
-}
-.excel-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #107C41;
 }
 
 /* Scrolled Navbar Styles (Clean Solid Warm Pebble, No Glassmorphism) */
