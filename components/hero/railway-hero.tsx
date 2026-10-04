@@ -50,9 +50,9 @@ export function RailwayHero() {
             </h1>
 
             {/* Professional Role */}
-            <div className="text-xl sm:text-2xl font-semibold text-[#7A6F66] mb-4 sm:mb-5 tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-semibold text-[#7A6F66] mb-4 sm:mb-5 tracking-tight">
               Fullstack Developer
-            </div>
+            </h2>
 
             {/* Selected Tagline */}
             <p className="text-[0.85rem] sm:text-[0.98rem] text-[#7A6F66] leading-relaxed mb-7 max-w-xl font-medium">

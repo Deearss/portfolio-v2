@@ -30,7 +30,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center py-1"
-              aria-label="Buka profil GitHub saya di tab baru"
+              aria-label="Open GitHub profile in a new tab"
             >
               <Image
                 src="/footer-image/longicon-github.webp"
@@ -56,7 +56,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center py-1"
-              aria-label="Buka profil LinkedIn saya di tab baru"
+              aria-label="Open LinkedIn profile in a new tab"
             >
               <Image
                 src="/footer-image/longicon-linkedin.webp"
@@ -82,7 +82,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center py-1"
-              aria-label="Buka profil Projects.co.id saya di tab baru"
+              aria-label="Open Projects.co.id profile in a new tab"
             >
               <Image
                 src="/footer-image/longicon-projectscoid.webp"
@@ -106,13 +106,13 @@ export function Footer() {
             <button
               onClick={scrollToTop}
               className="p-2 sm:p-2.5 rounded-lg bg-stone-800 hover:bg-stone-700 active:scale-95 text-stone-200 transition-all cursor-pointer"
-              aria-label="Kembali ke atas"
+              aria-label="Back to top"
             >
               <ArrowUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
             <div className="hidden md:block pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-top-10 transition-all duration-200 z-30">
               <div className="relative px-2.5 py-1 text-[11px] font-semibold text-stone-100 bg-stone-800/95 border border-stone-700 rounded-md shadow-xl whitespace-nowrap">
-                Kembali ke atas
+                Back to top
                 <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-stone-800" />
               </div>
             </div>

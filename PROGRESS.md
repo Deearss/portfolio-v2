@@ -146,14 +146,17 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 
 ---
 
-## 🎯 Status Sesi Saat Ini: Education Section Implementation & Polish
-- **Fokus**: Merombak section About Me menjadi **"Education"** ([components/about/about-section.tsx](file:///home/dier/Ngoding/vibe-coding/gemini-code/portfolio-v2/components/about/about-section.tsx)) dengan judul `Education` dan subtitle ringkas: *"Formal academic foundations and hands-on software engineering training."*. Layout menggunakan 2 kartu bergaya *academic paper* berdampingan (50:50 grid):
-  - **Higher Education (S1 Teknik Informatika - UNISKA MAB)**: Ikon besar `GraduationCap` (`size-14`), judul centered, timeline `Active (2024 - Present)`. Paragraf pertama sebagai overview umum kurikulum, diikuti 2 sub-paragraf memorable highlights yang dibuat menjorok ke dalam (`pl-3.5 sm:pl-4`): *Relational Database & OOP Architecture* (teks "(PBO)" telah dihapus) serta *Applied Statistics & Artificial Intelligence*, dilengkapi bullet point hanging warm almond (`bg-[#8c4b26]`).
-  - **Vocational High School (SMKN 4 Banjarmasin - RPL)**: Ikon besar `Code2` (`size-14`), judul centered, timeline `Graduated (2021 - 2024)`. Paragraf pertama sebagai overview kejuruan, diikuti 2 sub-paragraf menjorok ke dalam (`pl-3.5 sm:pl-4`): *Vocational Competency Exam (UKK)* (aplikasi kasir offline 3 hari tanpa AI) serta *External Industry Assessment*, dilengkapi bullet point hanging warm almond identik.
-  - **Dekorasi Pojok (Corner Accents)**: Tiap pojokan (4 sudut) dari kedua paper dilengkapi aksen bracket L-shaped minimalis (`border-[#B8AEA4]`) bernuansa blueprint/manuskrip akademik sehingga lembaran paper tidak polos tanpa merusak clean aesthetic.
-  - **Hirarki & Keseimbangan Visual**: Pola nested indentation dan hanging bullet mempertegas hirarki bacaan; kedua paper memiliki tinggi dan ritme vertikal simetris di desktop dan responsif di mobile.
-  - **Navigasi**: Navbar disinkronkan ke `EDUCATION` (`#education` dengan alias `#about`).
-- **Next Agenda**: Review section Experience / Career, sinkronisasi bahasa Inggris untuk section lain, atau penyempurnaan showcase karya.
+## 🎯 Status Sesi Saat Ini: Standardisasi Bahasa Inggris Natural (Global i18n Polish)
+- **Fokus**: Menuntaskan standardisasi seluruh konten teks, metadata, dan atribut aksesibilitas (`aria-label`) ke dalam bahasa Inggris natural (idiomatic US English) di semua section aktif tanpa em-dash (`—`), tanpa AI clichés, dan tanpa penerjemahan harfiah kaku:
+  - **Metadata & Root Layout** (`app/layout.tsx`): Atribut `lang` di-set ke `"en"`, dan OpenGraph `locale` di-set ke `"en_US"`.
+  - **Navbar** (`components/navbar/navbar.tsx`): Menu links (`EDUCATION`, `SKILLS`, `WORK`, `CONTACT`), tombol `HIRE ME`, serta `aria-label` mobile hamburger toggle (*"Open navigation menu"* / *"Close navigation menu"*).
+  - **Education Section** (`components/about/about-section.tsx`): Format paper akademik 50:50 dengan corner accents L-shaped, hanging bullet points almond, dan narasi kurikulum perguruan tinggi (*Applied Statistics & Artificial Intelligence*, *Relational Database & OOP Architecture*) serta SMK (*Vocational Competency Exam (UKK)*, *External Industry Assessment*).
+  - **Skills Section** (`components/skills/skills-section.tsx`): Header overline (*"Technical Stack & Tooling"*), deskripsi adaptif, dan 4 pilar stack (*Frontend*, *Backend*, *Databases*, *DevOps*).
+  - **Selected Web Projects** (`components/projects/project-deck-carousel.tsx`): Judul showcase (*Commercial HVAC & AC Service Platform*, *Boutique Wedding Organizer Landing Page*, *Crystal Ice Supply & B2B Subscription*), overline (*"Featured Works & Demonstrations"*), subtitle, direct demo pill buttons, serta seluruh kontrol navigasi (`aria-label` next/prev project).
+  - **Contact Section** (`components/contact/minimal-contact.tsx`): Overline (*"Get In Touch"*), title (*"Start a Conversation"*), direct message gateway (*Message on WhatsApp*, *Send an Email*), dan 3 kartu profil eksternal (*Repositories & Code*, *Career Profile*, *Client Reviews & Rating*).
+  - **Footer** (`components/footer/footer.tsx`): Tautan profil sosial dan kontrol tombol kembali ke atas (*"Back to top"*).
+  - **Contact Redirect Gateway** (`lib/kontak-redirect.ts`): Pesan fallback 503 saat env belum disetel diterjemahkan ke bahasa Inggris profesional.
+- **Status Git**: Siap di-commit secara lokal (tanpa push, sesuai aturan no autonomous push).
 
 ---
 

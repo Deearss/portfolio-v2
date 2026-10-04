@@ -39,11 +39,11 @@ import {
 
 interface TechItem {
   name: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean | "true" | "false" }>;
 }
 
 interface SkillPillar {
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean | "true" | "false" }>;
   title: string;
   avatar: string;
   items: TechItem[];
@@ -114,19 +114,19 @@ export function SkillsSection() {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">
           <p className="text-xs sm:text-sm font-medium uppercase tracking-widest text-[#7A6F66] mb-2">
-            Peralatan &amp; Fondasi Teknis
+            Technical Stack &amp; Tooling
           </p>
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-semibold text-[#2D2A28] tracking-tight">
             Techstack
           </h2>
           <p className="text-sm sm:text-base text-[#7A6F66] mt-3 leading-relaxed max-w-xl mx-auto">
             <span className="block sm:hidden">
-              Peralatan dan teknologi utama untuk merancang antarmuka serta sistem web modern.
+              Core technologies and engineering tools used to build modern web applications.
             </span>
             <span className="hidden sm:inline">
-              Kombinasi bahasa, framework, dan perkakas yang saya gunakan untuk{" "}
+              Languages, frameworks, and developer tooling I rely on to{" "}
               <br className="hidden sm:inline" />
-              membangun antarmuka responsif serta sistem backend yang terstruktur.
+              engineer responsive client interfaces and structured backend systems.
             </span>
           </p>
         </div>
@@ -156,7 +156,7 @@ export function SkillsSection() {
                   {/* Paper Card Header */}
                   <div className="border-b border-[#EAE2D5] pb-2 sm:pb-2.5 mb-2.5 sm:mb-3.5">
                     <div className="flex items-center gap-1.5 sm:gap-2">
-                      <PillarIcon className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 text-[#2D2A28]" />
+                      <PillarIcon aria-hidden="true" className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 text-[#2D2A28]" />
                       <h3 className="text-xs sm:text-base font-bold text-[#2D2A28] tracking-tight">
                         {pillar.title}
                       </h3>
@@ -172,7 +172,7 @@ export function SkillsSection() {
                           key={item.name}
                           className="flex items-center gap-1.5 sm:gap-2.5 group/item py-0.5"
                         >
-                          <ItemIcon className="w-3.5 h-3.5 sm:w-[17px] sm:h-[17px] text-[#7A6F66] group-hover/item:text-[#8c4b26] transition-colors shrink-0" />
+                          <ItemIcon aria-hidden="true" className="w-3.5 h-3.5 sm:w-[17px] sm:h-[17px] text-[#7A6F66] group-hover/item:text-[#8c4b26] transition-colors shrink-0" />
                           <span className="text-[11px] sm:text-[13px] font-medium text-[#2D2A28] group-hover/item:text-[#8c4b26] transition-colors whitespace-nowrap">
                             {item.name}
                           </span>

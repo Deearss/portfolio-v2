@@ -49,7 +49,7 @@ export const metadata: Metadata = {
       "I build scalable web apps with a rigorous Definition of Done and clean systems architecture. Powered by modern AI tools daily.",
     url: "https://deearss.netlify.app",
     siteName: "Haidir Aditya Portfolio",
-    locale: "id_ID",
+    locale: "en_US",
     type: "website",
     images: [
       {
@@ -81,7 +81,7 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="id"
+      lang="en"
       className={`${cactusClassicalSerif.variable} ${sourceSerif4.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#FAF7F2] text-[#2D2A28]">

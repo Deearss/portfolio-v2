@@ -23,8 +23,8 @@ interface FannedCardItem {
 const FAN_CARDS: FannedCardItem[] = [
   {
     id: "ac",
-    title: "Landing Page Jasa AC Skala Proyek",
-    shortTitle: "Jasa AC",
+    title: "Commercial HVAC & AC Service Platform",
+    shortTitle: "HVAC Services",
     category: "Services Showcase",
     image: "/showcase/ac.webp",
     liveUrl: "https://demo-jasa-ac.netlify.app",
@@ -33,7 +33,7 @@ const FAN_CARDS: FannedCardItem[] = [
   },
   {
     id: "wedding",
-    title: "Landing Page Wedding Organizer",
+    title: "Boutique Wedding Organizer Landing Page",
     shortTitle: "Wedding",
     category: "Commercial Showcase",
     image: "/showcase/wedding.webp",
@@ -43,8 +43,8 @@ const FAN_CARDS: FannedCardItem[] = [
   },
   {
     id: "es-batu",
-    title: "Landing Page Langganan Es Batu Kristal",
-    shortTitle: "Es Batu Kristal",
+    title: "Crystal Ice Supply & B2B Subscription",
+    shortTitle: "Crystal Ice B2B",
     category: "B2B Subscription",
     image: "/showcase/es-batu.webp",
     liveUrl: "https://demo-es-batu.netlify.app",
@@ -110,13 +110,13 @@ export function ProjectDeckCarousel() {
         {/* Main Section Header */}
         <div className="mb-14 sm:mb-20 text-center max-w-3xl mx-auto">
           <p className="text-xs sm:text-sm font-medium uppercase tracking-widest text-[#7A6F66] mb-2">
-            Karya Pilihan &amp; Demonstrasi
+            Featured Works &amp; Demonstrations
           </p>
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-semibold text-[#2D2A28] tracking-tight">
-            Hasil Kerjaan &amp; Eksplorasi Web
+            Selected Web Projects
           </h2>
           <p className="text-sm sm:text-base text-[#7A6F66] mt-3 leading-relaxed max-w-xl mx-auto">
-            Aplikasi web fungsional dengan performa kencang, responsif di berbagai perangkat, dan dapat langsung kamu uji secara online.
+            Functional web applications engineered for speed, cross-device responsiveness, and real-time live preview.
           </p>
         </div>
 
@@ -165,7 +165,7 @@ export function ProjectDeckCarousel() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[#2D2A28] hover:text-[#7A6F66] p-1 transition-colors"
-                    aria-label={`Buka Live Demo ${card.title}`}
+                    aria-label={`Open Live Demo for ${card.title}`}
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
@@ -198,7 +198,7 @@ export function ProjectDeckCarousel() {
                     href={card.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Buka Demo ${card.title}`}
+                    aria-label={`Open Live Demo for ${card.title}`}
                     className="px-3 py-1.5 rounded-md bg-[#2D2A28] hover:bg-[#403B37] text-[#FAF7F2] text-xs font-semibold shrink-0 inline-flex items-center gap-1 transition-all shadow-xs active:scale-95"
                   >
                     <span>Live Demo</span>
@@ -217,7 +217,7 @@ export function ProjectDeckCarousel() {
                   (activeMobileIndex - 1 + FAN_CARDS.length) % FAN_CARDS.length
                 )
               }
-              aria-label="Projek Sebelumnya"
+              aria-label="Previous Project"
               className="p-2 rounded-md bg-white border border-[#E3DDD5] hover:border-[#B8AEA4] text-[#2D2A28] active:scale-95 cursor-pointer min-w-9 min-h-9 flex items-center justify-center shadow-xs"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -228,7 +228,7 @@ export function ProjectDeckCarousel() {
                 <button
                   key={dotIdx}
                   onClick={() => scrollToMobileCard(dotIdx)}
-                  aria-label={`Lihat Projek ${dotIdx + 1}`}
+                  aria-label={`View Project ${dotIdx + 1}`}
                   className="p-1 cursor-pointer"
                 >
                   <span
@@ -244,7 +244,7 @@ export function ProjectDeckCarousel() {
               onClick={() =>
                 scrollToMobileCard((activeMobileIndex + 1) % FAN_CARDS.length)
               }
-              aria-label="Projek Berikutnya"
+              aria-label="Next Project"
               className="p-2 rounded-md bg-white border border-[#E3DDD5] hover:border-[#B8AEA4] text-[#2D2A28] active:scale-95 cursor-pointer min-w-9 min-h-9 flex items-center justify-center shadow-xs"
             >
               <ChevronRight className="w-4 h-4" />
@@ -287,8 +287,8 @@ export function ProjectDeckCarousel() {
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
                           className="text-[#2D2A28] hover:text-[#7A6F66] transition-colors"
-                          aria-label={`Buka Live Demo ${card.title}`}
-                          title="Buka Live Demo"
+                          aria-label={`Open Live Demo for ${card.title}`}
+                          title="Open Live Demo"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
@@ -316,7 +316,7 @@ export function ProjectDeckCarousel() {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          aria-label={`Live Demo ${card.title}`}
+                          aria-label={`Open Live Demo for ${card.title}`}
                           className="px-3 py-1.5 rounded-md bg-[#2D2A28] hover:bg-[#403B37] text-[#FAF7F2] text-xs font-semibold shrink-0 inline-flex items-center gap-1 shadow-xs active:scale-95 transition-all"
                         >
                           <span>Live Demo</span>
