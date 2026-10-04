@@ -1,417 +1,635 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
-  ExternalLink,
-  ArrowUpRight,
+  X,
   ChevronLeft,
   ChevronRight,
+  ArrowUpRight,
 } from "lucide-react";
-import { ExcelBeforeAfter } from "./excel-before-after";
-import { TimesheetHorizontalGallery } from "./timesheet-horizontal-gallery";
+import { FaHandPointer } from "react-icons/fa";
+import {
+  SiAstro,
+  SiGithub,
+  SiNetlify,
+  SiNextdotjs,
+  SiTypescript,
+  SiTailwindcss,
+} from "react-icons/si";
 
-interface FannedCardItem {
-  id: string;
-  title: string;
-  shortTitle: string;
-  category: string;
-  image: string;
-  liveUrl: string;
-  tilt: string;
-  zIndex: number;
+interface TechItem {
+  name: string;
+  icon: React.ComponentType<{
+    className?: string;
+    "aria-hidden"?: boolean | "true" | "false";
+  }>;
 }
 
-const FAN_CARDS: FannedCardItem[] = [
+interface ProjectItem {
+  id: string;
+  num: string;
+  title: string;
+  shortDesc: string;
+  longDesc: string;
+  techList: TechItem[];
+  image: string;
+  liveUrl?: string;
+  // Only for public repos, so the code itself can back up the description
+  sourceUrl?: string;
+}
+
+const PROJECTS: ProjectItem[] = [
   {
     id: "ac",
-    title: "Landing Page Jasa AC Skala Proyek",
-    shortTitle: "Jasa AC",
-    category: "Services Showcase",
+    num: "01",
+    title: "AC Service Landing Page",
+    shortDesc:
+      "AC installation and service landing page built with Astro.js & TypeScript.",
+    longDesc:
+      "A demo landing page for an AC company that supplies, installs, and maintains units for offices, hotels, boarding houses, and schools. Written in Indonesian for local customers, it walks visitors through the services, the AC types on offer, a zoomable gallery of past installations, and a five-step project flow, then sends them to WhatsApp to request a quote.",
+    techList: [
+      { name: "Astro.js", icon: SiAstro },
+      { name: "TypeScript", icon: SiTypescript },
+    ],
     image: "/showcase/ac.webp",
     liveUrl: "https://demo-jasa-ac.netlify.app",
-    tilt: "-rotate-8 sm:-translate-x-[200px] md:-translate-x-[260px] scale-[0.92] sm:scale-95 hover:-rotate-2 hover:-translate-y-3 hover:scale-105",
-    zIndex: 10,
   },
   {
     id: "wedding",
-    title: "Landing Page Wedding Organizer",
-    shortTitle: "Wedding",
-    category: "Commercial Showcase",
+    num: "02",
+    title: "Wedding Organizer Landing Page",
+    shortDesc:
+      "Wedding organizer landing page built with Next.js, TypeScript & Tailwind CSS.",
+    longDesc:
+      "A demo landing page for a wedding and event organizer, written in Indonesian. It presents three planning packages with price ranges, explains an open-book budgeting system and a 20/40/40 milestone payment plan, answers common client worries in an FAQ, and sends visitors to WhatsApp for a free first consultation.",
+    techList: [
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Tailwind CSS", icon: SiTailwindcss },
+    ],
     image: "/showcase/wedding.webp",
     liveUrl: "https://demo-wedding-organizer.netlify.app",
-    tilt: "rotate-0 z-20 scale-105 sm:scale-110 shadow-2xl hover:-translate-y-3 hover:scale-115",
-    zIndex: 20,
   },
   {
     id: "es-batu",
-    title: "Landing Page Langganan Es Batu Kristal",
-    shortTitle: "Es Batu Kristal",
-    category: "B2B Subscription",
+    num: "03",
+    title: "Ice Supply Landing Page",
+    shortDesc:
+      "Ice subscription and delivery landing page built with Astro.js & TypeScript.",
+    longDesc:
+      "A demo landing page for an ice supplier in Banjarmasin that delivers to restaurants, cafes, and small shops on a subscription. Written in Indonesian, it lists four ice types with monthly prices by daily volume, shows the delivery area, previews what ordering over WhatsApp looks like, and explains the four steps to start a subscription.",
+    techList: [
+      { name: "Astro.js", icon: SiAstro },
+      { name: "TypeScript", icon: SiTypescript },
+    ],
     image: "/showcase/es-batu.webp",
     liveUrl: "https://demo-es-batu.netlify.app",
-    tilt: "rotate-8 sm:translate-x-[200px] md:translate-x-[260px] scale-[0.92] sm:scale-95 hover:rotate-2 hover:-translate-y-3 hover:scale-105",
-    zIndex: 10,
+  },
+  {
+    id: "portfolio",
+    num: "04",
+    title: "Personal Portfolio Website",
+    shortDesc:
+      "This portfolio site, built with Next.js, TypeScript & Tailwind CSS.",
+    longDesc:
+      "The site you're looking at right now. I redesigned it in three days with Antigravity, then refined it with Claude Code. It's a static Next.js site on Netlify with one server-side piece: the WhatsApp and email buttons go through a relay, so my number and address never ship to the browser where scrapers could harvest them.",
+    techList: [
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Tailwind CSS", icon: SiTailwindcss },
+      { name: "Netlify", icon: SiNetlify },
+    ],
+    image: "/showcase/portfolio.webp",
+    sourceUrl: "https://github.com/Deearss/portfolio-v2",
   },
 ];
 
 export function ProjectDeckCarousel() {
-  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
-  const [activeMobileIndex, setActiveMobileIndex] = useState<number>(1); // default wedding
-  const mobileSliderRef = useRef<HTMLDivElement>(null);
-  const isProgrammaticScroll = useRef<boolean>(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
+    null,
+  );
 
-  const scrollToMobileCard = (index: number) => {
-    setActiveMobileIndex(index);
-    const container = mobileSliderRef.current;
-    if (container) {
-      isProgrammaticScroll.current = true;
-      const targetChild = container.children[index] as HTMLElement | undefined;
-      if (targetChild) {
-        container.scrollTo({
-          left: targetChild.offsetLeft,
-          behavior: "smooth",
-        });
-      }
-      setTimeout(() => {
-        isProgrammaticScroll.current = false;
-      }, 400);
-    }
-  };
+  // Modal focus refs: focus moves into the dialog on open and back to the card on close
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const lastTriggerRef = useRef<HTMLElement | null>(null);
 
-  const handleMobileScroll = () => {
-    if (isProgrammaticScroll.current) return;
-    const container = mobileSliderRef.current;
-    if (!container) return;
-    const scrollLeft = container.scrollLeft;
-    const cardWidth = container.offsetWidth;
-    const newIndex = Math.round(scrollLeft / (cardWidth || 1));
-    if (newIndex >= 0 && newIndex < FAN_CARDS.length && newIndex !== activeMobileIndex) {
-      setActiveMobileIndex(newIndex);
-    }
-  };
+  // Drag physics refs (avoid re-renders during 60fps drag)
+  const isDownRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const lastXRef = useRef(0);
+  const lastTimeRef = useRef(0);
+  const velocityRef = useRef(0);
+  const hasDraggedRef = useRef(false);
 
-  useEffect(() => {
-    const container = mobileSliderRef.current;
-    if (container && container.children[1]) {
-      const weddingCard = container.children[1] as HTMLElement;
-      container.scrollTo({
-        left: weddingCard.offsetLeft,
-        behavior: "instant",
-      });
-    }
+  const checkScrollState = useCallback(() => {
+    if (!scrollContainerRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+    setCanScrollLeft(scrollLeft > 20);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 20);
+
+    const card = scrollContainerRef.current
+      .firstElementChild as HTMLElement | null;
+    const cardWidth = card ? card.offsetWidth + 24 : 420;
+    // At the end of the track the last card is in view even though the track
+    // can't scroll a full card further, so the last dot has to win there.
+    const atEnd = scrollLeft >= scrollWidth - clientWidth - 20;
+    const index = atEnd ? PROJECTS.length - 1 : Math.round(scrollLeft / cardWidth);
+    setActiveIndex(Math.min(Math.max(index, 0), PROJECTS.length - 1));
   }, []);
 
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    checkScrollState();
+    container.addEventListener("scroll", checkScrollState, { passive: true });
+    window.addEventListener("resize", checkScrollState);
+
+    return () => {
+      container.removeEventListener("scroll", checkScrollState);
+      window.removeEventListener("resize", checkScrollState);
+    };
+  }, [checkScrollState]);
+
+  // Lock body scroll, move focus into the modal, and keep Tab inside it while open
+  useEffect(() => {
+    if (selectedProject) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      closeButtonRef.current?.focus();
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setSelectedProject(null);
+          return;
+        }
+        if (e.key !== "Tab" || !dialogRef.current) return;
+
+        const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex="0"]',
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        const active = document.activeElement;
+
+        if (!dialogRef.current.contains(active)) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
+        } else if (e.shiftKey && active === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && active === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      };
+
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        window.removeEventListener("keydown", handleKeyDown);
+        lastTriggerRef.current?.focus({ preventScroll: true });
+      };
+    }
+  }, [selectedProject]);
+
+  // Mouse Drag Handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    isDownRef.current = true;
+    hasDraggedRef.current = false;
+    setIsDragging(true);
+    document.body.style.cursor = "grabbing";
+    document.body.style.userSelect = "none";
+    startXRef.current = e.pageX - container.offsetLeft;
+    scrollLeftRef.current = container.scrollLeft;
+    lastXRef.current = e.pageX;
+    lastTimeRef.current = performance.now();
+    velocityRef.current = 0;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDownRef.current || !scrollContainerRef.current) return;
+    e.preventDefault();
+
+    const container = scrollContainerRef.current;
+    const x = e.pageX - container.offsetLeft;
+    const walk = x - startXRef.current;
+
+    if (Math.abs(walk) > 6) {
+      hasDraggedRef.current = true;
+    }
+
+    container.scrollLeft = scrollLeftRef.current - walk;
+
+    const now = performance.now();
+    const dt = now - lastTimeRef.current;
+    if (dt > 10) {
+      velocityRef.current = (e.pageX - lastXRef.current) / dt;
+      lastXRef.current = e.pageX;
+      lastTimeRef.current = now;
+    }
+  };
+
+  const endDrag = useCallback(() => {
+    if (!isDownRef.current) return;
+    isDownRef.current = false;
+    setIsDragging(false);
+    document.body.style.cursor = "";
+    document.body.style.userSelect = "";
+
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const card = container.firstElementChild as HTMLElement | null;
+    const cardWidth = card ? card.offsetWidth + 24 : 420;
+    const currentScroll = container.scrollLeft;
+
+    let targetIndex = Math.round(currentScroll / cardWidth);
+
+    if (velocityRef.current < -0.2) {
+      targetIndex = Math.min(targetIndex + 1, PROJECTS.length - 1);
+    } else if (velocityRef.current > 0.2) {
+      targetIndex = Math.max(targetIndex - 1, 0);
+    }
+
+    container.scrollTo({
+      left: targetIndex * cardWidth,
+      behavior: "smooth",
+    });
+
+    setTimeout(() => {
+      hasDraggedRef.current = false;
+    }, 50);
+  }, []);
+
+  // Global mouseup listener to ensure grabbing cursor resets cleanly even outside container
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      if (isDownRef.current) {
+        endDrag();
+      }
+    };
+    window.addEventListener("mouseup", handleGlobalMouseUp);
+    return () => {
+      window.removeEventListener("mouseup", handleGlobalMouseUp);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+  }, [endDrag]);
+
+  const scrollByDirection = (direction: "left" | "right") => {
+    if (!scrollContainerRef.current) return;
+    const card = scrollContainerRef.current
+      .firstElementChild as HTMLElement | null;
+    const cardWidth = card ? card.offsetWidth + 24 : 420;
+    const currentScroll = scrollContainerRef.current.scrollLeft;
+    let nextIndex =
+      direction === "left"
+        ? Math.floor(currentScroll / cardWidth) - 1
+        : Math.ceil(currentScroll / cardWidth) + 1;
+
+    nextIndex = Math.min(Math.max(nextIndex, 0), PROJECTS.length - 1);
+
+    scrollContainerRef.current.scrollTo({
+      left: nextIndex * cardWidth,
+      behavior: "smooth",
+    });
+  };
+
+  const scrollToProject = (index: number) => {
+    if (!scrollContainerRef.current) return;
+    const card = scrollContainerRef.current
+      .firstElementChild as HTMLElement | null;
+    const cardWidth = card ? card.offsetWidth + 24 : 420;
+
+    scrollContainerRef.current.scrollTo({
+      left: index * cardWidth,
+      behavior: "smooth",
+    });
+  };
+
+  const openProject = (project: ProjectItem, trigger: HTMLElement) => {
+    lastTriggerRef.current = trigger;
+    setSelectedProject(project);
+  };
+
+  const handleCardClick = (project: ProjectItem, trigger: HTMLElement) => {
+    if (!hasDraggedRef.current) {
+      openProject(project, trigger);
+    }
+  };
+
   return (
-    <section id="projek" className="scroll-mt-16 sm:scroll-mt-20 py-16 sm:py-20 bg-[#FAFAF9] border-b border-stone-200/60 font-sans overflow-hidden">
-      <div className="max-w-6xl mx-auto px-3.5 sm:px-6">
-        
-        {/* Main Section Title Header */}
-        <div className="mb-20 sm:mb-28 text-center max-w-3xl mx-auto px-2 sm:px-0">
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-stone-900 tracking-tight text-balance">
-            Saya Bisa Bantu Apa?
+    <section
+      id="work"
+      className="scroll-mt-16 sm:scroll-mt-20 py-16 sm:py-24 bg-[#FAF7F2] border-b border-[#E3DDD5] overflow-hidden"
+    >
+      {/* Anchor for backward compatibility */}
+      <span id="projek" className="sr-only" />
+
+      <div className="w-full max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10">
+        {/* Main Section Header (Padding & Max-Width Parity with Techstack) */}
+        <div className="text-center max-w-lg sm:px-10 mb-12 sm:mb-16 mx-auto">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#2D2A28] tracking-tight">
+            Featured Projects
           </h2>
-          <p className="text-sm sm:text-lg text-stone-600 mt-2 sm:mt-3 leading-relaxed text-balance">
-            Rangkuman proyek otomatisasi spreadsheet dan aplikasi web yang bisa langsung kamu uji.
+          <p className="text-sm sm:text-base text-[#7A6F66] mt-3 leading-relaxed max-sm:px-4">
+            <span className="sm:hidden">
+              Fast, responsive web applications with live previews you can try.
+            </span>
+            <span className="hidden sm:inline">
+              Functional web applications engineered for speed, cross-device
+              responsiveness, and real-time live preview.
+            </span>
           </p>
         </div>
 
-        <div className="space-y-32 sm:space-y-48">
+        {/* Navigation & Interaction Controls (Stacked Vertically: Explanation on Top, Bare Arrow Buttons on Bottom) */}
+        <div className="flex flex-col items-center text-center mt-10 sm:mt-14 mb-2 sm:mb-4 max-w-2xl mx-auto px-4">
+          {/* Bare Minimalist Arrow Controls (No white circle wrapper, borderless, shadowless) */}
+          <div className="flex items-center justify-center gap-6 mt-3">
+            <button
+              onClick={() => scrollByDirection("left")}
+              disabled={!canScrollLeft}
+              aria-label="Previous Project"
+              className={`p-1.5 transition-colors cursor-pointer ${
+                canScrollLeft
+                  ? "text-[#2D2A28] hover:text-[#8c4b26] active:scale-90"
+                  : "text-[#B8AEA4] cursor-not-allowed"
+              }`}
+            >
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+            <button
+              onClick={() => scrollByDirection("right")}
+              disabled={!canScrollRight}
+              aria-label="Next Project"
+              className={`p-1.5 transition-colors cursor-pointer ${
+                canScrollRight
+                  ? "text-[#2D2A28] hover:text-[#8c4b26] active:scale-90"
+                  : "text-[#B8AEA4] cursor-not-allowed"
+              }`}
+            >
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+          </div>
+        </div>
 
-          {/* ========================================================================= */}
-          {/* ITEM 1: Demo Landing Page buatan sendiri (Adaptive Dual-Layout) */}
-          {/* ========================================================================= */}
-          <div className="space-y-6 sm:space-y-8">
-            <div className="text-center max-w-2xl mx-auto border-b border-stone-200/80 pb-3 sm:pb-4 px-2">
-              <h3 className="text-xl sm:text-3xl font-extrabold text-stone-900 text-balance">
-                Demo Standar Landing Page
-              </h3>
-              <p className="text-xs sm:text-sm text-stone-600 mt-2 sm:mt-2.5 leading-relaxed text-balance max-w-lg mx-auto">
-                Tiga contoh usaha ini fiktif, tapi kodenya nyata, aktif online, responsif, dan muat di bawah satu detik. Buka dan uji sendiri.
-              </p>
-            </div>
-
-            {/* MOBILE ONLY VIEW (< 640px): Interactive Touch Card Deck with Smooth Sliding Carousel */}
-            <div className="block sm:hidden">
-              {/* Segmented Project Selector Tabs */}
-              <div className="flex items-center justify-between bg-stone-200/70 p-1 rounded-xl mb-4 gap-1">
-                {FAN_CARDS.map((card, idx) => (
-                  <button
-                    key={card.id}
-                    onClick={() => scrollToMobileCard(idx)}
-                    className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      activeMobileIndex === idx
-                        ? "bg-[#1565C0] text-white shadow-xs"
-                        : "text-stone-600 hover:text-stone-900 hover:bg-stone-200/50"
-                    }`}
-                  >
-                    {card.shortTitle}
-                  </button>
-                ))}
-              </div>
-
-              {/* Smooth Sliding Carousel Track */}
+        {/* Horizontal Drag & Scroll Track */}
+        <div
+          ref={scrollContainerRef}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={endDrag}
+          onMouseLeave={endDrag}
+          className={`flex gap-4 sm:gap-6 overflow-x-auto pb-6 pt-2 select-none touch-pan-x touch-pan-y overscroll-x-contain ${
+            isDragging
+              ? "cursor-grabbing scroll-auto snap-none"
+              : "cursor-grab scroll-smooth snap-x snap-mandatory"
+          } scrollbar-none [&::-webkit-scrollbar]:hidden`}
+        >
+          {PROJECTS.map((project) => {
+            return (
               <div
-                ref={mobileSliderRef}
-                onScroll={handleMobileScroll}
-                className="flex overflow-x-auto gap-3 snap-x snap-mandatory scroll-smooth pb-1 overscroll-x-contain touch-pan-x scrollbar-none [&::-webkit-scrollbar]:hidden"
+                key={project.id}
+                role="button"
+                tabIndex={0}
+                aria-haspopup="dialog"
+                aria-label={`View details: ${project.title}`}
+                onClick={(e) => handleCardClick(project, e.currentTarget)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    openProject(project, e.currentTarget);
+                  }
+                }}
+                className={`w-[84vw] shadow-lg shadow-black/5 p-2 max-w-[340px] sm:max-w-none sm:w-[420px] md:w-[450px] lg:w-[470px] shrink-0 snap-start bg-white rounded-2xl border border-[#E3DDD5] hover:border-[#B8AEA4] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#8c4b26] transition-colors duration-300 flex flex-col justify-between overflow-hidden group ${
+                  isDragging ? "cursor-grabbing select-none" : "cursor-pointer"
+                }`}
               >
-                {FAN_CARDS.map((card, idx) => (
-                  <div
-                    key={card.id}
-                    className="w-full shrink-0 snap-center bg-stone-900 rounded-xl border border-stone-700/80 shadow-xl overflow-hidden"
-                  >
-                    {/* Browser Window Header Bar */}
-                    <div className="px-3 py-2 bg-stone-950 border-b border-stone-800 flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
-                      </div>
-                      <span className="text-[10px] font-mono text-stone-300 truncate max-w-42.5">
-                        {card.title}
-                      </span>
-                      <a
-                        href={card.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#42A5F5] hover:text-white p-1 transition-colors"
-                        aria-label={`Buka Live Demo ${card.title}`}
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    </div>
+                <div>
+                  {/* 1. Gambar Projek (Screenshot Preview Frame with Dark Overlay & Centered Pointer) */}
+                  <div className="relative aspect-16/9 rounded-xl overflow-hidden mb-4 bg-[#FAF7F2]">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      width={480}
+                      height={300}
+                      className="w-full h-full opacity-85 object-cover object-top pointer-events-none"
+                      draggable={false}
+                      loading="lazy"
+                    />
 
-                    {/* Screenshot Preview Image */}
-                    <div className="relative aspect-16/10 bg-stone-950 overflow-hidden">
-                      <Image
-                        src={card.image}
-                        alt={card.title}
-                        width={360}
-                        height={225}
-                        className="w-full h-full object-cover object-top"
-                        priority={idx === 1}
-                        loading={idx === 1 ? undefined : "lazy"}
+                    {/* Dark Overlay & Pure Centered Hand Pointer Icon + Helper Cue (Pure Fade-in / Fade-out, Zero Scaling) */}
+                    <div className="absolute inset-0 bg-[#1F1C1B]/75 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col items-center justify-center gap-2">
+                      <FaHandPointer
+                        className="w-8 h-8 sm:w-10 sm:h-10 text-white drop-shadow-md"
+                        aria-hidden="true"
                       />
-                      <div className="absolute inset-0 bg-linear-to-t from-stone-950/70 via-transparent to-transparent opacity-50" />
-                    </div>
-
-                    {/* Footer Strip with Direct CTA */}
-                    <div className="px-3 py-2 bg-stone-900 flex items-center justify-between gap-2 border-t border-stone-800">
-                      <div className="min-w-0 flex-1">
-                        <span className="text-[11px] font-bold text-stone-100 block truncate">
-                          {card.title}
-                        </span>
-                        <span className="text-[9.5px] text-stone-400 block font-mono">
-                          {card.category}
-                        </span>
-                      </div>
-                      <a
-                        href={card.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Buka Demo ${card.title}`}
-                        className="px-2.5 py-1 rounded-md bg-[#1976D2] hover:bg-[#1565C0] text-white text-[11px] font-bold shrink-0 inline-flex items-center gap-1 transition-all shadow-2xs active:scale-95 cursor-pointer"
-                      >
-                        <span>Buka Demo</span>
-                        <ArrowUpRight className="w-3 h-3" />
-                      </a>
+                      <span className="text-[11px] sm:text-xs font-semibold text-white/95 tracking-wide drop-shadow-md">
+                        Click to view details
+                      </span>
                     </div>
                   </div>
-                ))}
-              </div>
 
-              {/* Mobile Carousel Controls & Gesture Cue */}
-              <div className="flex items-center justify-between mt-3 text-xs text-stone-500 px-1">
-                <button
-                  onClick={() =>
-                    scrollToMobileCard(
-                      (activeMobileIndex - 1 + FAN_CARDS.length) % FAN_CARDS.length
-                    )
-                  }
-                  aria-label="Projek Sebelumnya"
-                  className="p-2 rounded-lg bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 active:scale-95 shadow-2xs cursor-pointer min-w-9 min-h-9 flex items-center justify-center"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
+                  {/* 2. Judul Projek (Centered) */}
+                  <div className="text-center mb-1 px-4 sm:px-6">
+                    <h3 className="font-semibold text-sm sm:text-[1.1rem] text-[#2D2A28] group-hover:text-[#8c4b26] transition-colors">
+                      {project.title}
+                    </h3>
+                  </div>
 
-                <div className="flex items-center gap-1">
-                  {FAN_CARDS.map((_, dotIdx) => (
-                    <button
-                      key={dotIdx}
-                      onClick={() => scrollToMobileCard(dotIdx)}
-                      aria-label={`Lihat Projek ${dotIdx + 1}`}
-                      className="p-2 cursor-pointer inline-flex items-center justify-center min-w-7 min-h-7"
-                    >
-                      <span
-                        className={`h-2 rounded-full transition-all duration-200 ${
-                          activeMobileIndex === dotIdx ? "w-6 bg-[#1565C0]" : "w-2 bg-stone-300"
-                        }`}
-                      />
-                    </button>
-                  ))}
+                  {/* 3. Deskripsi Singkat Terkait Projek & Techstack */}
+                  <p className="text-center text-[0.65rem] sm:text-[0.8rem] text-[#7A6F66] leading-relaxed mb-4 px-8 sm:px-16">
+                    {project.shortDesc}
+                  </p>
                 </div>
 
-                <button
-                  onClick={() =>
-                    scrollToMobileCard((activeMobileIndex + 1) % FAN_CARDS.length)
-                  }
-                  aria-label="Projek Selanjutnya"
-                  className="p-2 rounded-lg bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 active:scale-95 shadow-2xs cursor-pointer min-w-9 min-h-9 flex items-center justify-center"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* DESKTOP ONLY VIEW (>= 640px): Fanned Out Floating Cards (Kipas Tangan 3D) */}
-            <div className="hidden sm:block">
-              <div className="relative pt-6 pb-12 px-4 flex items-center justify-center min-h-115">
-                <div className="relative w-full max-w-4xl flex items-center justify-center">
-                  {FAN_CARDS.map((card) => {
-                    const isHovered = hoveredCardId === card.id;
+                {/* 4. Kumpulan Teks Techstack Berlogo (Minimalis dengan Efek Hover, Tanpa Border) */}
+                <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 mb-2 mt-2 py-2 px-4 sm:px-6">
+                  {project.techList.map((tech) => {
+                    const Icon = tech.icon;
                     return (
-                      <div
-                        key={card.id}
-                        onMouseEnter={() => setHoveredCardId(card.id)}
-                        onMouseLeave={() => setHoveredCardId(null)}
-                        className={`absolute w-75 md:w-85 transition-all duration-300 ease-out transform cursor-pointer ${card.tilt} ${
-                          isHovered ? "z-40 scale-105 shadow-2xl" : ""
-                        }`}
-                        style={{ zIndex: isHovered ? 40 : card.zIndex }}
+                      <span
+                        key={tech.name}
+                        className="inline-flex items-center gap-1.5 text-xs text-[#7A6F66] hover:text-[#2D2A28] transition-colors cursor-default group/tech"
                       >
-                        <div className="bg-stone-900 rounded-xl border border-stone-700/80 shadow-xl overflow-hidden group">
-                          {/* Browser Window Header Bar */}
-                          <div className="px-3.5 py-2 bg-stone-950 border-b border-stone-800 flex items-center justify-between gap-2">
-                            <div className="flex items-center gap-1.5">
-                              <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" />
-                              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" />
-                              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
-                            </div>
-                            <span className="text-[10px] font-mono text-stone-400 truncate max-w-40">
-                              {card.title}
-                            </span>
-                            <a
-                              href={card.liveUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="text-[#42A5F5] hover:text-white p-1 transition-colors"
-                              aria-label={`Buka Live Demo ${card.title}`}
-                              title="Buka Live Demo"
-                            >
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </a>
-                          </div>
-
-                          {/* Screenshot Preview Image */}
-                          <div className="relative aspect-16/10 bg-stone-950 overflow-hidden">
-                            <Image
-                              src={card.image}
-                              alt={card.title}
-                              width={340}
-                              height={212}
-                              className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                              loading="lazy"
-                            />
-                            <div className="absolute inset-0 bg-linear-to-t from-stone-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
-                          </div>
-
-                          {/* Footer Strip */}
-                          <div className="p-3 bg-stone-900 flex items-center justify-between gap-2 border-t border-stone-800">
-                            <span className="text-[11px] font-semibold text-stone-200 truncate">
-                              {card.title}
-                            </span>
-                            <a
-                              href={card.liveUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              aria-label={`Live Demo ${card.title}`}
-                              className="px-2.5 py-1 rounded bg-[#1976D2] hover:bg-[#1565C0] text-white text-[11px] font-bold shrink-0 inline-flex items-center gap-1 transition-all"
-                            >
-                              <span>Live Demo</span>
-                              <ArrowUpRight className="w-3 h-3" />
-                            </a>
-                          </div>
-                        </div>
-                      </div>
+                        <Icon
+                          className="size-4 text-[#B8AEA4] group-hover/tech:text-[#8c4b26] transition-colors shrink-0"
+                          aria-hidden="true"
+                        />
+                        {/* <span className="font-medium tracking-tight">
+                          {tech.name}
+                        </span> */}
+                      </span>
                     );
                   })}
                 </div>
               </div>
+            );
+          })}
+        </div>
 
-              {/* Quick Demo Links Pill List below Fan Cards */}
-              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                {FAN_CARDS.map((card) => (
+        {/* Carousel Pagination Dots */}
+        <div className="flex items-center justify-center gap-1.5 mt-2">
+          {PROJECTS.map((_, dotIdx) => (
+            <button
+              key={dotIdx}
+              onClick={() => scrollToProject(dotIdx)}
+              aria-label={`Go to Project ${dotIdx + 1}`}
+              className="p-1.5 cursor-pointer inline-flex items-center justify-center"
+            >
+              <span
+                className={`transition-all duration-300 rounded-full h-1.5 sm:h-2 ${
+                  activeIndex === dotIdx
+                    ? "w-6 sm:w-8 bg-[#2D2A28]"
+                    : "w-1.5 sm:w-2 bg-[#B8AEA4] hover:bg-[#7A6F66]"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Project Detail Modal Dialog (Clean Solid Backdrop & Selectable Text) */}
+      {selectedProject && (
+        <div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-project-title"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-[#2D2A28]/60 overflow-y-auto"
+          onClick={() => setSelectedProject(null)}
+        >
+          <div
+            className="relative w-full max-w-2xl bg-white border border-[#E3DDD5] rounded-2xl shadow-xl overflow-hidden my-auto select-text"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-5 sm:px-6 py-4 bg-[#FAF7F2] border-b border-[#E3DDD5] flex items-center justify-between gap-4">
+              <div>
+                <h3
+                  id="modal-project-title"
+                  className="text-lg sm:text-xl max-sm:pr-10 font-semibold text-[#2D2A28] tracking-tight leading-snug"
+                >
+                  {selectedProject.title}
+                </h3>
+              </div>
+
+              <button
+                ref={closeButtonRef}
+                type="button"
+                onClick={() => setSelectedProject(null)}
+                aria-label="Close project details modal"
+                className="p-1 text-[#7A6F66] hover:text-[#2D2A28] transition-colors cursor-pointer shrink-0"
+              >
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
+
+            {/* Modal Content Body */}
+            <div
+              tabIndex={0}
+              role="region"
+              aria-label="Project details"
+              className="p-5 sm:p-6 max-h-[75vh] overflow-y-auto space-y-5 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#8c4b26]"
+            >
+              {/* Full Image Preview (Plain Square, No Decoration) */}
+              <Image
+                src={selectedProject.image}
+                alt={selectedProject.title}
+                width={640}
+                height={400}
+                className="w-full h-auto block"
+                priority
+              />
+
+              {/* In-depth Narrative (Selectable Text) */}
+              <div className="mb-10">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#7A6F66] mb-1">
+                  About the Project
+                </h4>
+                <p className="text-sm sm:text-[0.9rem] text-[#2D2A28] text-justify leading-relaxed">
+                  {selectedProject.longDesc}
+                </p>
+              </div>
+
+              {/* Tech Stack List */}
+              <div className="mb-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#7A6F66] mb-1">
+                  Technologies &amp; Libraries
+                </h4>
+                <div className="flex flex-wrap items-center gap-3">
+                  {selectedProject.techList.map((tech) => {
+                    const Icon = tech.icon;
+                    return (
+                      <span
+                        key={tech.name}
+                        className="inline-flex items-center gap-1 mr-2.5 py-1 text-xs font-medium text-[#2D2A28]"
+                      >
+                        <Icon
+                          className="w-3.5 h-3.5 text-[#8c4b26]"
+                          aria-hidden="true"
+                        />
+                        <span>{tech.name}</span>
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer with Direct Live Demo CTA */}
+            <div className="px-5 sm:px-6 py-3 bg-[#FAF7F2] border-t border-[#E3DDD5] flex items-center justify-between gap-3">
+              <span className="text-xs text-[#7A6F66] hidden sm:inline">
+                Press{" "}
+                <kbd className="px-1.5 py-0.5 rounded bg-white border border-[#E3DDD5] text-[10px]">
+                  Esc
+                </kbd>{" "}
+                to close
+              </span>
+
+              <div className="w-full sm:w-auto flex gap-2 ml-auto">
+                {selectedProject.sourceUrl && (
                   <a
-                    key={card.id}
-                    href={card.liveUrl}
+                    href={selectedProject.sourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3.5 py-1.5 rounded-full bg-white border border-stone-200 text-stone-700 text-xs font-semibold hover:bg-[#E3F2FD] hover:text-[#1565C0] hover:border-[#BBDEFB] transition-all shadow-xs inline-flex items-center gap-1.5"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-md bg-[#2D2A28] hover:bg-[#403B37] text-[#FAF7F2] font-semibold text-xs transition-all active:scale-95"
                   >
-                    <span>{card.title}</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-stone-400" />
+                    <SiGithub className="w-3.5 h-3.5" aria-hidden="true" />
+                    <span>View Source on GitHub</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
                   </a>
-                ))}
+                )}
+                {selectedProject.liveUrl && (
+                  <a
+                    href={selectedProject.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-md bg-[#2D2A28] hover:bg-[#403B37] text-[#FAF7F2] font-semibold text-xs transition-all active:scale-95"
+                  >
+                    <span>Open Live Demo</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                )}
               </div>
             </div>
           </div>
-
-          {/* ========================================================================= */}
-          {/* ITEM 2: Kerjaan Berbayar: Report Timesheet Bongkar Muat Kapal */}
-          {/* ========================================================================= */}
-          <div className="space-y-4 sm:space-y-6">
-            <div className="text-center max-w-2xl mx-auto border-b border-stone-200/80 pb-3 sm:pb-4 px-2">
-              <h3 className="text-xl sm:text-3xl font-extrabold text-stone-900 text-balance">
-                Timesheet Bongkar Muat Kapal
-              </h3>
-              <p className="text-xs sm:text-sm text-stone-600 mt-2 sm:mt-2.5 leading-relaxed text-balance max-w-lg mx-auto">
-                Mengubah puluhan baris jam kerja mentah jadi ringkasan tiap crane dan palka, lengkap dengan audit pelacak jam hilang.
-              </p>
-            </div>
-
-            {/* Peraga: lembar REPORT dan tab AUDIT WAKTU (Horizontal Smooth Scroll) */}
-            <TimesheetHorizontalGallery />
-
-            <p className="text-center text-xs sm:text-sm text-orange-600 font-medium px-6 sm:px-0 text-balance">
-              Data pada contoh di atas disamarkan untuk menjaga kerahasiaan berkas klien.
-            </p>
-          </div>
-          
-          {/* ========================================================================= */}
-          {/* ITEM 3: Demo Pembukuan Excel buatan sendiri */}
-          {/* ========================================================================= */}
-          <div className="space-y-4 sm:space-y-6">
-            <div className="text-center max-w-2xl mx-auto border-b border-stone-200/80 pb-3 sm:pb-4 px-2">
-              <h3 className="text-xl sm:text-3xl font-extrabold text-stone-900 text-balance">
-                Otomatisasi Pembukuan Toko
-              </h3>
-              <p className="text-xs sm:text-sm text-stone-600 mt-2 sm:mt-2.5 leading-relaxed text-balance max-w-lg mx-auto">
-                Angkanya simulasi dan tokonya fiktif. Membandingkan alur hitung manual tiap malam dengan kalkulasi otomatis.
-              </p>
-            </div>
-
-            {/* Interactive Before vs After Component */}
-            <div>
-              <ExcelBeforeAfter />
-            </div>
-
-            <div className="flex justify-end">
-              <a
-                href="#kontak"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-lg bg-stone-900 text-white text-xs font-bold hover:bg-stone-800 active:scale-95 transition-all shadow-sm"
-              >
-                <span>Konsultasi Rapikan Excel</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
-
         </div>
-
-      </div>
+      )}
     </section>
   );
 }

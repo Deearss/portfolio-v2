@@ -31,9 +31,6 @@ export const BATAS_SUBJEK = 200;
  * di-percent-encode dulu (`%0A`) sebelum masuk header `Location`, jadi
  * nggak bisa dipakai nyuntik header. Sisanya, yang nggak pernah sah di
  * teks manusia, tetap dibuang.
- *
- * Rentangnya disamain sama `sanitizeInput` di lib/sanitize.ts biar dua
- * lapis pembersihan ini nggak beda aturan.
  */
 export function bersihin(mentah: string, batas: number): string {
   return mentah
@@ -61,12 +58,12 @@ function arahkan(tujuan: string): Response {
   });
 }
 
-/** Jawaban kalau environment variable-nya belum disetel. */
+/** Response when environment variable is not configured. */
 function belumDisetel(namaVar: string): Response {
   return new Response(
-    `Konfigurasi kontak belum lengkap di server: ${namaVar} belum disetel.\n\n` +
-      `Produksi : Netlify -> Site configuration -> Environment variables\n` +
-      `Lokal    : salin .env.example jadi .env.local, lalu isi nilainya`,
+    `Contact configuration is incomplete on server: ${namaVar} is not set.\n\n` +
+      `Production : Netlify -> Site configuration -> Environment variables\n` +
+      `Local      : copy .env.example to .env.local, then set the value`,
     { status: 503, headers: { "content-type": "text/plain; charset=utf-8" } },
   );
 }

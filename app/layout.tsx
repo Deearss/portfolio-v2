@@ -1,36 +1,47 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Chivo_Mono } from "next/font/google";
+import { Cactus_Classical_Serif, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-sans",
+const cactusClassicalSerif = Cactus_Classical_Serif({
+  variable: "--font-cactus",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
+const sourceSerif4 = Source_Serif_4({
+  variable: "--font-source-serif",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
-const chivoMono = Chivo_Mono({
-  variable: "--font-chivo-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
+// Teks link preview (WhatsApp, LinkedIn, X) nyontek hero di
+// components/hero/railway-hero.tsx dan ikut kecetak di banner
+// scripts/og-image.html. Ubah salah satu, samain semuanya, lalu render ulang
+// bannernya: npm run og
+const TITLE = "Haidir Aditya | Fullstack Developer";
+const DESCRIPTION =
+  "I build scalable web apps with a rigorous Definition of Done and clean systems architecture. Powered by modern AI tools daily.";
+// Naikin angka `v` tiap og-image.png dirender ulang, biar WhatsApp & sosmed
+// ngambil banner baru, bukan banner lama yang udah mereka simpan.
+const OG_IMAGE = "/og-image.png?v=2";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://deearss.netlify.app"),
-  title: "Haidir Aditya | Systems & Software Engineer",
-  description:
-    "Kerjaan manual yang berantakan, saya ubah jadi sistem yang jalan sendiri. Data, dokumen, dan aplikasi web dengan hasil yang bisa kamu uji langsung.",
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: [
     "Haidir Aditya",
     "deearss",
-    "Systems Engineer",
-    "Software Engineer",
-    "Freelance Indonesia",
+    "Fullstack Developer",
+    "Web Developer",
+    "Remote Developer",
     "Next.js",
-    "Otomatisasi Excel",
-    "Restrukturisasi Pembukuan",
-    "Web Performance Optimization",
+    "TypeScript",
+    "React",
+    "Laravel",
+    "Indonesia",
   ],
   authors: [{ name: "Haidir Aditya", url: "https://github.com/Deearss" }],
   creator: "Haidir Aditya",
@@ -43,29 +54,26 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
-    title: "Haidir Aditya | Systems & Software Engineer",
-    description:
-      "Kerjaan manual yang berantakan, saya ubah jadi sistem yang jalan sendiri. Data, dokumen, dan aplikasi web.",
+    title: TITLE,
+    description: DESCRIPTION,
     url: "https://deearss.netlify.app",
     siteName: "Haidir Aditya Portfolio",
-    locale: "id_ID",
+    locale: "en_US",
     type: "website",
     images: [
       {
-        url: "/og-image.png",
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Haidir Aditya Portfolio Preview",
+        alt: "Haidir Aditya | Fullstack Developer Portfolio Preview",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Haidir Aditya | Systems & Software Engineer",
-    description:
-      "Membantu pembuatan aplikasi web kencang, restrukturisasi Excel, dan otomatisasi sistem digital dengan performa tinggi.",
-    images: ["/og-image.png"],
-    creator: "@Deearss",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [OG_IMAGE],
   },
   robots: {
     index: true,
@@ -80,10 +88,10 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="id"
-      className={`${plusJakartaSans.variable} ${chivoMono.variable} h-full antialiased`}
+      lang="en"
+      className={`${cactusClassicalSerif.variable} ${sourceSerif4.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#FAFAF9] text-[#1C1917]">
+      <body className="min-h-full flex flex-col bg-[#FAF7F2] text-[#2D2A28]">
         {children}
       </body>
     </html>
