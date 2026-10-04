@@ -1,353 +1,542 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
-  ExternalLink,
-  ArrowUpRight,
+  X,
   ChevronLeft,
   ChevronRight,
+  MoveHorizontal,
+  ArrowUpRight,
 } from "lucide-react";
+import { FaHandPointer } from "react-icons/fa";
+import { SiNextdotjs, SiTypescript, SiTailwindcss } from "react-icons/si";
 
-interface FannedCardItem {
-  id: string;
-  title: string;
-  shortTitle: string;
-  category: string;
-  image: string;
-  liveUrl: string;
-  tilt: string;
-  zIndex: number;
+interface TechItem {
+  name: string;
+  icon: React.ComponentType<{
+    className?: string;
+    "aria-hidden"?: boolean | "true" | "false";
+  }>;
 }
 
-const FAN_CARDS: FannedCardItem[] = [
+interface ProjectItem {
+  id: string;
+  num: string;
+  title: string;
+  shortDesc: string;
+  longDesc: string;
+  techList: TechItem[];
+  image: string;
+  liveUrl: string;
+}
+
+const PROJECTS: ProjectItem[] = [
   {
     id: "ac",
-    title: "Commercial HVAC & AC Service Platform",
-    shortTitle: "HVAC Services",
-    category: "Services Showcase",
+    num: "01",
+    title: "AC Service Landing Page",
+    shortDesc:
+      "Commercial AC service platform built with Next.js, TypeScript & Tailwind CSS.",
+    longDesc:
+      "Engineered as a high-performance web platform tailored for B2B air conditioning installation, scheduled maintenance contracts, and corporate facility service requests. Features an instant multi-parameter quote calculator, structured appointment dispatch, and mobile-first ergonomics.",
+    techList: [
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Tailwind CSS", icon: SiTailwindcss },
+    ],
     image: "/showcase/ac.webp",
     liveUrl: "https://demo-jasa-ac.netlify.app",
-    tilt: "-rotate-8 sm:-translate-x-[200px] md:-translate-x-[260px] scale-[0.92] sm:scale-95 hover:-rotate-2 hover:-translate-y-3 hover:scale-105",
-    zIndex: 10,
   },
   {
     id: "wedding",
-    title: "Boutique Wedding Organizer Landing Page",
-    shortTitle: "Wedding",
-    category: "Commercial Showcase",
+    num: "02",
+    title: "Wedding Organizer Landing Page",
+    shortDesc:
+      "Wedding organizer landing page built with Next.js, TypeScript & Tailwind CSS.",
+    longDesc:
+      "Crafted for an exclusive wedding atelier, this web platform combines aesthetic elegance with responsive client acquisition workflows. Features dynamic wedding package tier calculators, curated vendor coordination portfolios, and direct consultation scheduling.",
+    techList: [
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Tailwind CSS", icon: SiTailwindcss },
+    ],
     image: "/showcase/wedding.webp",
     liveUrl: "https://demo-wedding-organizer.netlify.app",
-    tilt: "rotate-0 z-20 scale-105 sm:scale-110 shadow-lg hover:-translate-y-3 hover:scale-115",
-    zIndex: 20,
   },
   {
     id: "es-batu",
-    title: "Crystal Ice Supply & B2B Subscription",
-    shortTitle: "Crystal Ice B2B",
-    category: "B2B Subscription",
+    num: "03",
+    title: "Ice Supply Landing Page",
+    shortDesc:
+      "B2B crystal ice supply and logistics portal built with Next.js, TypeScript & Tailwind CSS.",
+    longDesc:
+      "Developed to streamline daily order fulfilment for commercial ice supplies across restaurants, coffee chains, and hospitality venues. Features recurring subscription tiering, bulk volume logistics calculations, and direct replenishment tracking.",
+    techList: [
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Tailwind CSS", icon: SiTailwindcss },
+    ],
     image: "/showcase/es-batu.webp",
     liveUrl: "https://demo-es-batu.netlify.app",
-    tilt: "rotate-8 sm:translate-x-[200px] md:translate-x-[260px] scale-[0.92] sm:scale-95 hover:rotate-2 hover:-translate-y-3 hover:scale-105",
-    zIndex: 10,
   },
 ];
 
 export function ProjectDeckCarousel() {
-  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
-  const [activeMobileIndex, setActiveMobileIndex] = useState<number>(1);
-  const mobileSliderRef = useRef<HTMLDivElement>(null);
-  const isProgrammaticScroll = useRef<boolean>(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
+    null,
+  );
 
-  const scrollToMobileCard = (index: number) => {
-    setActiveMobileIndex(index);
-    const container = mobileSliderRef.current;
-    if (container) {
-      isProgrammaticScroll.current = true;
-      const targetChild = container.children[index] as HTMLElement | undefined;
-      if (targetChild) {
-        container.scrollTo({
-          left: targetChild.offsetLeft,
-          behavior: "smooth",
-        });
-      }
-      setTimeout(() => {
-        isProgrammaticScroll.current = false;
-      }, 400);
-    }
-  };
+  // Drag physics refs (avoid re-renders during 60fps drag)
+  const isDownRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const lastXRef = useRef(0);
+  const lastTimeRef = useRef(0);
+  const velocityRef = useRef(0);
+  const hasDraggedRef = useRef(false);
 
-  const handleMobileScroll = () => {
-    if (isProgrammaticScroll.current) return;
-    const container = mobileSliderRef.current;
-    if (!container) return;
-    const scrollLeft = container.scrollLeft;
-    const cardWidth = container.offsetWidth;
-    const newIndex = Math.round(scrollLeft / (cardWidth || 1));
-    if (newIndex >= 0 && newIndex < FAN_CARDS.length && newIndex !== activeMobileIndex) {
-      setActiveMobileIndex(newIndex);
-    }
-  };
+  const checkScrollState = useCallback(() => {
+    if (!scrollContainerRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+    setCanScrollLeft(scrollLeft > 20);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 20);
 
-  useEffect(() => {
-    const container = mobileSliderRef.current;
-    if (container && container.children[1]) {
-      const weddingCard = container.children[1] as HTMLElement;
-      container.scrollTo({
-        left: weddingCard.offsetLeft,
-        behavior: "instant",
-      });
-    }
+    const card = scrollContainerRef.current
+      .firstElementChild as HTMLElement | null;
+    const cardWidth = card ? card.offsetWidth + 24 : 420;
+    const index = Math.round(scrollLeft / cardWidth);
+    setActiveIndex(Math.min(Math.max(index, 0), PROJECTS.length - 1));
   }, []);
 
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    checkScrollState();
+    container.addEventListener("scroll", checkScrollState, { passive: true });
+    window.addEventListener("resize", checkScrollState);
+
+    return () => {
+      container.removeEventListener("scroll", checkScrollState);
+      window.removeEventListener("resize", checkScrollState);
+    };
+  }, [checkScrollState]);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (selectedProject) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setSelectedProject(null);
+        }
+      };
+
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    }
+  }, [selectedProject]);
+
+  // Mouse Drag Handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    isDownRef.current = true;
+    hasDraggedRef.current = false;
+    setIsDragging(true);
+    document.body.style.cursor = "grabbing";
+    document.body.style.userSelect = "none";
+    startXRef.current = e.pageX - container.offsetLeft;
+    scrollLeftRef.current = container.scrollLeft;
+    lastXRef.current = e.pageX;
+    lastTimeRef.current = performance.now();
+    velocityRef.current = 0;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDownRef.current || !scrollContainerRef.current) return;
+    e.preventDefault();
+
+    const container = scrollContainerRef.current;
+    const x = e.pageX - container.offsetLeft;
+    const walk = x - startXRef.current;
+
+    if (Math.abs(walk) > 6) {
+      hasDraggedRef.current = true;
+    }
+
+    container.scrollLeft = scrollLeftRef.current - walk;
+
+    const now = performance.now();
+    const dt = now - lastTimeRef.current;
+    if (dt > 10) {
+      velocityRef.current = (e.pageX - lastXRef.current) / dt;
+      lastXRef.current = e.pageX;
+      lastTimeRef.current = now;
+    }
+  };
+
+  const endDrag = useCallback(() => {
+    if (!isDownRef.current) return;
+    isDownRef.current = false;
+    setIsDragging(false);
+    document.body.style.cursor = "";
+    document.body.style.userSelect = "";
+
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const card = container.firstElementChild as HTMLElement | null;
+    const cardWidth = card ? card.offsetWidth + 24 : 420;
+    const currentScroll = container.scrollLeft;
+
+    let targetIndex = Math.round(currentScroll / cardWidth);
+
+    if (velocityRef.current < -0.2) {
+      targetIndex = Math.min(targetIndex + 1, PROJECTS.length - 1);
+    } else if (velocityRef.current > 0.2) {
+      targetIndex = Math.max(targetIndex - 1, 0);
+    }
+
+    container.scrollTo({
+      left: targetIndex * cardWidth,
+      behavior: "smooth",
+    });
+
+    setTimeout(() => {
+      hasDraggedRef.current = false;
+    }, 50);
+  }, []);
+
+  // Global mouseup listener to ensure grabbing cursor resets cleanly even outside container
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      if (isDownRef.current) {
+        endDrag();
+      }
+    };
+    window.addEventListener("mouseup", handleGlobalMouseUp);
+    return () => {
+      window.removeEventListener("mouseup", handleGlobalMouseUp);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+  }, [endDrag]);
+
+  const scrollByDirection = (direction: "left" | "right") => {
+    if (!scrollContainerRef.current) return;
+    const card = scrollContainerRef.current
+      .firstElementChild as HTMLElement | null;
+    const cardWidth = card ? card.offsetWidth + 24 : 420;
+    const currentScroll = scrollContainerRef.current.scrollLeft;
+    let nextIndex =
+      direction === "left"
+        ? Math.floor(currentScroll / cardWidth) - 1
+        : Math.ceil(currentScroll / cardWidth) + 1;
+
+    nextIndex = Math.min(Math.max(nextIndex, 0), PROJECTS.length - 1);
+
+    scrollContainerRef.current.scrollTo({
+      left: nextIndex * cardWidth,
+      behavior: "smooth",
+    });
+  };
+
+  const scrollToProject = (index: number) => {
+    if (!scrollContainerRef.current) return;
+    const card = scrollContainerRef.current
+      .firstElementChild as HTMLElement | null;
+    const cardWidth = card ? card.offsetWidth + 24 : 420;
+
+    scrollContainerRef.current.scrollTo({
+      left: index * cardWidth,
+      behavior: "smooth",
+    });
+  };
+
+  const handleCardClick = (project: ProjectItem) => {
+    if (!hasDraggedRef.current) {
+      setSelectedProject(project);
+    }
+  };
+
   return (
-    <section id="work" className="scroll-mt-16 py-16 sm:py-24 bg-[#FAF7F2] border-b border-[#E3DDD5] overflow-hidden">
+    <section
+      id="work"
+      className="scroll-mt-16 sm:scroll-mt-20 py-16 sm:py-24 bg-[#FAF7F2] border-b border-[#E3DDD5] overflow-hidden"
+    >
       {/* Anchor for backward compatibility */}
       <span id="projek" className="sr-only" />
 
-      <div className="max-w-6xl mx-auto px-5 sm:px-8">
-        
-        {/* Main Section Header */}
-        <div className="mb-14 sm:mb-20 text-center max-w-3xl mx-auto">
-          <p className="text-xs sm:text-sm font-medium uppercase tracking-widest text-[#7A6F66] mb-2">
-            Featured Works &amp; Demonstrations
-          </p>
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-semibold text-[#2D2A28] tracking-tight">
-            Selected Web Projects
+      <div className="w-full max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10">
+        {/* Main Section Header (Padding & Max-Width Parity with Techstack) */}
+        <div className="text-center max-w-lg sm:px-10 mb-12 sm:mb-16 mx-auto">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#2D2A28] tracking-tight">
+            Featured Projects
           </h2>
-          <p className="text-sm sm:text-base text-[#7A6F66] mt-3 leading-relaxed max-w-xl mx-auto">
-            Functional web applications engineered for speed, cross-device responsiveness, and real-time live preview.
+          <p className="text-sm sm:text-base text-[#7A6F66] mt-3 leading-relaxed max-sm:px-4">
+            <span className="sm:hidden">
+              Fast, responsive web applications with live previews you can try.
+            </span>
+            <span className="hidden sm:inline">
+              Functional web applications engineered for speed, cross-device
+              responsiveness, and real-time live preview.
+            </span>
           </p>
         </div>
 
-        {/* MOBILE ONLY VIEW (< 640px): Smooth Sliding Touch Carousel */}
-        <div className="block sm:hidden mb-12">
-          {/* Segmented Selector Tabs */}
-          <div className="flex items-center justify-between bg-[#E3DDD5]/70 p-1 mb-4 gap-1 rounded-lg border border-[#E3DDD5]">
-            {FAN_CARDS.map((card, idx) => (
-              <button
-                key={card.id}
-                onClick={() => scrollToMobileCard(idx)}
-                className={`flex-1 py-1.5 px-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${
-                  activeMobileIndex === idx
-                    ? "bg-[#2D2A28] text-[#FAF7F2] shadow-xs"
-                    : "text-[#7A6F66] hover:text-[#2D2A28]"
+        {/* Navigation & Interaction Controls (Stacked Vertically: Explanation on Top, Bare Arrow Buttons on Bottom) */}
+        <div className="flex flex-col items-center text-center mt-10 sm:mt-14 mb-2 sm:mb-4 max-w-2xl mx-auto px-4">
+          {/* Bare Minimalist Arrow Controls (No white circle wrapper, borderless, shadowless) */}
+          <div className="flex items-center justify-center gap-6 mt-3">
+            <button
+              onClick={() => scrollByDirection("left")}
+              disabled={!canScrollLeft}
+              aria-label="Previous Project"
+              className={`p-1.5 transition-colors cursor-pointer ${
+                canScrollLeft
+                  ? "text-[#2D2A28] hover:text-[#8c4b26] active:scale-90"
+                  : "text-[#B8AEA4] cursor-not-allowed"
+              }`}
+            >
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+            <button
+              onClick={() => scrollByDirection("right")}
+              disabled={!canScrollRight}
+              aria-label="Next Project"
+              className={`p-1.5 transition-colors cursor-pointer ${
+                canScrollRight
+                  ? "text-[#2D2A28] hover:text-[#8c4b26] active:scale-90"
+                  : "text-[#B8AEA4] cursor-not-allowed"
+              }`}
+            >
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+          </div>
+        </div>
+
+        {/* Horizontal Drag & Scroll Track */}
+        <div
+          ref={scrollContainerRef}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={endDrag}
+          onMouseLeave={endDrag}
+          className={`flex gap-4 sm:gap-6 overflow-x-auto pb-6 pt-2 select-none touch-pan-x touch-pan-y overscroll-x-contain ${
+            isDragging
+              ? "cursor-grabbing scroll-auto snap-none"
+              : "cursor-grab scroll-smooth snap-x snap-mandatory"
+          } scrollbar-none [&::-webkit-scrollbar]:hidden`}
+        >
+          {PROJECTS.map((project) => {
+            return (
+              <div
+                key={project.id}
+                onClick={() => handleCardClick(project)}
+                className={`w-[84vw] shadow-lg shadow-black/5 p-2 max-w-[340px] sm:max-w-none sm:w-[420px] md:w-[450px] lg:w-[470px] shrink-0 snap-start bg-white rounded-2xl border border-[#E3DDD5] hover:border-[#B8AEA4] transition-colors duration-300 flex flex-col justify-between overflow-hidden group ${
+                  isDragging ? "cursor-grabbing select-none" : "cursor-pointer"
                 }`}
               >
-                {card.shortTitle}
-              </button>
-            ))}
-          </div>
+                <div>
+                  {/* 1. Gambar Projek (Screenshot Preview Frame with Dark Overlay & Centered Pointer) */}
+                  <div className="relative aspect-16/9 rounded-xl overflow-hidden mb-4 bg-[#FAF7F2]">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      width={480}
+                      height={300}
+                      className="w-full h-full opacity-85 object-cover object-top pointer-events-none"
+                      draggable={false}
+                      loading="lazy"
+                    />
 
-          {/* Sliding Carousel Track */}
-          <div
-            ref={mobileSliderRef}
-            onScroll={handleMobileScroll}
-            className="flex overflow-x-auto gap-3 snap-x snap-mandatory scroll-smooth pb-1 overscroll-x-contain touch-pan-x scrollbar-none [&::-webkit-scrollbar]:hidden"
-          >
-            {FAN_CARDS.map((card, idx) => (
-              <div
-                key={card.id}
-                className="w-full shrink-0 snap-center bg-white border border-[#E3DDD5] rounded-xl shadow-xs overflow-hidden"
-              >
-                {/* Header Bar */}
-                <div className="px-3.5 py-2.5 bg-[#FAF7F2] border-b border-[#E3DDD5] flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#B8AEA4] inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#7A6F66] inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#2D2A28] inline-block" />
-                  </div>
-                  <span className="text-[11px] font-semibold text-[#7A6F66] truncate max-w-44">
-                    {card.title}
-                  </span>
-                  <a
-                    href={card.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#2D2A28] hover:text-[#7A6F66] p-1 transition-colors"
-                    aria-label={`Open Live Demo for ${card.title}`}
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-
-                {/* Screenshot Preview */}
-                <div className="relative aspect-16/10 bg-[#FAF7F2] overflow-hidden">
-                  <Image
-                    src={card.image}
-                    alt={card.title}
-                    width={360}
-                    height={225}
-                    className="w-full h-full object-cover object-top"
-                    priority={idx === 1}
-                    loading={idx === 1 ? undefined : "lazy"}
-                  />
-                </div>
-
-                {/* Footer Strip with Direct CTA */}
-                <div className="px-3.5 py-2.5 bg-white flex items-center justify-between gap-2 border-t border-[#E3DDD5]">
-                  <div className="min-w-0 flex-1">
-                    <span className="text-xs font-bold text-[#2D2A28] block truncate">
-                      {card.title}
-                    </span>
-                    <span className="text-[10px] text-[#7A6F66] block font-semibold">
-                      {card.category}
-                    </span>
-                  </div>
-                  <a
-                    href={card.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Open Live Demo for ${card.title}`}
-                    className="px-3 py-1.5 rounded-md bg-[#2D2A28] hover:bg-[#403B37] text-[#FAF7F2] text-xs font-semibold shrink-0 inline-flex items-center gap-1 transition-all shadow-xs active:scale-95"
-                  >
-                    <span>Live Demo</span>
-                    <ArrowUpRight className="w-3 h-3" />
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Mobile Controls */}
-          <div className="flex items-center justify-between mt-3 text-xs text-[#7A6F66] px-1">
-            <button
-              onClick={() =>
-                scrollToMobileCard(
-                  (activeMobileIndex - 1 + FAN_CARDS.length) % FAN_CARDS.length
-                )
-              }
-              aria-label="Previous Project"
-              className="p-2 rounded-md bg-white border border-[#E3DDD5] hover:border-[#B8AEA4] text-[#2D2A28] active:scale-95 cursor-pointer min-w-9 min-h-9 flex items-center justify-center shadow-xs"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-
-            <div className="flex items-center gap-1.5">
-              {FAN_CARDS.map((_, dotIdx) => (
-                <button
-                  key={dotIdx}
-                  onClick={() => scrollToMobileCard(dotIdx)}
-                  aria-label={`View Project ${dotIdx + 1}`}
-                  className="p-1 cursor-pointer"
-                >
-                  <span
-                    className={`block h-2 rounded-full transition-all duration-200 ${
-                      activeMobileIndex === dotIdx ? "w-6 bg-[#2D2A28]" : "w-2 bg-[#B8AEA4]"
-                    }`}
-                  />
-                </button>
-              ))}
-            </div>
-
-            <button
-              onClick={() =>
-                scrollToMobileCard((activeMobileIndex + 1) % FAN_CARDS.length)
-              }
-              aria-label="Next Project"
-              className="p-2 rounded-md bg-white border border-[#E3DDD5] hover:border-[#B8AEA4] text-[#2D2A28] active:scale-95 cursor-pointer min-w-9 min-h-9 flex items-center justify-center shadow-xs"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* DESKTOP VIEW (>= 640px): Anthropic-style Interactive Fanned Cards */}
-        <div className="hidden sm:block">
-          <div className="relative h-[480px] md:h-[530px] flex items-center justify-center">
-            <div className="relative w-[340px] md:w-[380px] h-[240px] md:h-[260px] flex items-center justify-center">
-              {FAN_CARDS.map((card) => {
-                const isHovered = hoveredCardId === card.id;
-                const isAnyHovered = hoveredCardId !== null;
-
-                return (
-                  <div
-                    key={card.id}
-                    onMouseEnter={() => setHoveredCardId(card.id)}
-                    onMouseLeave={() => setHoveredCardId(null)}
-                    className={`absolute cursor-pointer transition-all duration-300 ease-out origin-bottom ${card.tilt}`}
-                    style={{
-                      zIndex: isHovered ? 50 : isAnyHovered ? card.zIndex : card.zIndex,
-                    }}
-                  >
-                    <div className="w-[340px] md:w-[380px] bg-white border border-[#E3DDD5] rounded-xl shadow-xs hover:border-[#B8AEA4] hover:shadow-lg transition-all overflow-hidden group">
-                      {/* Browser Window Header */}
-                      <div className="px-3.5 py-2.5 bg-[#FAF7F2] border-b border-[#E3DDD5] flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                          <span className="w-2.5 h-2.5 rounded-full bg-[#B8AEA4] inline-block" />
-                          <span className="w-2.5 h-2.5 rounded-full bg-[#7A6F66] inline-block" />
-                          <span className="w-2.5 h-2.5 rounded-full bg-[#2D2A28] inline-block" />
-                        </div>
-                        <span className="text-[11px] font-semibold text-[#7A6F66] truncate max-w-48">
-                          {card.title}
-                        </span>
-                        <a
-                          href={card.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="text-[#2D2A28] hover:text-[#7A6F66] transition-colors"
-                          aria-label={`Open Live Demo for ${card.title}`}
-                          title="Open Live Demo"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                        </a>
-                      </div>
-
-                      {/* Screenshot Preview */}
-                      <div className="relative aspect-16/10 bg-[#FAF7F2] overflow-hidden">
-                        <Image
-                          src={card.image}
-                          alt={card.title}
-                          width={380}
-                          height={238}
-                          className="w-full h-full object-cover object-top group-hover:scale-102 transition-transform duration-500"
-                          loading="lazy"
-                        />
-                      </div>
-
-                      {/* Footer Strip */}
-                      <div className="p-3 bg-white flex items-center justify-between gap-2 border-t border-[#E3DDD5]">
-                        <span className="text-xs font-bold text-[#2D2A28] truncate">
-                          {card.title}
-                        </span>
-                        <a
-                          href={card.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          aria-label={`Open Live Demo for ${card.title}`}
-                          className="px-3 py-1.5 rounded-md bg-[#2D2A28] hover:bg-[#403B37] text-[#FAF7F2] text-xs font-semibold shrink-0 inline-flex items-center gap-1 shadow-xs active:scale-95 transition-all"
-                        >
-                          <span>Live Demo</span>
-                          <ArrowUpRight className="w-3 h-3" />
-                        </a>
-                      </div>
+                    {/* Dark Overlay & Pure Centered Hand Pointer Icon + Helper Cue (Pure Fade-in / Fade-out, Zero Scaling) */}
+                    <div className="absolute inset-0 bg-[#1F1C1B]/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col items-center justify-center gap-2">
+                      <FaHandPointer
+                        className="w-8 h-8 sm:w-10 sm:h-10 text-white drop-shadow-md"
+                        aria-hidden="true"
+                      />
+                      <span className="text-[11px] sm:text-xs font-semibold text-white/95 tracking-wide drop-shadow-md">
+                        Click to view details
+                      </span>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </div>
 
-          {/* Quick Demo Links Pill List */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-6">
-            {FAN_CARDS.map((card) => (
-              <a
-                key={card.id}
-                href={card.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 rounded-full bg-white border border-[#E3DDD5] text-[#2D2A28] text-xs font-semibold shadow-xs hover:border-[#B8AEA4] hover:bg-[#FAF7F2] active:scale-95 transition-all inline-flex items-center gap-1.5"
-              >
-                <span>{card.title}</span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-[#7A6F66]" />
-              </a>
-            ))}
-          </div>
+                  {/* 2. Judul Projek (Centered) */}
+                  <div className="text-center mb-1 px-4 sm:px-6">
+                    <h3 className="font-semibold text-sm sm:text-[1.1rem] text-[#2D2A28] group-hover:text-[#8c4b26] transition-colors">
+                      {project.title}
+                    </h3>
+                  </div>
+
+                  {/* 3. Deskripsi Singkat Terkait Projek & Techstack */}
+                  <p className="text-center text-[0.65rem] sm:text-[0.8rem] text-[#7A6F66] leading-relaxed mb-4 px-8 sm:px-16">
+                    {project.shortDesc}
+                  </p>
+                </div>
+
+                {/* 4. Kumpulan Teks Techstack Berlogo (Minimalis dengan Efek Hover, Tanpa Border) */}
+                <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 mb-2 mt-2 py-2 px-4 sm:px-6">
+                  {project.techList.map((tech) => {
+                    const Icon = tech.icon;
+                    return (
+                      <span
+                        key={tech.name}
+                        className="inline-flex items-center gap-1.5 text-xs text-[#7A6F66] hover:text-[#2D2A28] transition-colors cursor-default group/tech"
+                      >
+                        <Icon
+                          className="size-4 text-[#B8AEA4] group-hover/tech:text-[#8c4b26] transition-colors shrink-0"
+                          aria-hidden="true"
+                        />
+                        {/* <span className="font-medium tracking-tight">
+                          {tech.name}
+                        </span> */}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
+        {/* Carousel Pagination Dots */}
+        <div className="flex items-center justify-center gap-1.5 mt-2">
+          {PROJECTS.map((_, dotIdx) => (
+            <button
+              key={dotIdx}
+              onClick={() => scrollToProject(dotIdx)}
+              aria-label={`Go to Project ${dotIdx + 1}`}
+              className="p-1.5 cursor-pointer inline-flex items-center justify-center"
+            >
+              <span
+                className={`transition-all duration-300 rounded-full h-1.5 sm:h-2 ${
+                  activeIndex === dotIdx
+                    ? "w-6 sm:w-8 bg-[#2D2A28]"
+                    : "w-1.5 sm:w-2 bg-[#B8AEA4] hover:bg-[#7A6F66]"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
       </div>
+
+      {/* Project Detail Modal Dialog (Clean Solid Backdrop & Selectable Text) */}
+      {selectedProject && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-project-title"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-[#2D2A28]/60 overflow-y-auto animate-fade-in"
+          onClick={() => setSelectedProject(null)}
+        >
+          <div
+            className="relative w-full max-w-2xl bg-white border border-[#E3DDD5] rounded-2xl shadow-xl overflow-hidden my-auto select-text"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-5 sm:px-6 py-4 bg-[#FAF7F2] border-b border-[#E3DDD5] flex items-center justify-between gap-4">
+              <div>
+                <h3
+                  id="modal-project-title"
+                  className="text-lg sm:text-xl max-sm:pr-10 font-semibold text-[#2D2A28] tracking-tight leading-snug"
+                >
+                  {selectedProject.title}
+                </h3>
+              </div>
+
+              <button
+                onClick={() => setSelectedProject(null)}
+                aria-label="Close project details modal"
+                className="p-1 text-[#7A6F66] hover:text-[#2D2A28] transition-colors cursor-pointer shrink-0"
+              >
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
+
+            {/* Modal Content Body */}
+            <div className="p-5 sm:p-6 max-h-[75vh] overflow-y-auto space-y-5">
+              {/* Full Image Preview (Plain Square, No Decoration) */}
+              <Image
+                src={selectedProject.image}
+                alt={selectedProject.title}
+                width={640}
+                height={400}
+                className="w-full h-auto block"
+                priority
+              />
+
+              {/* In-depth Narrative (Selectable Text) */}
+              <div className="mb-10">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#7A6F66] mb-1">
+                  About the Project
+                </h4>
+                <p className="text-sm sm:text-[0.9rem] text-[#2D2A28] text-justify leading-relaxed">
+                  {selectedProject.longDesc}
+                </p>
+              </div>
+
+              {/* Tech Stack List */}
+              <div className="mb-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#7A6F66] mb-1">
+                  Technologies &amp; Libraries
+                </h4>
+                <div className="flex flex-wrap items-center gap-3">
+                  {selectedProject.techList.map((tech) => {
+                    const Icon = tech.icon;
+                    return (
+                      <span
+                        key={tech.name}
+                        className="inline-flex items-center gap-1 mr-2.5 py-1 text-xs font-medium text-[#2D2A28]"
+                      >
+                        <Icon
+                          className="w-3.5 h-3.5 text-[#8c4b26]"
+                          aria-hidden="true"
+                        />
+                        <span>{tech.name}</span>
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer with Direct Live Demo CTA */}
+            <div className="px-5 sm:px-6 py-3 bg-[#FAF7F2] border-t border-[#E3DDD5] flex items-center justify-between gap-3">
+              <span className="text-xs text-[#7A6F66] hidden sm:inline">
+                Press{" "}
+                <kbd className="px-1.5 py-0.5 rounded bg-white border border-[#E3DDD5] font-mono text-[10px]">
+                  Esc
+                </kbd>{" "}
+                to close
+              </span>
+
+              <a
+                href={selectedProject.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-md bg-[#2D2A28] hover:bg-[#403B37] text-[#FAF7F2] font-semibold text-xs transition-all active:scale-95 ml-auto"
+              >
+                <span>Open Live Demo</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
