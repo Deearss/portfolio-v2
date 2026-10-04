@@ -46,8 +46,8 @@ export function Navbar() {
         <div className="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
           {/* Brand Name (Minimalist Editorial Typography) */}
           <a
-            href="#about"
-            onClick={(e) => scrollToSection(e, "about")}
+            href="#hero"
+            onClick={(e) => scrollToSection(e, "hero")}
             className="text-xl sm:text-2xl font-bold tracking-tight text-[#2D2A28] hover:text-[#7A6F66] transition-colors select-none"
             aria-label="Deearss Home"
           >
@@ -57,11 +57,11 @@ export function Navbar() {
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-8 lg:gap-10">
             <a
-              href="#about"
-              onClick={(e) => scrollToSection(e, "about")}
+              href="#education"
+              onClick={(e) => scrollToSection(e, "education")}
               className="text-xs font-semibold uppercase tracking-widest text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
             >
-              ABOUT
+              EDUCATION
             </a>
             <a
               href="#skills"
@@ -115,11 +115,11 @@ export function Navbar() {
           <div className="md:hidden bg-[#FAF7F2] border-b border-[#E3DDD5] shadow-sm px-6 py-4">
             <nav className="flex flex-col gap-3 font-medium text-xs uppercase tracking-wider text-[#2D2A28]">
               <a
-                href="#about"
-                onClick={(e) => scrollToSection(e, "about")}
+                href="#education"
+                onClick={(e) => scrollToSection(e, "education")}
                 className="py-1 text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
               >
-                ABOUT
+                EDUCATION
               </a>
               <a
                 href="#skills"

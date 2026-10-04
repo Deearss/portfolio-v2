@@ -23,7 +23,7 @@ export function RailwayHero() {
 
   return (
     <section
-      id="about"
+      id="hero"
       className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 bg-[#FAF7F2] text-[#2D2A28] border-b border-[#E3DDD5] overflow-hidden"
     >
 

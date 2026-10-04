@@ -75,6 +75,17 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
   - **Background Canvas Bersih (Solid Warm Pebble)**: Berdasarkan evaluasi visual langsung, tekstur grafis dibatalkan demi mempertahankan estetika minimalis yang tenang, lapang, dan kontras tajam dengan warna dasar `#FAF7F2` tanpa noise/glitch.
   - **Chibi Profile Card**: Avatar chibi duduk natural tanpa garis border lingkaran tambahan, header status *"Open to Work"* dengan ikon Rocket, lokasi *"Banjarmasin, Indonesia"*, serta kontak terproteksi via proxy (`/go/wa` dan `/go/email`).
 
+### 2b. My Education Section (`components/about/about-section.tsx`)
+- **Status**: ✅ **Selesai & Teruji (Side-by-Side 50:50 Dual Education Cards, 100% English)**
+- **Fitur**:
+  - Konteks resmi dialihkan dari klaim generic menjadi **"My Education"**, berfokus murni pada rekam jejak akademis dan pengalaman nyata belajar IT.
+  - Bahasa: 100% natural US English, bebas klaim angka fiktif maupun em-dash.
+  - Kartu 1 (Kiri): **Higher Education (B.S. in Computer Science)** di Universitas Islam Kalimantan MAB, Banjarmasin (Aktif, 2024 - Sekarang). Mengulas pendalaman rekayasa database relasional dan Object-Oriented Architecture (PBO).
+  - Kartu 2 (Kanan): **Vocational High School (Software Engineering / RPL)** di SMK Negeri 4 Banjarmasin (Lulus, 2021 - 2024). Mengabadikan pencapaian Uji Kompetensi Keahlian (UKK) membangun aplikasi kasir web offline (multi-role admin & staff, CRUD barang & pelanggan, transaksi) secara mandiri dengan CSS murni dan PHP tanpa bantuan AI sama sekali di bawah penilaian penguji eksternal industri.
+  - Navigasi: Menu navbar desktop dan drawer mobile disinkronkan menjadi `EDUCATION` (`#education`).
+  - Tipografi paper: Header kartu diformat ala paper akademik (kategori di atas, judul degree tebal, nama institusi, lokasi, dan masa pendidikan teks murni tanpa kotak) dipadu deskripsi ikhtisar `text-justify`.
+  - Desain adaptif: Berjajar 2 kartu sejajar tinggi simetris (`items-stretch`, `lg:grid-cols-2`) di desktop dan bertumpuk proporsional di layar mobile.
+
 ### 3. Skills Section (`components/skills/skills-section.tsx`)
 - **Status**: ✅ **Selesai & Teruji (1-Row 4 Flat Warm Pebble Cards + Peeking Themed Chibi Avatars)**
 - **Fitur**:
@@ -135,9 +146,14 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 
 ---
 
-## 🎯 Status Sesi Saat Ini: Skills / Techstack Section Polish & Chibi Brand Integration
-- **Fokus**: Merombak Techstack menjadi 4 pilar kertas datar (Frontend, Backend, Databases, DevOps) dengan peeking chibi avatar tematik di belakang kartu fisik, warna hover almond roasted kontras tinggi, dan layout responsif 4-kolom desktop / 2-kolom mobile.
-- **Next Agenda**: Membangun section **"About Me"** (terinspirasi dari website portofolio Luputer milik Saidi) dengan gaya arsitektur Warm Pebble minimalis.
+## 🎯 Status Sesi Saat Ini: Education Section Implementation & Polish
+- **Fokus**: Merombak section About Me menjadi **"Education"** ([components/about/about-section.tsx](file:///home/dier/Ngoding/vibe-coding/gemini-code/portfolio-v2/components/about/about-section.tsx)) dengan judul `Education` dan subtitle ringkas: *"Formal academic foundations and hands-on software engineering training."*. Layout menggunakan 2 kartu bergaya *academic paper* berdampingan (50:50 grid):
+  - **Higher Education (S1 Teknik Informatika - UNISKA MAB)**: Ikon besar `GraduationCap` (`size-14`), judul centered, timeline `Active (2024 - Present)`. Paragraf pertama sebagai overview umum kurikulum, diikuti 2 sub-paragraf memorable highlights yang dibuat menjorok ke dalam (`pl-3.5 sm:pl-4`): *Relational Database & OOP Architecture* (teks "(PBO)" telah dihapus) serta *Applied Statistics & Artificial Intelligence*, dilengkapi bullet point hanging warm almond (`bg-[#8c4b26]`).
+  - **Vocational High School (SMKN 4 Banjarmasin - RPL)**: Ikon besar `Code2` (`size-14`), judul centered, timeline `Graduated (2021 - 2024)`. Paragraf pertama sebagai overview kejuruan, diikuti 2 sub-paragraf menjorok ke dalam (`pl-3.5 sm:pl-4`): *Vocational Competency Exam (UKK)* (aplikasi kasir offline 3 hari tanpa AI) serta *External Industry Assessment*, dilengkapi bullet point hanging warm almond identik.
+  - **Dekorasi Pojok (Corner Accents)**: Tiap pojokan (4 sudut) dari kedua paper dilengkapi aksen bracket L-shaped minimalis (`border-[#B8AEA4]`) bernuansa blueprint/manuskrip akademik sehingga lembaran paper tidak polos tanpa merusak clean aesthetic.
+  - **Hirarki & Keseimbangan Visual**: Pola nested indentation dan hanging bullet mempertegas hirarki bacaan; kedua paper memiliki tinggi dan ritme vertikal simetris di desktop dan responsif di mobile.
+  - **Navigasi**: Navbar disinkronkan ke `EDUCATION` (`#education` dengan alias `#about`).
+- **Next Agenda**: Review section Experience / Career, sinkronisasi bahasa Inggris untuk section lain, atau penyempurnaan showcase karya.
 
 ---
 

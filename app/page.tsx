@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar } from "@/components/navbar/navbar";
 import { RailwayHero } from "@/components/hero/railway-hero";
+import { AboutSection } from "@/components/about/about-section";
 import { SkillsSection } from "@/components/skills/skills-section";
 import { ProjectDeckCarousel } from "@/components/projects/project-deck-carousel";
 import { MinimalContact } from "@/components/contact/minimal-contact";
@@ -12,6 +13,7 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <RailwayHero />
+        <AboutSection />
         <SkillsSection />
         <ProjectDeckCarousel />
         <MinimalContact />
