@@ -112,22 +112,12 @@ export function SkillsSection() {
     <section id="skills" className="scroll-mt-16 py-16 sm:py-24 bg-[#EAE2D5] border-y border-[#DDD5C7]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">
-          <p className="text-xs sm:text-sm font-medium uppercase tracking-widest text-[#7A6F66] mb-2">
-            Technical Stack &amp; Tooling
-          </p>
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-semibold text-[#2D2A28] tracking-tight">
+        <div className="text-center max-w-lg sm:px-10 mb-12 sm:mb-16 mx-auto">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#2D2A28] tracking-tight">
             Techstack
           </h2>
-          <p className="text-sm sm:text-base text-[#7A6F66] mt-3 leading-relaxed max-w-xl mx-auto">
-            <span className="block sm:hidden">
-              Core technologies and engineering tools used to build modern web applications.
-            </span>
-            <span className="hidden sm:inline">
-              Languages, frameworks, and developer tooling I rely on to{" "}
-              <br className="hidden sm:inline" />
-              engineer responsive client interfaces and structured backend systems.
-            </span>
+          <p className="text-sm sm:text-base text-[#7A6F66] mt-3 leading-relaxed">
+            Core technologies and engineering tools used to build modern web applications.
           </p>
         </div>
 

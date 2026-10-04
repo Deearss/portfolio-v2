@@ -94,12 +94,13 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
     - **Backend**: Avatar chibi memakai headset developer lengkap dengan mic (real-time/API engineer).
     - **Databases**: Avatar chibi default asli (rambut ikal signature Dier dengan kacamata baca bulat dan senyum natural).
     - **DevOps**: Avatar chibi memakai topi insinyur proyek (*engineer work cap*).
+    - **Solid White Body Fill**: Tubuh/bahu keempat avatar chibi diisi warna putih solid (`#FFFFFF`) sinkron dengan kepala/wajah (menghilangkan efek badan transparan berongga saat kartu di-hover dan avatar menyembul naik).
   - Mengadaptasi estetika lembaran kertas arsitektur yang ditempel (*pasted paper sheet*) dengan sudut siku tajam murni (`rounded-none`), border tipis 1px (`#DDD5C7`), latar kartu warm pebble lembut (`#FAF7F2`), dan **tanpa bayangan drop-shadow**.
   - Format pohon dependensi sub-cabang dihilangkan total; setiap teknologi hanya tampil 1 kali.
-  - Header section diperkaya berbobot:
-    - Overline mini teks: `PERALATAN & FONDASI TEKNIS` (uppercase, tracking-widest, `#7A6F66`).
-    - Judul utama: `Techstack` (`text-2xl sm:text-4xl md:text-5xl font-semibold tracking-tight`).
-    - Teks deskripsi adaptif: 2 baris ringkas di mobile (`block sm:hidden`) dan 2 baris proporsional di desktop (`hidden sm:inline`).
+  - Header section bersih & selaras dengan Education section:
+    - Overline mini teks dihapus total (clean & non-redundant).
+    - Judul utama: `Techstack` diperbesar menjadi `text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight` (seragam presisi dengan header section Education).
+    - Teks deskripsi: Dibatasi padding terkalibrasi (`max-w-lg sm:px-10 mx-auto`) sehingga selalu rapi terbungkus dalam 2 baris proporsional di mode desktop maupun mobile: *"Core technologies and engineering tools used to build modern web applications."*
   - Judul tiap kartu disederhanakan murni:
     - **Frontend**: Next.js, Astro.js, React.js, TypeScript, Tailwind CSS, JavaScript, HTML5 & CSS3 (7 items).
     - **Backend**: Node.js, PHP, Laravel, RESTful API, Route & Middleware, Schema Validation, Webhook (7 items).
@@ -151,12 +152,12 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
   - **Metadata & Root Layout** (`app/layout.tsx`): Atribut `lang` di-set ke `"en"`, dan OpenGraph `locale` di-set ke `"en_US"`.
   - **Navbar** (`components/navbar/navbar.tsx`): Menu links (`EDUCATION`, `SKILLS`, `WORK`, `CONTACT`), tombol `HIRE ME`, serta `aria-label` mobile hamburger toggle (*"Open navigation menu"* / *"Close navigation menu"*).
   - **Education Section** (`components/about/about-section.tsx`): Format paper akademik 50:50 dengan corner accents L-shaped, hanging bullet points almond, dan narasi kurikulum perguruan tinggi (*Applied Statistics & Artificial Intelligence*, *Relational Database & OOP Architecture*) serta SMK (*Vocational Competency Exam (UKK)*, *External Industry Assessment*).
-  - **Skills Section** (`components/skills/skills-section.tsx`): Header overline (*"Technical Stack & Tooling"*), deskripsi adaptif, dan 4 pilar stack (*Frontend*, *Backend*, *Databases*, *DevOps*).
+  - **Skills Section** (`components/skills/skills-section.tsx`): Header diselaraskan dengan Education (tanpa overline redundan, judul besar `text-3xl sm:text-4xl md:text-5xl`, dan deskripsi terbungkus 2 baris seimbang di desktop), 4 pilar stack (*Frontend*, *Backend*, *Databases*, *DevOps*), serta keempat avatar chibi diperbarui dengan tubuh/bahu putih solid (`#FFFFFF`) tanpa efek tembus pandang saat hover.
   - **Selected Web Projects** (`components/projects/project-deck-carousel.tsx`): Judul showcase (*Commercial HVAC & AC Service Platform*, *Boutique Wedding Organizer Landing Page*, *Crystal Ice Supply & B2B Subscription*), overline (*"Featured Works & Demonstrations"*), subtitle, direct demo pill buttons, serta seluruh kontrol navigasi (`aria-label` next/prev project).
   - **Contact Section** (`components/contact/minimal-contact.tsx`): Overline (*"Get In Touch"*), title (*"Start a Conversation"*), direct message gateway (*Message on WhatsApp*, *Send an Email*), dan 3 kartu profil eksternal (*Repositories & Code*, *Career Profile*, *Client Reviews & Rating*).
   - **Footer** (`components/footer/footer.tsx`): Tautan profil sosial dan kontrol tombol kembali ke atas (*"Back to top"*).
   - **Contact Redirect Gateway** (`lib/kontak-redirect.ts`): Pesan fallback 503 saat env belum disetel diterjemahkan ke bahasa Inggris profesional.
-- **Status Git**: Siap di-commit secara lokal (tanpa push, sesuai aturan no autonomous push).
+- **Status Git & Remote Backup**: Seluruh commit dan progres terkini telah diamankan ke GitHub pada branch non-produksi `wip/v2-redesign` (bukan branch `main`). Langkah ini melindungi seluruh kode hasil evolusi dari risiko kehilangan data lokal (PC crash/musibah), tanpa memicu auto-deploy publik di Netlify (karena Netlify hanya men-deploy dari branch `main`). Website produksi publik tetap aman dan utuh.
 
 ---
 
