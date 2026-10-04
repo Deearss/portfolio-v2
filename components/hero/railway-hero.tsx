@@ -12,6 +12,10 @@ import {
   Rocket,
 } from "lucide-react";
 
+// Path CV yang bisa diunduh (taruh PDF-nya di public/). Biarin null selama
+// CV aslinya belum siap: tombol "Download CV" otomatis ngumpet.
+const CV_URL: string | null = null;
+
 export function RailwayHero() {
   const scrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
@@ -87,14 +91,16 @@ export function RailwayHero() {
                 <ArrowDown className="size-3.5 sm:size-4" />
               </a>
 
-              <a
-                href="/cv-haidir-aditya.pdf"
-                download="CV-Haidir-Aditya.pdf"
-                className="order-1 w-full sm:order-3 sm:w-auto mb-2.5 sm:mb-0 inline-flex items-center justify-center gap-2 px-0 sm:px-6 py-2 sm:py-2.5 rounded-md bg-[#e49a4c] hover:bg-[#d88d3e] text-[#2D2A28] border border-[#d88d3e] font-semibold text-[0.8rem] sm:text-[0.88rem] transition-all shadow-xs active:scale-95"
-              >
-                <Download className="size-3.5 sm:size-4 text-[#2D2A28]" />
-                <span>Download CV</span>
-              </a>
+              {CV_URL && (
+                <a
+                  href={CV_URL}
+                  download="CV-Haidir-Aditya.pdf"
+                  className="order-1 w-full sm:order-3 sm:w-auto mb-2.5 sm:mb-0 inline-flex items-center justify-center gap-2 px-0 sm:px-6 py-2 sm:py-2.5 rounded-md bg-[#e49a4c] hover:bg-[#d88d3e] text-[#2D2A28] border border-[#d88d3e] font-semibold text-[0.8rem] sm:text-[0.88rem] transition-all shadow-xs active:scale-95"
+                >
+                  <Download className="size-3.5 sm:size-4 text-[#2D2A28]" />
+                  <span>Download CV</span>
+                </a>
+              )}
             </div>
 
             {/* Three Quick Social and Direct Contact Icons (Borderless, Centered on mobile) */}

@@ -70,6 +70,7 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
     - Di layar desktop: Urutan tetap berjajar horizontal (*View My Work* -> *Get In Touch* -> *Download CV*).
     - Khusus mode mobile: Tombol *Download CV* otomatis naik ke posisi paling atas (`order-1 w-full`), diberikan jarak ekstra lega (`mb-2.5`), sedangkan tombol *View My Work* dan *Get In Touch* berada di bawahnya membagi baris secara simetris (`flex-1`).
     - Skema warna: *View My Work* (solid charcoal `#2D2A28`), *Get In Touch* (outline stone `#B8AEA4`, hover putih terang), dan *Download CV* (almond hangat `#e49a4c`).
+    - **Per 4 Okt 2026 tombol *Download CV* disembunyiin** karena CV aslinya belum ada (file placeholder-nya udah dihapus). Buat munculin lagi: taruh PDF CV asli di `public/`, lalu isi konstanta `CV_URL` di `components/hero/railway-hero.tsx` (misal `"/cv-haidir-aditya.pdf"`).
   - **Ikon Sosial Tanpa Kotak**: Tiga ikon (GitHub `@Deearss`, LinkedIn, Email relay) borderless langsung dapat diklik dengan ukuran lebih besar (`w-5 h-5 sm:w-6 sm:h-6`).
   - **Tipografi & Ikon Simetris Mobile**: Khusus tampilan mobile (`< sm`), header status, judul utama, role, tagline, serta deretan tombol sosial diformat rata tengah (`items-center text-center justify-center`) agar harmonis dan simetris dengan tombol aksi dan kartu profil di bawahnya. Pada layar desktop (`sm:`), perataan tetap rata kiri elegan.
   - **Background Canvas Bersih (Solid Warm Pebble)**: Berdasarkan evaluasi visual langsung, tekstur grafis dibatalkan demi mempertahankan estetika minimalis yang tenang, lapang, dan kontras tajam dengan warna dasar `#FAF7F2` tanpa noise/glitch.
@@ -201,7 +202,7 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 - **Projek ke-4 di katalog**: web portofolio ini sendiri, dengan tombol "View Source on GitHub" (repo `Deearss/portfolio-v2` publik; repo 3 demo lainnya privat). Thumbnail `public/showcase/portfolio.webp` dipotret pakai fungsi `potret()` dari `scripts/render-og.mjs`. Dots katalog sekarang nandain kartu terakhir pas track mentok kanan.
 - **Metadata**: keyword era freelance (`Freelance Indonesia`, `Systems Designer`, `Web Performance Optimization`, dll) diganti; `twitter:creator "@Deearss"` dibuang (akun X-nya belum dikonfirmasi punya Dier). Pesan otomatis tombol WhatsApp/Email diganti dari "discuss a project" (bahasa klien freelance) jadi soal lowongan.
 - **Link preview produksi masih versi lama**: selama `wip/v2-redesign` belum di-merge, link `deearss.netlify.app` di WhatsApp/sosmed masih nampilin judul "Systems & Software Engineer" + deskripsi Indonesia era freelance.
-- **Blocker yang masih ada**: `public/cv-haidir-aditya.pdf` masih placeholder ("INI BUKAN CV ASLI"). Wajib diganti CV asli sebelum merge ke `main`.
+- **CV**: placeholder "INI BUKAN CV ASLI" dihapus dan tombol *Download CV* disembunyiin lewat `CV_URL = null` sebelum merge ke `main`. Tinggal nunggu PDF CV asli dari Dier.
 
 ---
 
