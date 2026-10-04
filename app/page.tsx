@@ -4,6 +4,7 @@ import { RailwayHero } from "@/components/hero/railway-hero";
 import { AboutSection } from "@/components/about/about-section";
 import { SkillsSection } from "@/components/skills/skills-section";
 import { ProjectDeckCarousel } from "@/components/projects/project-deck-carousel";
+import { AiWorkflowSection } from "@/components/ai/ai-workflow-section";
 import { MinimalContact } from "@/components/contact/minimal-contact";
 import { Footer } from "@/components/footer/footer";
 
@@ -16,6 +17,7 @@ export default function Home() {
         <AboutSection />
         <SkillsSection />
         <ProjectDeckCarousel />
+        <AiWorkflowSection />
         <MinimalContact />
       </main>
       <Footer />

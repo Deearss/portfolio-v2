@@ -68,14 +68,21 @@ export function Navbar() {
               onClick={(e) => scrollToSection(e, "skills")}
               className="text-xs font-semibold uppercase tracking-widest text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
             >
-              SKILLS
+              TECHSTACK
             </a>
             <a
               href="#work"
               onClick={(e) => scrollToSection(e, "work")}
               className="text-xs font-semibold uppercase tracking-widest text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
             >
-              WORK
+              PROJECTS
+            </a>
+            <a
+              href="#ai"
+              onClick={(e) => scrollToSection(e, "ai")}
+              className="text-xs font-semibold uppercase tracking-widest text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
+            >
+              AI
             </a>
             <a
               href="#contact"
@@ -126,14 +133,21 @@ export function Navbar() {
                 onClick={(e) => scrollToSection(e, "skills")}
                 className="py-1 text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
               >
-                SKILLS
+                TECHSTACK
               </a>
               <a
                 href="#work"
                 onClick={(e) => scrollToSection(e, "work")}
                 className="py-1 text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
               >
-                WORK
+                PROJECTS
+              </a>
+              <a
+                href="#ai"
+                onClick={(e) => scrollToSection(e, "ai")}
+                className="py-1 text-[#7A6F66] hover:text-[#2D2A28] transition-colors"
+              >
+                AI
               </a>
               <a
                 href="#contact"
