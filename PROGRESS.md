@@ -6,7 +6,7 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 
 ## 👤 Profil & Konteks Pemilik
 - **Nama**: Haidir Aditya (Dier / Deearss)
-- **Role / Headline**: *Fullstack Developer*
+- **Role / Headline**: *Frontend Developer* (ganti dari Fullstack 12 Okt 2026, ngikut CV)
 - **Domisili / Identitas**: Mahasiswa Computer Science, Indonesia
 - **Target Domain**: `my.id` (Personal Branding & Freelance Service)
 - **Repositori GitHub Portofolio**: `https://github.com/Deearss/portfolio-v2` (Branch: `main`)
@@ -64,7 +64,7 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 - **Fitur**:
   - **Layout 2-Kolom Responsif**: Sisi kiri untuk identitas dan aksi, sisi kanan untuk Profile Card Chibi.
   - **Status Remote & Open to Work (No Pill Badge)**: Kedua indikator kesiapan (di sisi kiri *"Available for Remote Work"* dan di kartu profil *"Open to Work"*) diformat sebagai teks murni bersanding dengan ikon Rocket presisi, 100% bebas dari kontainer kapsul, border tambahan, maupun green dot.
-  - **Headline & Role (English & Animated)**: *"Hi, I'm Haidir Aditya"* dilengkapi animasi garis bawah (underline) yang meluncur halus dari kiri ke kanan saat halaman pertama kali dimuat (`scaleX(0)` ke `scaleX(1)` via GPU transform), dipadu peran *"Fullstack Developer"*.
+  - **Headline & Role (English & Animated)**: *"Hi, I'm Haidir Aditya"* dilengkapi animasi garis bawah (underline) yang meluncur halus dari kiri ke kanan saat halaman pertama kali dimuat (`scaleX(0)` ke `scaleX(1)` via GPU transform), dipadu peran *"Frontend Developer"*.
   - **Tagline Disiplin Engineering**: *"I build scalable web apps with a rigorous Definition of Done and clean systems architecture. Powered by modern AI tools daily."*
   - **3 Tombol Aksi Terkalibrasi (Adaptive Mobile Ordering)**:
     - Di layar desktop: Urutan tetap berjajar horizontal (*View My Work* -> *Get In Touch* -> *Download CV*).
@@ -132,7 +132,7 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 ### 6. Footer (`components/footer/footer.tsx`)
 - **Status**: ✅ **Selesai & Teruji**
 - **Fitur**:
-  - Identitas resmi: Haidir Aditya, Fullstack Developer.
+  - Identitas resmi: Haidir Aditya, Frontend Developer.
   - Latar charcoal gelap `#2D2A28` yang kontras dan tenang di akhir halaman.
 
 ### 9. Rencana Fitur Transisi Evolusi Portofolio
@@ -203,6 +203,22 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
 - **Metadata**: keyword era freelance (`Freelance Indonesia`, `Systems Designer`, `Web Performance Optimization`, dll) diganti; `twitter:creator "@Deearss"` dibuang (akun X-nya belum dikonfirmasi punya Dier). Pesan otomatis tombol WhatsApp/Email diganti dari "discuss a project" (bahasa klien freelance) jadi soal lowongan.
 - **Link preview produksi masih versi lama**: selama `wip/v2-redesign` belum di-merge, link `deearss.netlify.app` di WhatsApp/sosmed masih nampilin judul "Systems & Software Engineer" + deskripsi Indonesia era freelance.
 - **CV**: placeholder "INI BUKAN CV ASLI" dihapus dan tombol *Download CV* disembunyiin lewat `CV_URL = null` sebelum merge ke `main`. Tinggal nunggu PDF CV asli dari Dier.
+
+---
+
+## 🎯 Sesi 12 Okt 2026 (Claude Code): Judul jadi Frontend + audit keamanan
+- **Judul ganti `Fullstack Developer` → `Frontend Developer`** atas permintaan Dier, biar sama kayak CV yang lagi dipakai
+  ngelamar. Kena di hero (2 tempat), footer, `TITLE`/keywords/alt OG di `app/layout.tsx`, `scripts/og-image.html`, dan README.
+  Banner `public/og-image.png` dirender ulang (`npm run og`), `OG_IMAGE` naik ke `?v=3`. Tagline nggak diubah.
+- **Audit dependensi:** `npm audit fix` (tanpa `--force`) nambal `sharp` → 0.35.5 (CVE librsvg) dan `source-map-js` → 1.2.2
+  (DoS). Dua-duanya cuma kepake waktu build, bukan di situs yang tayang. **Sisa 5 temuan `braces`** lewat
+  `eslint-config-next`: alat lint doang, nggak ikut ke `out/`. "Perbaikan" dari npm itu turun ke eslint-config-next 14
+  (rusak), jadi sengaja dibiarin.
+- **Audit kode:** perantara `/go/*` aman (tujuan dikunci ke wa.me/Gmail, bukan open redirect; karakter kontrol dibuang;
+  `no-store`). `.env.local` nggak pernah masuk git, nilainya nggak ketemu di `out/`. Nggak ada `dangerouslySetInnerHTML`/`eval`,
+  semua `target="_blank"` udah `rel="noopener noreferrer"`. Header produksi: HSTS (bawaan Netlify), `X-Frame-Options`,
+  `nosniff`, `Referrer-Policy`. Belum ada CSP: opsional buat situs statis tanpa input pengguna.
+- **Di-merge ke `main` dan di-push 12 Okt 2026** atas izin Dier.
 
 ---
 
