@@ -18,7 +18,7 @@ export function Footer() {
             Haidir Aditya
           </p>
           <p className="text-[#B8AEA4] mt-0.5 text-xs">
-            Fullstack Developer
+            Frontend Developer
           </p>
         </div>
 
