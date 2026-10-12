@@ -1,6 +1,6 @@
 # deearss: Portfolio v2
 
-Personal portfolio of Haidir Aditya, a fullstack developer from Banjarmasin, Indonesia.
+Personal portfolio of Haidir Aditya, a frontend developer from Banjarmasin, Indonesia.
 Live at [deearss.netlify.app](https://deearss.netlify.app).
 
 ## Stack

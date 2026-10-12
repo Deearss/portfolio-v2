@@ -55,7 +55,7 @@ export function RailwayHero() {
 
             {/* Professional Role */}
             <h2 className="text-xl sm:text-2xl font-semibold text-[#7A6F66] mb-4 sm:mb-5 tracking-tight">
-              Fullstack Developer
+              Frontend Developer
             </h2>
 
             {/* Selected Tagline */}
@@ -182,7 +182,7 @@ export function RailwayHero() {
                   Haidir Aditya
                 </h3>
                 <p className="text-xs sm:text-sm text-[#7A6F66] font-medium mt-0.5">
-                  Fullstack Developer
+                  Frontend Developer
                 </p>
               </div>
 
