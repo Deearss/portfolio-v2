@@ -220,6 +220,13 @@ Dokumentasi ini dibuat untuk merekam status pengerjaan website portofolio **Haid
   `nosniff`, `Referrer-Policy`. Belum ada CSP: opsional buat situs statis tanpa input pengguna.
 - **Di-merge ke `main` dan di-push 12 Okt 2026** atas izin Dier.
 
+## 🎯 Sesi 26 Okt 2026 (Claude Code): Tambalan keamanan Next.js
+- **Next 16.3.8 → 16.4.1** (eslint-config-next ikut) dari tambalan out-of-band Next.js 14/10/2026: RCE di `use cache`,
+  RCE sharp/SVG di Image Optimization, dan DoS Server Actions. Situs ini `output: export` plus perantara `/go/*` di
+  Netlify Functions, jadi tiga celah itu nggak kena ke yang tayang. Tetap dinaikin biar nggak ketinggalan. `sharp` tetap 0.35.5.
+- **Sisa `npm audit`:** 2 temuan high di `undici` dan `zod`, dua-duanya dependensi dev (`npm audit --omit=dev` = 0). Dibiarin.
+- Lint + build lulus di Node 24.22.1. **Di-merge ke `main` dan di-push 26 Okt 2026** atas izin Dier.
+
 ---
 
 ## 🚀 Perintah Verifikasi
